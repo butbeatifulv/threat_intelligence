@@ -1,6 +1,6 @@
 # Legacy tool server (`.external`) — reference only
 
-The directory [`.external/hexstrike-ai-master/`](../.external/hexstrike-ai-master/) contains a vendored copy of **HexStrike AI v6.0** (MIT). It is **not** part of the Veil runtime and is **not** started by Veil compose.
+The directory [`refs/hexstrike-ai-master/`](../refs/hexstrike-ai-master/) contains a vendored copy of **HexStrike AI v6.0** (MIT). It is **not** part of the Veil runtime and is **not** started by Veil compose.
 
 Operational default: agents and services use **`veil-engage` + engage-api** only — **no Flask `:8888`**. Migration steps: [mcp-agents.md — Migration runbook](mcp-agents.md#migration-runbook-hexstrike-flask-8888--veil-engage).
 

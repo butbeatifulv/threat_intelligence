@@ -1,6 +1,6 @@
 # Legacy MCP parity checklist
 
-Reference: [`.external/hexstrike-ai-master/`](../.external/hexstrike-ai-master/) (MIT, **reference-only — not runtime**). Parity scripts under `scripts/engage/` may read that tree; **`engage/` and `pkg/engage/` must not** import or embed `.external/hexstrike*` paths (`make test-engage-external-guard`, P11d).
+Reference: [`refs/hexstrike-ai-master/`](../refs/hexstrike-ai-master/) (MIT, **reference-only — not runtime**). Parity scripts under `scripts/engage/` may read that tree; **`engage/` and `pkg/engage/` must not** import or embed `.external/hexstrike*` paths (`make test-engage-external-guard`, P11d).
 
 | Area | Legacy reference | Veil engage |
 |------|------------------|-------------|

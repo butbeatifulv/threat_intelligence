@@ -6,7 +6,7 @@ Fourth Veil runtime context: **authorized tool execution**, intelligence workflo
 
 **Execution model:** Catalog tools run as subprocesses on the **same machine as the MCP server**, using that host’s **`PATH`** and OS environment—like HexStrike running `hexstrike_server.py` on the host with scanners installed there, not on a separate “client-only” laptop. Install the security CLIs you need on **that** execution host. Topology and dependency expectations: [docs/engage/engage-mcp-topology.md](../docs/engage/engage-mcp-topology.md), [docs/engage/engage-client-dependencies.md](../docs/engage/engage-client-dependencies.md).
 
-Greenfield **Go** implementation of the tool-orchestration model from the MIT reference in [`.external/hexstrike-ai-master/`](../.external/hexstrike-ai-master/) (attribution: [NOTICE.hexstrike](NOTICE.hexstrike)). Veil does **not** ship or run that Python stack — engage provides:
+Greenfield **Go** implementation of the tool-orchestration model from the MIT reference in [`refs/hexstrike-ai-master/`](../refs/hexstrike-ai-master/) (attribution: [NOTICE.hexstrike](NOTICE.hexstrike)). Veil does **not** ship or run that Python stack — engage provides:
 
 - **YAML catalog** — 150 legacy MCP tool names with per-tool `parameters` and `args` templates
 - **Generic runner** — subprocess execution with Keycloak RBAC and audit logging

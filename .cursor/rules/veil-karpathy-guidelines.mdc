@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Veil + Karpathy guidelines
 
-Merged with [AGENTS.md](../../AGENTS.md) and [docs/agents/coding-style.md](../../docs/agents/coding-style.md). Full skill: [.cursor/skills/veil-karpathy-guidelines/SKILL.md](../../.cursor/skills/veil-karpathy-guidelines/SKILL.md). On errors: [veil-agent-kaizen-metacognition.mdc](veil-agent-kaizen-metacognition.mdc). Upstream reference: [.external/andrej-karpathy-skills-main/](../../.external/andrej-karpathy-skills-main/) (read-only).
+Merged with [AGENTS.md](../../AGENTS.md) and [docs/agents/coding-style.md](../../docs/agents/coding-style.md). Full skill: [.cursor/skills/veil-karpathy-guidelines/SKILL.md](../../.cursor/skills/veil-karpathy-guidelines/SKILL.md). On errors: [veil-agent-kaizen-metacognition.mdc](veil-agent-kaizen-metacognition.mdc). Upstream reference: [refs/andrej-karpathy-skills-main/](../../refs/andrej-karpathy-skills-main/) (read-only).
 
 **Tradeoff:** Caution over speed on non-trivial work.
 

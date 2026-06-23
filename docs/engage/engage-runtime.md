@@ -204,7 +204,7 @@ Smoke: `make test-engage-browser` (skips if sidecar/API down).
 - **stdio:** `veil-engage` — [examples/mcp/engage.stdio.json.example](../examples/mcp/engage.stdio.json.example)
 - **HTTP (optional):** `ENGAGE_MCP_HTTP_ENABLED=1` on `:8892`, or [engage.http.json.example](../examples/mcp/engage.http.json.example)
 
-Engage is a greenfield Go rewrite of the MIT tool server in `.external/` (attribution in [engage/NOTICE.hexstrike](../engage/NOTICE.hexstrike)).
+Engage is a greenfield Go rewrite of the MIT tool server in `refs/hexstrike-ai-master/` (attribution in [engage/NOTICE.hexstrike](../engage/NOTICE.hexstrike)).
 
 ## Benchmarks (Phase 22)
 

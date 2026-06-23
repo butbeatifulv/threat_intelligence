@@ -1,31 +1,31 @@
 # Veil security control catalog — maps external frameworks to repo-enforced controls.
-# Sources (reference only, do not edit .external/): JCSF, DAF, DAF MLSO, OWASP GenAI landscapes.
+# Sources (reference only, do not edit refs/): JCSF, DAF, DAF MLSO, OWASP GenAI landscapes.
 version: 1
 
 sources:
   - id: jcsf
     title: Jet Container Security Framework
-    path: .external/Jet-Container-Security-Framework-main
+    path: refs/Jet-Container-Security-Framework-main
     scope: container domains (nodes, runtime, images, manifests, runtime)
   - id: daf
     title: DevSecOps Assessment Framework
-    path: .external/DevSecOps-Assessment-Framework-main
+    path: refs/DevSecOps-Assessment-Framework-main
     scope: secure SDLC, CI/CD, secrets, container images
   - id: daf-mlso
     title: DAF MLSO (AI/ML systems)
-    path: .external/DevSecOps-Assessment-Framework-main/DAF_MLSO_public_RU.md
+    path: refs/DevSecOps-Assessment-Framework-main/DAF_MLSO_public_RU.md
     scope: agentic AI, MCP, least privilege
   - id: owasp-agentic
     title: OWASP Agentic AI Solutions Landscape Q2/2026
-    path: .external/Cheat-Sheet-Agentic-AI-Solution-Landscape-Q226-1-1.pdf
+    path: refs/owasp/Cheat-Sheet-Agentic-AI-Solution-Landscape-Q226-1-1.pdf
     scope: agent lifecycle SecOps
   - id: owasp-red-team-ai
     title: OWASP Red Teaming AI Landscape Q2/2026
-    path: .external/Cheat-Sheet-Red-Teaming-AI-Solution-Landscape-Q226.pdf
+    path: refs/owasp/Cheat-Sheet-Red-Teaming-AI-Solution-Landscape-Q226.pdf
     scope: red-team / evaluate phase
   - id: agent-store
     title: openJiuwen Agent Store (catalog reference)
-    path: .external/agent-store
+    path: refs/agent-store
     scope: agent metadata patterns only; not executed in CI
   - id: gaia
     title: GAIA benchmark (arXiv:2311.12983)

@@ -17,7 +17,7 @@ Authoritative mapping of profile → tool → distro packages:
 - [`../scripts/ops/engage-tools-sources.yaml`](../scripts/ops/engage-tools-sources.yaml) (Kali/pkg tracker/upstream provenance + fallback methods)
 
 Profiles: `minimal`, `recommended`, `full` (see file). Some tools have **empty** package lists on certain distros (for example `masscan` on Alpine); install those manually or skip them in that environment.
-For HexStrike parity there is a dedicated `core47` profile based on [`.external/hexstrike-ai-master/README.md`](../.external/hexstrike-ai-master/README.md).
+For HexStrike parity there is a dedicated `core47` profile based on [`refs/hexstrike-ai-master/README.md`](../refs/hexstrike-ai-master/README.md).
 
 ## Plan-only vs install
 

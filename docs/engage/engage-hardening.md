@@ -2,7 +2,7 @@
 
 Veil **engage** runs offensive tooling inside a **protected perimeter** for active threat countermeasures. Hardening assumes attackers may probe the API/MCP surface; the host and graph must not become pivot points.
 
-**Framework alignment:** Jet [JCSF](../.external/Jet-Container-Security-Framework-main/), [DAF](../.external/DevSecOps-Assessment-Framework-main/) (+ MLSO for agentic), OWASP GenAI agentic/red-team landscapes — see [external-security-frameworks.md](../external/external-security-frameworks.md) and [engage-agentic-threats.md](engage-agentic-threats.md). Enforced catalog: [deploy/security/veil-controls.yaml](../deploy/security/veil-controls.yaml).
+**Framework alignment:** Jet [JCSF](../refs/Jet-Container-Security-Framework-main/), [DAF](../refs/DevSecOps-Assessment-Framework-main/) (+ MLSO for agentic), OWASP GenAI agentic/red-team landscapes — see [external-security-frameworks.md](../external/external-security-frameworks.md) and [engage-agentic-threats.md](engage-agentic-threats.md). Enforced catalog: [deploy/security/veil-controls.yaml](../deploy/security/veil-controls.yaml).
 
 ## Threat model
 

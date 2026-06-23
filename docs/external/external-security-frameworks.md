@@ -1,6 +1,6 @@
 # External security frameworks (reference layer)
 
-Veil **does not ship** full JCSF/DAF spreadsheets in `.external/` — those directories are **read-only reference**. Operational truth lives in:
+Veil **does not ship** full JCSF/DAF spreadsheets in `refs/` — those directories are **read-only reference** (symlink to [cxado-references](https://github.com/butbeautifulv/cxado-references) via meta-repo). Operational truth lives in:
 
 | Artifact | Role |
 |----------|------|
@@ -13,13 +13,13 @@ Veil **does not ship** full JCSF/DAF spreadsheets in `.external/` — those dire
 
 | Path | Framework | What we extract |
 |------|-----------|-----------------|
-| [.external/Jet-Container-Security-Framework-main/](../.external/Jet-Container-Security-Framework-main/) | **JCSF** (Jet) | Five domains: nodes, runtime, images, manifests, container runtime → P5 Terraform/Ansible/Helm |
-| [.external/DevSecOps-Assessment-Framework-main/](../.external/DevSecOps-Assessment-Framework-main/) | **DAF** | Secure SDLC practices (secrets, CI/CD, container images, SCM) → CI gates, profiles |
+| [refs/Jet-Container-Security-Framework-main/](../refs/Jet-Container-Security-Framework-main/) | **JCSF** (Jet) | Five domains: nodes, runtime, images, manifests, container runtime → P5 Terraform/Ansible/Helm |
+| [refs/DevSecOps-Assessment-Framework-main/](../refs/DevSecOps-Assessment-Framework-main/) | **DAF** | Secure SDLC practices (secrets, CI/CD, container images, SCM) → CI gates, profiles |
 | `DAF_MLSO_public_RU.md` in same tree | **DAF MLSO** | AI/agent/MCP least privilege → engage runner + MCP |
-| [.external/Cheat-Sheet-Agentic-AI-Solution-Landscape-Q226-1-1.pdf](../.external/Cheat-Sheet-Agentic-AI-Solution-Landscape-Q226-1-1.pdf) | **OWASP GenAI** | Agentic lifecycle SecOps → MCP/tooling controls |
-| [.external/Cheat-Sheet-Red-Teaming-AI-Solution-Landscape-Q226.pdf](../.external/Cheat-Sheet-Red-Teaming-AI-Solution-Landscape-Q226.pdf) | **OWASP Red Team AI** | Test/evaluate phase → self-test scope (no host attacks) |
-| [.external/Карта инструментов DevSecOps.pdf](../.external/Карта%20инструментов%20DevSecOps.pdf) | Tool landscape | Informative; Veil **implements** tools via engage catalog, not every box on the map |
-| [.external/agent-store/](../.external/agent-store/) | **openJiuwen Agent Store** | Catalog/metadata patterns only — see [external-agent-store.md](external-agent-store.md) |
+| [refs/owasp/Cheat-Sheet-Agentic-AI-Solution-Landscape-Q226-1-1.pdf](../refs/owasp/Cheat-Sheet-Agentic-AI-Solution-Landscape-Q226-1-1.pdf) | **OWASP GenAI** | Agentic lifecycle SecOps → MCP/tooling controls |
+| [refs/owasp/Cheat-Sheet-Red-Teaming-AI-Solution-Landscape-Q226.pdf](../refs/owasp/Cheat-Sheet-Red-Teaming-AI-Solution-Landscape-Q226.pdf) | **OWASP Red Team AI** | Test/evaluate phase → self-test scope (no host attacks) |
+| [Карта инструментов DevSecOps.pdf](../refs/Карта%20инструментов%20DevSecOps.pdf) | Tool landscape | Informative; Veil **implements** tools via engage catalog, not every box on the map |
+| [refs/agent-store/](../refs/agent-store/) | **openJiuwen Agent Store** | Catalog/metadata patterns only — see [external-agent-store.md](external-agent-store.md) |
 | [.external/Anthropic-Cybersecurity-Skills-main/](../.external/Anthropic-Cybersecurity-Skills-main/) | **Cybersecurity Skills** (community) | Procedure playbooks for agents — see [external-cybersecurity-skills.md](../playbooks/external-cybersecurity-skills.md); index in [skills-index/](../skills-index/) |
 | [GAIA arXiv:2311.12983](https://arxiv.org/abs/2311.12983) | **GAIA benchmark** | General-assistant agent eval (HF optional) — [agent-evaluation-gaia.md](agent-evaluation-gaia.md) |
 
@@ -28,7 +28,7 @@ Veil **does not ship** full JCSF/DAF spreadsheets in `.external/` — those dire
 1. **Do not copy controls blindly** — JCSF L4 practices may be incompatible with lab/smoke profiles (`smoke-minimal`, local runner).
 2. **Separate roles** — graph read (`veil-mcp`) vs tool exec (`veil-engage`) vs batch scrape; each maps to different DAF/JCSF domains.
 3. **Secured engage infra** — production engage uses `secure-engage.env` + Docker runner + `ENGAGE_TARGET_GUARD=block` for SSRF-style abuse from agents.
-4. **`.external/` is never executed** — same rule as HexStrike reference; no CI dependency on PDF binaries.
+4. **`refs/` is never executed** — same rule as HexStrike reference; no CI dependency on PDF binaries. `.external/Anthropic-Cybersecurity-Skills-main/` remains Veil-local for `make corpus-import` only.
 
 ## Automated verification
 
