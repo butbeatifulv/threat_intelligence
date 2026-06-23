@@ -6,6 +6,8 @@
 
 **Documentation in the agent chain:** [.cursor/rules/veil-agent-documentation.mdc](.cursor/rules/veil-agent-documentation.mdc) — after each merge, actualize plans, runtime docs, and descriptions the next agent reads; use structured reasoning in phase plans (constraints, few-shot examples from prior phases, explicit `make` DoD).
 
+**Rules index (all 9 rules + adaptation guide):** [docs/agents/cursor-rules-index.md](docs/agents/cursor-rules-index.md) — catalog, orchestrator vs implementer, Veil→Fish matrix.
+
 ## Agent chain (summary)
 
 | Step | Rule / doc |
