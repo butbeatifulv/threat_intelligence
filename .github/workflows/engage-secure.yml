@@ -1,36 +1,11 @@
-name: engage-secure
+# Engage secure CI moved to veneno
+name: engage-secure (moved to veneno)
 
 on:
-  schedule:
-    - cron: '0 3 * * *'
   workflow_dispatch:
 
 jobs:
-  hardening-selftest:
+  pointer:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '1.25'
-      - name: Engage hardening self-test (strict)
-        env:
-          ENGAGE_HARDENING_SELFTEST_STRICT: '1'
-        run: |
-          cd engage/serve && go test ./internal/security/... -count=1
-          python3 scripts/engage/hardening-compose-audit.py
-
-  secure-smoke:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Secure compose smoke (nginx TLS)
-        run: make test-engage-secure
-
-  keycloak-smoke:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - name: Keycloak auth path smoke
-        run: make test-engage-keycloak
+      - run: echo "Run in butbeautifulv/veneno"
