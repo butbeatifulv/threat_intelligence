@@ -12,12 +12,11 @@ on:
       - 'deploy/**/README.md'
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   sync-github-description:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4

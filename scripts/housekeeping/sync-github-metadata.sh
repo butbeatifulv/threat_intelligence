@@ -16,5 +16,12 @@ fi
 
 DESC="$(tr -d '\n' <"${DESC_FILE}")"
 REPO="${GITHUB_REPOSITORY:-butbeautifulv/veil}"
-gh repo edit "${REPO}" --description "${DESC}"
+if ! gh repo edit "${REPO}" --description "${DESC}"; then
+  if [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
+  echo "WARN: GITHUB_TOKEN cannot update repo description (needs Administration); sync skipped in CI" >&2
+  echo "Run 'make sync-github-metadata' locally or add a PAT with Administration write" >&2
+  exit 0
+  fi
+  exit 1
+fi
 echo "Updated GitHub description for ${REPO}"

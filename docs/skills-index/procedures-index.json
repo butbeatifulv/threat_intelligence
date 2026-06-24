@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-20T11:40Z",
+  "generated_at": "2026-06-24T14:19Z",
   "skill_count": 754,
   "procedures": [
     {
@@ -104,9 +104,7 @@
         "volatility",
         "yara"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/analyzing-bootkit-and-rootkit-samples/SKILL.md"
     },
     {
@@ -202,9 +200,7 @@
         "shodan",
         "wireshark"
       ],
-      "catalog_tools": [
-        "metasploit"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/analyzing-command-and-control-communication/SKILL.md"
     },
     {
@@ -269,10 +265,7 @@
         "falco",
         "trivy"
       ],
-      "catalog_tools": [
-        "falco",
-        "trivy"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/analyzing-docker-container-forensics/SKILL.md"
     },
     {
@@ -427,13 +420,7 @@
         "osquery",
         "velociraptor"
       ],
-      "catalog_tools": [
-        "hashcat",
-        "hydra",
-        "john",
-        "masscan",
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/analyzing-linux-system-artifacts/SKILL.md"
     },
     {
@@ -507,9 +494,7 @@
         "volatility",
         "wireshark"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/analyzing-malware-behavior-with-cuckoo-sandbox/SKILL.md"
     },
     {
@@ -574,9 +559,7 @@
         "volatility",
         "yara"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/analyzing-memory-dumps-with-volatility/SKILL.md"
     },
     {
@@ -814,9 +797,7 @@
         "volatility",
         "yara"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/analyzing-ransomware-encryption-mechanisms/SKILL.md"
     },
     {
@@ -1317,9 +1298,7 @@
         "metasploit",
         "sigma"
       ],
-      "catalog_tools": [
-        "metasploit"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/building-attack-pattern-library-from-cti-reports/SKILL.md"
     },
     {
@@ -1818,11 +1797,7 @@
         "ffuf",
         "gobuster"
       ],
-      "catalog_tools": [
-        "feroxbuster_scan",
-        "ffuf_scan",
-        "gobuster_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/bypassing-authentication-with-forced-browsing/SKILL.md"
     },
     {
@@ -1908,10 +1883,7 @@
         "hashcat",
         "nuclei"
       ],
-      "catalog_tools": [
-        "hashcat",
-        "nuclei_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/conducting-api-security-testing/SKILL.md"
     },
     {
@@ -1982,10 +1954,7 @@
         "subfinder",
         "theharvester"
       ],
-      "catalog_tools": [
-        "amass",
-        "subfinder_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/conducting-external-reconnaissance-with-osint/SKILL.md"
     },
     {
@@ -2132,9 +2101,7 @@
         "volatility",
         "yara"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/conducting-memory-forensics-with-volatility/SKILL.md"
     },
     {
@@ -2170,11 +2137,7 @@
         "metasploit",
         "nmap"
       ],
-      "catalog_tools": [
-        "hydra",
-        "metasploit",
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/conducting-network-penetration-test/SKILL.md"
     },
     {
@@ -2230,9 +2193,7 @@
         "sigma",
         "splunk"
       ],
-      "catalog_tools": [
-        "responder"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/conducting-post-incident-lessons-learned/SKILL.md"
     },
     {
@@ -2305,10 +2266,7 @@
         "hashcat",
         "nmap"
       ],
-      "catalog_tools": [
-        "hashcat",
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/conducting-wireless-network-penetration-test/SKILL.md"
     },
     {
@@ -2437,9 +2395,7 @@
       "tool_mentions": [
         "nmap"
       ],
-      "catalog_tools": [
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/configuring-network-segmentation-with-vlans/SKILL.md"
     },
     {
@@ -2682,9 +2638,7 @@
         "responder",
         "splunk"
       ],
-      "catalog_tools": [
-        "responder"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/deploying-edr-agent-with-crowdstrike/SKILL.md"
     },
     {
@@ -3102,9 +3056,7 @@
       "tool_mentions": [
         "falco"
       ],
-      "catalog_tools": [
-        "falco"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/detecting-container-escape-attempts/SKILL.md"
     },
     {
@@ -3148,9 +3100,7 @@
       "tool_mentions": [
         "falco"
       ],
-      "catalog_tools": [
-        "falco"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/detecting-cryptomining-in-cloud/SKILL.md"
     },
     {
@@ -3330,9 +3280,7 @@
         "splunk",
         "volatility"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/detecting-fileless-attacks-on-endpoints/SKILL.md"
     },
     {
@@ -3354,9 +3302,7 @@
         "volatility",
         "yara"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/detecting-fileless-malware-techniques/SKILL.md"
     },
     {
@@ -3692,10 +3638,7 @@
         "masscan",
         "nmap"
       ],
-      "catalog_tools": [
-        "masscan",
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/detecting-network-scanning-with-ids-signatures/SKILL.md"
     },
     {
@@ -3720,9 +3663,7 @@
         "sigma",
         "splunk"
       ],
-      "catalog_tools": [
-        "responder"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/detecting-ntlm-relay-with-event-correlation/SKILL.md"
     },
     {
@@ -3784,9 +3725,7 @@
       "tool_mentions": [
         "nmap"
       ],
-      "catalog_tools": [
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/detecting-port-scanning-with-fail2ban/SKILL.md"
     },
     {
@@ -3846,9 +3785,7 @@
       "tool_mentions": [
         "volatility"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/detecting-process-hollowing-technique/SKILL.md"
     },
     {
@@ -3880,9 +3817,7 @@
         "volatility",
         "yara"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/detecting-process-injection-techniques/SKILL.md"
     },
     {
@@ -3953,9 +3888,7 @@
         "volatility",
         "yara"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/detecting-rootkit-activity/SKILL.md"
     },
     {
@@ -4164,9 +4097,7 @@
         "splunk",
         "volatility"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/detecting-t1055-process-injection-with-sysmon/SKILL.md"
     },
     {
@@ -4266,9 +4197,7 @@
         "hashcat",
         "impacket"
       ],
-      "catalog_tools": [
-        "hashcat"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/executing-active-directory-attack-simulation/SKILL.md"
     },
     {
@@ -4367,9 +4296,7 @@
         "burp",
         "sqlmap"
       ],
-      "catalog_tools": [
-        "sqlmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/exploiting-api-injection-vulnerabilities/SKILL.md"
     },
     {
@@ -4397,10 +4324,7 @@
         "ffuf",
         "nuclei"
       ],
-      "catalog_tools": [
-        "ffuf_scan",
-        "nuclei_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/exploiting-broken-function-level-authorization/SKILL.md"
     },
     {
@@ -4414,9 +4338,7 @@
       "tool_mentions": [
         "nuclei"
       ],
-      "catalog_tools": [
-        "nuclei_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/exploiting-broken-link-hijacking/SKILL.md"
     },
     {
@@ -4492,10 +4414,7 @@
         "ffuf",
         "john"
       ],
-      "catalog_tools": [
-        "ffuf_scan",
-        "john"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/exploiting-idor-vulnerabilities/SKILL.md"
     },
     {
@@ -4538,9 +4457,7 @@
         "impacket",
         "nmap"
       ],
-      "catalog_tools": [
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/exploiting-ipv6-vulnerabilities/SKILL.md"
     },
     {
@@ -4556,10 +4473,7 @@
         "hashcat",
         "john"
       ],
-      "catalog_tools": [
-        "hashcat",
-        "john"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/exploiting-jwt-algorithm-confusion-attack/SKILL.md"
     },
     {
@@ -4639,9 +4553,7 @@
         "burp",
         "nuclei"
       ],
-      "catalog_tools": [
-        "nuclei_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/exploiting-nosql-injection-vulnerabilities/SKILL.md"
     },
     {
@@ -4670,9 +4582,7 @@
         "burp",
         "nuclei"
       ],
-      "catalog_tools": [
-        "nuclei_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/exploiting-prototype-pollution-in-javascript/SKILL.md"
     },
     {
@@ -4687,9 +4597,7 @@
         "burp",
         "nuclei"
       ],
-      "catalog_tools": [
-        "nuclei_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/exploiting-race-condition-vulnerabilities/SKILL.md"
     },
     {
@@ -4720,11 +4628,7 @@
         "nmap",
         "responder"
       ],
-      "catalog_tools": [
-        "metasploit",
-        "nmap_scan",
-        "responder"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/exploiting-smb-vulnerabilities-with-metasploit/SKILL.md"
     },
     {
@@ -4739,9 +4643,7 @@
         "burp",
         "sqlmap"
       ],
-      "catalog_tools": [
-        "sqlmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/exploiting-sql-injection-vulnerabilities/SKILL.md"
     },
     {
@@ -4756,9 +4658,7 @@
         "burp",
         "sqlmap"
       ],
-      "catalog_tools": [
-        "sqlmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/exploiting-sql-injection-with-sqlmap/SKILL.md"
     },
     {
@@ -4881,11 +4781,7 @@
         "john",
         "volatility"
       ],
-      "catalog_tools": [
-        "hashcat",
-        "john",
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/extracting-credentials-from-memory-dump/SKILL.md"
     },
     {
@@ -5017,9 +4913,7 @@
         "velociraptor",
         "volatility"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/hunting-advanced-persistent-threats/SKILL.md"
     },
     {
@@ -5710,12 +5604,7 @@
         "nmap",
         "sqlmap"
       ],
-      "catalog_tools": [
-        "masscan",
-        "nikto_scan",
-        "nmap_scan",
-        "sqlmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/implementing-api-gateway-security-controls/SKILL.md"
     },
     {
@@ -6118,9 +6007,7 @@
       "tool_mentions": [
         "john"
       ],
-      "catalog_tools": [
-        "john"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/implementing-conduit-security-for-ot-remote-access/SKILL.md"
     },
     {
@@ -6252,9 +6139,7 @@
       "tool_mentions": [
         "trivy"
       ],
-      "catalog_tools": [
-        "trivy"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/implementing-devsecops-security-scanning/SKILL.md"
     },
     {
@@ -6660,9 +6545,7 @@
         "dd",
         "nmap"
       ],
-      "catalog_tools": [
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/implementing-iec-62443-security-zones/SKILL.md"
     },
     {
@@ -6788,9 +6671,7 @@
       "tool_mentions": [
         "john"
       ],
-      "catalog_tools": [
-        "john"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/implementing-llm-guardrails-for-security/SKILL.md"
     },
     {
@@ -7400,9 +7281,7 @@
       "tool_mentions": [
         "john"
       ],
-      "catalog_tools": [
-        "john"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/implementing-scim-provisioning-with-okta/SKILL.md"
     },
     {
@@ -7934,9 +7813,7 @@
       "tool_mentions": [
         "nuclei"
       ],
-      "catalog_tools": [
-        "nuclei_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/integrating-dast-with-owasp-zap-in-pipeline/SKILL.md"
     },
     {
@@ -8010,9 +7887,7 @@
         "volatility",
         "yara"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/investigating-ransomware-attack-artifacts/SKILL.md"
     },
     {
@@ -8301,12 +8176,7 @@
         "nuclei",
         "subfinder"
       ],
-      "catalog_tools": [
-        "amass",
-        "httpx_probe",
-        "nuclei_scan",
-        "subfinder_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-api-inventory-and-discovery/SKILL.md"
     },
     {
@@ -8321,9 +8191,7 @@
         "burp",
         "ffuf"
       ],
-      "catalog_tools": [
-        "ffuf_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-api-rate-limiting-bypass/SKILL.md"
     },
     {
@@ -8350,9 +8218,7 @@
         "nmap",
         "wireshark"
       ],
-      "catalog_tools": [
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-arp-spoofing-attack-simulation/SKILL.md"
     },
     {
@@ -8650,9 +8516,7 @@
       "tool_mentions": [
         "trivy"
       ],
-      "catalog_tools": [
-        "trivy"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-container-image-hardening/SKILL.md"
     },
     {
@@ -8781,9 +8645,7 @@
         "burp",
         "ffuf"
       ],
-      "catalog_tools": [
-        "ffuf_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-directory-traversal-testing/SKILL.md"
     },
     {
@@ -8834,13 +8696,7 @@
         "nmap",
         "subfinder"
       ],
-      "catalog_tools": [
-        "amass",
-        "gobuster_scan",
-        "httpx_probe",
-        "nmap_scan",
-        "subfinder_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-dns-enumeration-and-zone-transfer/SKILL.md"
     },
     {
@@ -8912,9 +8768,7 @@
         "dd",
         "volatility"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-endpoint-forensics-investigation/SKILL.md"
     },
     {
@@ -9007,9 +8861,7 @@
         "nmap",
         "yara"
       ],
-      "catalog_tools": [
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-firmware-malware-analysis/SKILL.md"
     },
     {
@@ -9140,9 +8992,7 @@
         "burp",
         "ffuf"
       ],
-      "catalog_tools": [
-        "ffuf_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-http-parameter-pollution-attack/SKILL.md"
     },
     {
@@ -9251,9 +9101,7 @@
         "nmap",
         "wireshark"
       ],
-      "catalog_tools": [
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-iot-security-assessment/SKILL.md"
     },
     {
@@ -9333,9 +9181,7 @@
       "tool_mentions": [
         "nmap"
       ],
-      "catalog_tools": [
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-kubernetes-penetration-testing/SKILL.md"
     },
     {
@@ -9468,9 +9314,7 @@
         "velociraptor",
         "volatility"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-malware-persistence-investigation/SKILL.md"
     },
     {
@@ -9499,9 +9343,7 @@
         "volatility",
         "yara"
       ],
-      "catalog_tools": [
-        "volatility"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-memory-forensics-with-volatility3/SKILL.md"
     },
     {
@@ -9688,9 +9530,7 @@
         "nmap",
         "wireshark"
       ],
-      "catalog_tools": [
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-ot-network-security-assessment/SKILL.md"
     },
     {
@@ -9728,9 +9568,7 @@
       "tool_mentions": [
         "nmap"
       ],
-      "catalog_tools": [
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-packet-injection-attack/SKILL.md"
     },
     {
@@ -9840,9 +9678,7 @@
       "tool_mentions": [
         "nmap"
       ],
-      "catalog_tools": [
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-privilege-escalation-assessment/SKILL.md"
     },
     {
@@ -10142,9 +9978,7 @@
         "burp",
         "sqlmap"
       ],
-      "catalog_tools": [
-        "sqlmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-second-order-sql-injection/SKILL.md"
     },
     {
@@ -10352,12 +10186,7 @@
         "shodan",
         "subfinder"
       ],
-      "catalog_tools": [
-        "amass",
-        "httpx_probe",
-        "nuclei_scan",
-        "subfinder_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-subdomain-enumeration-with-subfinder/SKILL.md"
     },
     {
@@ -10533,9 +10362,7 @@
         "nmap",
         "wireshark"
       ],
-      "catalog_tools": [
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-vlan-hopping-attack/SKILL.md"
     },
     {
@@ -10549,9 +10376,7 @@
       "tool_mentions": [
         "metasploit"
       ],
-      "catalog_tools": [
-        "metasploit"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-vulnerability-scanning-with-nessus/SKILL.md"
     },
     {
@@ -10566,9 +10391,7 @@
         "burp",
         "sqlmap"
       ],
-      "catalog_tools": [
-        "sqlmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-web-application-firewall-bypass/SKILL.md"
     },
     {
@@ -10585,11 +10408,7 @@
         "nuclei",
         "sqlmap"
       ],
-      "catalog_tools": [
-        "ffuf_scan",
-        "nuclei_scan",
-        "sqlmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-web-application-penetration-test/SKILL.md"
     },
     {
@@ -10605,11 +10424,7 @@
         "nikto",
         "nmap"
       ],
-      "catalog_tools": [
-        "metasploit",
-        "nikto_scan",
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-web-application-scanning-with-nikto/SKILL.md"
     },
     {
@@ -10664,9 +10479,7 @@
         "dd",
         "hashcat"
       ],
-      "catalog_tools": [
-        "hashcat"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/performing-wifi-password-cracking-with-aircrack/SKILL.md"
     },
     {
@@ -10904,9 +10717,7 @@
         "grype",
         "trivy"
       ],
-      "catalog_tools": [
-        "trivy"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/scanning-containers-with-trivy-in-cicd/SKILL.md"
     },
     {
@@ -10920,9 +10731,7 @@
       "tool_mentions": [
         "trivy"
       ],
-      "catalog_tools": [
-        "trivy"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/scanning-docker-images-with-trivy/SKILL.md"
     },
     {
@@ -10961,10 +10770,7 @@
         "metasploit",
         "nmap"
       ],
-      "catalog_tools": [
-        "metasploit",
-        "nmap_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/scanning-network-with-nmap-advanced/SKILL.md"
     },
     {
@@ -11031,9 +10837,7 @@
         "grype",
         "trivy"
       ],
-      "catalog_tools": [
-        "trivy"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/securing-container-registry-images/SKILL.md"
     },
     {
@@ -11047,9 +10851,7 @@
       "tool_mentions": [
         "trivy"
       ],
-      "catalog_tools": [
-        "trivy"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/securing-container-registry-with-harbor/SKILL.md"
     },
     {
@@ -11100,10 +10902,7 @@
         "falco",
         "trivy"
       ],
-      "catalog_tools": [
-        "falco",
-        "trivy"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/securing-kubernetes-on-cloud/SKILL.md"
     },
     {
@@ -11129,9 +10928,7 @@
       "tool_mentions": [
         "trivy"
       ],
-      "catalog_tools": [
-        "trivy"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/securing-serverless-functions/SKILL.md"
     },
     {
@@ -11161,12 +10958,7 @@
         "john",
         "nuclei"
       ],
-      "catalog_tools": [
-        "hashcat",
-        "hydra",
-        "john",
-        "nuclei_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/testing-api-authentication-weaknesses/SKILL.md"
     },
     {
@@ -11182,10 +10974,7 @@
         "ffuf",
         "john"
       ],
-      "catalog_tools": [
-        "ffuf_scan",
-        "john"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/testing-api-for-broken-object-level-authorization/SKILL.md"
     },
     {
@@ -11214,9 +11003,7 @@
         "burp",
         "ffuf"
       ],
-      "catalog_tools": [
-        "ffuf_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/testing-api-security-with-owasp-top-10/SKILL.md"
     },
     {
@@ -11245,9 +11032,7 @@
         "burp",
         "ffuf"
       ],
-      "catalog_tools": [
-        "ffuf_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/testing-for-broken-access-control/SKILL.md"
     },
     {
@@ -11276,9 +11061,7 @@
         "burp",
         "nuclei"
       ],
-      "catalog_tools": [
-        "nuclei_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/testing-for-email-header-injection/SKILL.md"
     },
     {
@@ -11295,11 +11078,7 @@
         "gobuster",
         "nuclei"
       ],
-      "catalog_tools": [
-        "ffuf_scan",
-        "gobuster_scan",
-        "nuclei_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/testing-for-host-header-injection/SKILL.md"
     },
     {
@@ -11315,10 +11094,7 @@
         "hashcat",
         "john"
       ],
-      "catalog_tools": [
-        "hashcat",
-        "john"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/testing-for-json-web-token-vulnerabilities/SKILL.md"
     },
     {
@@ -11334,10 +11110,7 @@
         "ffuf",
         "nuclei"
       ],
-      "catalog_tools": [
-        "ffuf_scan",
-        "nuclei_scan"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/testing-for-open-redirect-vulnerabilities/SKILL.md"
     },
     {
@@ -11356,9 +11129,7 @@
         "burp",
         "john"
       ],
-      "catalog_tools": [
-        "john"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/testing-for-sensitive-data-exposure/SKILL.md"
     },
     {
@@ -11430,10 +11201,7 @@
         "hashcat",
         "john"
       ],
-      "catalog_tools": [
-        "hashcat",
-        "john"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/testing-jwt-token-security/SKILL.md"
     },
     {
@@ -11448,9 +11216,7 @@
         "burp",
         "hashcat"
       ],
-      "catalog_tools": [
-        "hashcat"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/testing-mobile-api-authentication/SKILL.md"
     },
     {
@@ -11505,9 +11271,7 @@
         "metasploit",
         "shodan"
       ],
-      "catalog_tools": [
-        "metasploit"
-      ],
+      "catalog_tools": [],
       "corpus_path": "corpus/anthropic-cybersecurity-skills/skills/tracking-threat-actor-infrastructure/SKILL.md"
     },
     {
