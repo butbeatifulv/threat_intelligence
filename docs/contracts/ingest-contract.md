@@ -32,7 +32,17 @@ discovery/ → scrape.> (harvest) → pipeline/ → ingest.> (commit) → graph/
 
 ### Engage commit payloads (cross-layer, optional)
 
-Engage does **not** publish directly to `ingest.>`. When `ENGAGE_EVENTS_NATS_ENABLED=1`, [engage/serve](../engage/serve/) publishes JSON to stream **`ENGAGE_EVENTS`** (`engage.events.>`). [pipeline/engage-events](../pipeline/engage-events/) consumes and republishes `commit.Envelope` messages:
+**Roles after veil/veneno split:**
+
+| Role | Repo | Component |
+|------|------|-----------|
+| **Publisher** | **veneno** | `engage/serve` → `engage.events.*` |
+| **Bridge** | **veil** | `pipeline/engage-events` |
+| **Consumer** | **veil** | `knowledge/ingest` source `engage` |
+
+Veneno does **not** publish directly to `ingest.>`. When `ENGAGE_EVENTS_NATS_ENABLED=1`, veneno publishes JSON to stream **`ENGAGE_EVENTS`** (`engage.events.>`). [pipeline/engage-events](../pipeline/engage-events/) consumes and republishes `commit.Envelope` messages:
+
+**Wire schemas:** [engage-events-audit.json](schemas/engage-events-audit.json), [engage-events-finding.json](schemas/engage-events-finding.json) → [ingest-engage-tool-run.json](schemas/ingest-engage-tool-run.json), [ingest-engage-finding.json](schemas/ingest-engage-finding.json).
 
 | Engage subject | Ingest subject | Kind | Graph labels |
 |----------------|----------------|------|--------------|

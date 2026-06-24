@@ -1,0 +1,22 @@
+openapi: 3.0.3
+info:
+  title: Veil API — engage context fragment
+  version: 1.0.0
+paths:
+  /v1/categories/engage/context:
+    get:
+      summary: Engage target subgraph
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Target host or identifier
+      responses:
+        "200":
+          description: EngageTarget context JSON
+          content:
+            application/json:
+              schema:
+                type: object

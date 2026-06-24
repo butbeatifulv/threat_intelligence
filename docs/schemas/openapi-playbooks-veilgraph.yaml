@@ -1,0 +1,55 @@
+openapi: 3.0.3
+info:
+  title: Veil API — playbook fragments (veilgraph client)
+  version: 1.0.0
+paths:
+  /v1/playbooks/{id}/procedure:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Procedure JSON
+  /v1/playbooks/{id}/recommend-tools:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Recommended engage tools
+  /v1/playbooks/ontology/technique/{techniqueId}/skills:
+    get:
+      parameters:
+        - name: techniqueId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Skills for MITRE technique
+  /v1/categories/{category}/search:
+    get:
+      parameters:
+        - name: category
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [ti, vuln, engage]
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Category search results

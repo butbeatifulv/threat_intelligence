@@ -1,9 +1,0 @@
-{
-  "assignments_min": 2,
-  "estimated_total": 9000,
-  "recommended_order": ["pwn1", "web1"],
-  "challenge_assignees": {
-    "pwn1": "bob",
-    "web1": "alice"
-  }
-}

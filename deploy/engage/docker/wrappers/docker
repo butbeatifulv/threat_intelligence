@@ -1,8 +1,0 @@
-#!/bin/sh
-set -eu
-BENCH="/opt/docker-bench/docker-bench-security.sh"
-if [ -x "$BENCH" ]; then
-  exec "$BENCH" "$@"
-fi
-echo "docker-bench-security: not installed" >&2
-exit 1

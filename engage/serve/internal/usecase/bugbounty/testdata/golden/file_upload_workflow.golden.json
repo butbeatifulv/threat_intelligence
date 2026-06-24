@@ -1,9 +1,0 @@
-{
-  "phases_min": 4,
-  "phase_names": [
-    "reconnaissance",
-    "baseline_testing",
-    "malicious_upload",
-    "bypass_techniques"
-  ]
-}

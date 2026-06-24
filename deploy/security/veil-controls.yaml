@@ -1,4 +1,5 @@
 # Veil security control catalog — maps external frameworks to repo-enforced controls.
+# Engage/pentest execution controls: https://github.com/butbeautifulv/veneno (deploy/security/veneno-controls.yaml)
 # Sources (reference only, do not edit refs/): JCSF, DAF, DAF MLSO, OWASP GenAI landscapes.
 version: 1
 

@@ -1,6 +1,0 @@
-#!/bin/sh
-# P9i: catalog placeholder binaries on engage-runner PATH (deterministic exit 0).
-set -eu
-name="$(basename "$0")"
-printf '{"ok":true,"stub":true,"binary":"%s","note":"engage-runner stub; enable in tools.live.yaml or use MCP bridge"}\n' "$name"
-exit 0

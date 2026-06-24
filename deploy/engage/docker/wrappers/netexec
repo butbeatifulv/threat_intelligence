@@ -1,9 +1,0 @@
-#!/bin/sh
-set -eu
-if command -v nxc >/dev/null 2>&1; then
-  exec nxc "$@"
-fi
-if command -v netexec >/dev/null 2>&1 && [ "$(command -v netexec)" != "$0" ]; then
-  exec netexec "$@"
-fi
-exec engage-stub "$@"

@@ -1,9 +1,0 @@
-#!/bin/sh
-set -eu
-if command -v ROPgadget >/dev/null 2>&1; then
-  exec ROPgadget "$@"
-fi
-if command -v ropgadget >/dev/null 2>&1; then
-  exec ropgadget "$@"
-fi
-exec engage-stub "$@"

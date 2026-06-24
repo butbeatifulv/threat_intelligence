@@ -1,8 +1,0 @@
-{
-  "cipher_type": "unknown",
-  "analysis_results_sorted": [
-    "Possible Base64 encoding",
-    "Possible hexadecimal encoding"
-  ],
-  "recommended_tools_sorted": ["base64", "hex"]
-}

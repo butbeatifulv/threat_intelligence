@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://veil.cxado/schemas/engage-events-finding.json",
+  "title": "EngageFindingEvent",
+  "description": "NATS subject engage.events.finding — published by veneno",
+  "type": "object",
+  "required": ["tool", "target", "title"],
+  "properties": {
+    "tool": { "type": "string", "minLength": 1 },
+    "target": { "type": "string" },
+    "title": { "type": "string", "minLength": 1 },
+    "severity": { "type": "string" },
+    "description": { "type": "string" }
+  },
+  "additionalProperties": false
+}

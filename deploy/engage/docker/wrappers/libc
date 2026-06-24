@@ -1,7 +1,0 @@
-#!/bin/sh
-set -eu
-DB="/opt/libc-database"
-if [ -d "$DB" ] && [ -f "$DB/find" ]; then
-  exec "$DB/find" "$@"
-fi
-exec engage-stub "$@"

@@ -4,7 +4,6 @@ go 1.25.0
 
 require (
 	github.com/butbeautifulv/veil/pkg/engage v0.0.0
-	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/nats-io/nats-server/v2 v2.10.29
 	github.com/nats-io/nats.go v1.48.0
 )

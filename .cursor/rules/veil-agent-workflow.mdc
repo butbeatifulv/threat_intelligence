@@ -1,50 +1,31 @@
 ---
-description: Veil agent end-of-task workflow — style, tests, commit, push
+description: Veil agent end-of-task workflow — three layers, tests, commit, push
 alwaysApply: true
 ---
 
-# Veil agent workflow
+# Veil agent workflow (knowledge layer)
 
-Follow [AGENTS.md](../../AGENTS.md), [docs/agents/coding-style.md](../../docs/agents/coding-style.md), [veil-karpathy-guidelines.mdc](veil-karpathy-guidelines.mdc), and [veil-agent-kaizen-metacognition.mdc](veil-agent-kaizen-metacognition.mdc) as source of truth.
+Follow [AGENTS.md](../../AGENTS.md), [docs/agents/coding-style.md](../../docs/agents/coding-style.md), [core-karpathy-guidelines.mdc](core-karpathy-guidelines.mdc), and [core-kaizen.mdc](core-kaizen.mdc).
+
+**Pentest execution:** [veneno](https://github.com/butbeautifulv/veneno) — not in this repo.
 
 ## Architecture (do not break)
 
-- Four contexts: `discovery/`, `pipeline/`, `knowledge/`, `engage/` — **no cross-layer Go imports** between them.
-- TI integration via NATS (`scrape.>` → `ingest.>`); engage optional bus via `engage.events.>` → pipeline bridge → `ingest.engage.*` (engage never imports pipeline/graph).
-- Engage reads graph only via HTTP veil-api; shared wire types in `pkg/*`.
+- Three contexts: `discovery/`, `pipeline/`, `knowledge/` — **no cross-layer Go imports**.
+- TI integration via NATS (`scrape.>` → `ingest.>`).
+- Engage ingest bridge: `pipeline/engage-events` consumes `engage.events.*` from veneno.
 - No root `go.work`.
 
-## Multi-phase work (master plan → branch → phase commit → critic)
+## Multi-phase work
 
-Reduce diff size: **one branch per phase**, **commit after each slice**, merge via PR.
+1. Master plan → phase plan → branch → implement → critic → merge → docs ([core-workflow-chain.mdc](core-workflow-chain.mdc)).
 
-1. **Master plan** — phase list, deps, status table (**branch**, **owner/stream**).
-2. **Phase plan** — scope for the current phase only.
-3. **Branch** — `engage/phase-<NN>-<slug>` from latest `main` ([veil-agent-parallel-branches.mdc](veil-agent-parallel-branches.mdc)).
-4. **Implement** (implementer agents) — one phase per branch; push; open PR.
-5. **Critic** (this orchestrator session by default) — review PR against plan + [veil-agent-critic.mdc](veil-agent-critic.mdc); APPROVE → **merge + push `main`** ([veil-agent-parallel-branches.mdc](veil-agent-parallel-branches.mdc) § Merge discipline).
-6. **Master plan** — mark `done` with merge SHA after merge; next phase only from fresh `main`.
-7. **Documentation** — actualize plans, **README.md**, **CONTRIBUTING.md**, **`.github/repo-description.txt`** (then `make sync-github-metadata`), runtime/deploy docs, AGENTS.md per [veil-agent-documentation.mdc](veil-agent-documentation.mdc).
+## Required before finishing
 
-Parallel: multiple implementers on different phase branches; **one critic session** gates merges. Do not stack unrelated phases on one branch.
-
-Do not stack multiple phases without commits unless the user explicitly requests a batch.
-
-## Required before finishing a task
-
-1. Run `make test-discovery`, `make test-pipeline`, `make test-graph`, and/or `make test-engage` for touched layers.
-2. If ingest paths changed, run `./scripts/release/bump-graph-version.sh patch` and update `docs/schemas/` when `pkg/harvest` or `pkg/commit` changed.
-3. Run `make check-graph-version` before commit.
-4. **Commit** with a clear message (per phase when work was phased).
-5. **`git push origin HEAD`** unless the user forbade push.
-6. **Docs** — if the task changed behavior, APIs, env, tests, or platform status, update README, CONTRIBUTING, repo description, and paths in the phase plan ([veil-agent-documentation.mdc](veil-agent-documentation.mdc)); run `make sync-github-metadata` when `repo-description.txt` changed.
+1. `make test-discovery`, `make test-pipeline`, `make test-knowledge` for touched layers.
+2. Graph version bump if ingest paths changed (`make check-graph-version`).
+3. Commit, push, update docs per [core-agent-documentation.mdc](core-agent-documentation.mdc).
 
 ## Git hygiene
 
 - Never commit `data/`, secrets, or `**/__pycache__/`.
-- Prefer `git add -A -- . ':!data'` when `data/` is not writable.
-
-## Versions
-
-- Read [versions.env](../../versions.env) for `APP_VERSION` and `GRAPH_PACK_VERSION`.
-- Do not hardcode graph pack versions in new files; use `scripts/lib/common.sh` helpers.

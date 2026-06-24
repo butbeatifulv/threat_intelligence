@@ -1,23 +1,21 @@
 # Guidance for automated agents (Cursor, CI bots, etc.)
 
-**Behavioral guidelines (Karpathy + Veil):** [.cursor/rules/veil-karpathy-guidelines.mdc](.cursor/rules/veil-karpathy-guidelines.mdc), skill [.cursor/skills/veil-karpathy-guidelines/SKILL.md](.cursor/skills/veil-karpathy-guidelines/SKILL.md). Upstream reference: [refs/andrej-karpathy-skills-main/](refs/andrej-karpathy-skills-main/) (do not edit).
+**Core rules (DRY hub):** `make rules-link` from cxado meta-repo → [.cursor/rules/core-karpathy-guidelines.mdc](.cursor/rules/core-karpathy-guidelines.mdc), [core-agent-critic.mdc](.cursor/rules/core-agent-critic.mdc), [core-parallel-branches.mdc](.cursor/rules/core-parallel-branches.mdc), [core-kaizen.mdc](.cursor/rules/core-kaizen.mdc), [core-agent-documentation.mdc](.cursor/rules/core-agent-documentation.mdc). Generic skill: [cxado-skills/agent/karpathy-guidelines](https://github.com/butbeautifulv/cxado-skills). Upstream reference: [refs/andrej-karpathy-skills-main/](refs/andrej-karpathy-skills-main/) (do not edit).
 
-**Metacognition on errors (5 Whys, Gemba Kaizen, 1% improvement):** [.cursor/rules/veil-agent-kaizen-metacognition.mdc](.cursor/rules/veil-agent-kaizen-metacognition.mdc) — mandatory when tests, CI, smokes, or builds fail; document root cause before the next fix.
+**Veil overlay:** [veil-agent-workflow.mdc](.cursor/rules/veil-agent-workflow.mdc) — Go layers, `make test-*`.
 
-**Documentation in the agent chain:** [.cursor/rules/veil-agent-documentation.mdc](.cursor/rules/veil-agent-documentation.mdc) — after each merge, actualize plans, runtime docs, and descriptions the next agent reads; use structured reasoning in phase plans (constraints, few-shot examples from prior phases, explicit `make` DoD).
-
-**Rules index (all 9 rules + adaptation guide):** [docs/agents/cursor-rules-index.md](docs/agents/cursor-rules-index.md) — catalog, orchestrator vs implementer, Veil→Fish matrix.
+**Rules index (core + overlay):** [docs/agents/cursor-rules-index.md](docs/agents/cursor-rules-index.md) — catalog, orchestrator vs implementer, adaptation matrix.
 
 ## Agent chain (summary)
 
 | Step | Rule / doc |
 |------|------------|
 | Plan | Master + phase plan in `.cursor/plans/` |
-| Implement | [veil-agent-parallel-branches.mdc](.cursor/rules/veil-agent-parallel-branches.mdc) |
-| Review | [veil-agent-critic.mdc](.cursor/rules/veil-agent-critic.mdc) |
+| Implement | [core-parallel-branches.mdc](.cursor/rules/core-parallel-branches.mdc), [veil-agent-workflow.mdc](.cursor/rules/veil-agent-workflow.mdc) |
+| Review | [core-agent-critic.mdc](.cursor/rules/core-agent-critic.mdc) |
 | Subagents | [veil-agent-subagents.mdc](.cursor/rules/veil-agent-subagents.mdc), [`.cursor/agents/manifest.yaml`](.cursor/agents/manifest.yaml) |
-| Merge | Prompt merge to `main` ([veil-agent-parallel-branches.mdc](.cursor/rules/veil-agent-parallel-branches.mdc) § Merge discipline) |
-| Document | [veil-agent-documentation.mdc](.cursor/rules/veil-agent-documentation.mdc) — includes **README.md**, **CONTRIBUTING.md**, **`.github/repo-description.txt`** |
+| Merge | Prompt merge to `main` ([core-parallel-branches.mdc](.cursor/rules/core-parallel-branches.mdc) § Merge discipline) |
+| Document | [core-agent-documentation.mdc](.cursor/rules/core-agent-documentation.mdc) — includes **README.md**, **CONTRIBUTING.md**, **`.github/repo-description.txt`** |
 | Security frameworks | [veil-agent-security-frameworks.mdc](.cursor/rules/veil-agent-security-frameworks.mdc), [docs/external/external-security-frameworks.md](docs/external/external-security-frameworks.md) |
 | Cyber playbooks (read) | [docs/playbooks/external-cybersecurity-skills.md](docs/playbooks/external-cybersecurity-skills.md), [docs/architecture/cyber-domain-model.md](docs/architecture/cyber-domain-model.md) — `make corpus-import`, `make skills-index`, veil-mcp `playbook_*` |
 | Agent evaluation | [docs/agents/agent-evaluation-gaia.md](docs/agents/agent-evaluation-gaia.md) — [arXiv:2311.12983](https://arxiv.org/abs/2311.12983); `make test-agent-eval-pilot` / `test-agent-eval-paper`; HF optional |
@@ -48,13 +46,13 @@ Keep diffs reviewable: **one git commit per completed phase or slice**, not one 
 
 1. **Master plan** — before coding, write or update a master plan (status table with **phase / branch / status / owner**, dependencies). Active plans live in `.cursor/plans/`; completed phases go to `.cursor/plans/archive/` (see [archive/README.md](.cursor/plans/archive/README.md)).
 2. **Phase plan** — for the active phase only, add or open a slice plan derived from the master plan (scope, files, acceptance).
-3. **Branch per stream** — implementers work on `engage/phase-<NN>-<slug>` (or `feat/<layer>-phase-<NN>-<slug>`), not directly on `main` when multiple agents run in parallel. See [.cursor/rules/veil-agent-parallel-branches.mdc](.cursor/rules/veil-agent-parallel-branches.mdc).
+3. **Branch per stream** — implementers work on `engage/phase-<NN>-<slug>` (or `feat/<layer>-phase-<NN>-<slug>`), not directly on `main` when multiple agents run in parallel. See [.cursor/rules/core-parallel-branches.mdc](.cursor/rules/core-parallel-branches.mdc).
 4. **Execute one phase** — implement only what that phase plan covers; run tests for touched layers.
 5. **Commit on the branch** — `git add` + commit like `feat(engage): Phase N — <short title>`; `git push -u origin HEAD`; open a PR to `main`.
-6. **Critic gate** — the **orchestrator / main agent session** acts as critic & compliance ([.cursor/rules/veil-agent-critic.mdc](.cursor/rules/veil-agent-critic.mdc)): plan scope, architecture, tests, graph version; verdict APPROVE / REQUEST_CHANGES before merge.
-7. **Merge to `main` promptly** — after critic APPROVE, merge and `git push origin main` so the repo does not drift across parallel branches. See [veil-agent-parallel-branches.mdc](.cursor/rules/veil-agent-parallel-branches.mdc) § Merge discipline.
+6. **Critic gate** — the **orchestrator / main agent session** acts as critic & compliance ([.cursor/rules/core-agent-critic.mdc](.cursor/rules/core-agent-critic.mdc)): plan scope, architecture, tests, graph version; verdict APPROVE / REQUEST_CHANGES before merge.
+7. **Merge to `main` promptly** — after critic APPROVE, merge and `git push origin main` so the repo does not drift across parallel branches. See [core-parallel-branches.mdc](.cursor/rules/core-parallel-branches.mdc) § Merge discipline.
 8. **Update master plan** — on merge, mark phase `done`, note merge commit SHA; clear or archive branch name.
-9. **Actualize documentation** — plans, **[README.md](README.md)**, **[CONTRIBUTING.md](CONTRIBUTING.md)**, **[.github/repo-description.txt](.github/repo-description.txt)** (`make sync-github-metadata`), runtime/deploy docs, parity matrices per [veil-agent-documentation.mdc](.cursor/rules/veil-agent-documentation.mdc); list touched doc paths in the commit or PR.
+9. **Actualize documentation** — plans, **[README.md](README.md)**, **[CONTRIBUTING.md](CONTRIBUTING.md)**, **[.github/repo-description.txt](.github/repo-description.txt)** (`make sync-github-metadata`), runtime/deploy docs, parity matrices per [core-agent-documentation.mdc](.cursor/rules/core-agent-documentation.mdc); list touched doc paths in the commit or PR.
 
 If the user asks to “stage all” or catch up after many phases, still document phase boundaries in the commit message body.
 

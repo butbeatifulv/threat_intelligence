@@ -1,9 +1,0 @@
-{
-  "scenario_counts": {
-    "rce": 1,
-    "sqli": 1,
-    "xss": 1,
-    "ssrf": 1,
-    "idor": 1
-  }
-}

@@ -37,7 +37,7 @@ test-pkg-cover-strict:
 	./scripts/test/pkg-cover-strict.sh
 
 # P7 gate: pkg + bus + layer unit tests (wave-1 parallel branches merged)
-test-platform-p7: test-pkg-cover-strict test-platform-p0 test-discovery-p7c test-pipeline-p7d test-graph-ingest-p7e test-graph-serve-p7f test-engage-p7g
+test-platform-p7: test-pkg-cover-strict test-platform-p0 test-discovery-p7c test-pipeline-p7d test-graph-ingest-p7e test-graph-serve-p7f
 
 # GOWORK may point at discovery/go.work in the shell; each target uses the matching workspace.
 test-platform-p0: test-pkg-shared
@@ -140,8 +140,11 @@ test-graph-ingest-p7e:
 test-graph-serve-p7f:
 	cd knowledge && env GOWORK=$$(pwd)/go.work go test ./serve/internal/usecase/... ./connector/query/...
 
-test-engage-p7g:
-	cd engage && env GOWORK=$$(pwd)/go.work go test ./serve/internal/usecase/tools/... ./serve/internal/security/... ./serve/internal/usecase/intelligence/...
+# Pentest execution targets → https://github.com/butbeautifulv/veneno (make test-engage)
+
+test-engage-events-pipeline:
+	chmod +x ./scripts/test/smoke-engage-events-pipeline.sh
+	./scripts/test/smoke-engage-events-pipeline.sh
 
 test-pipeline:
 	cd pkg && env -u GOWORK go test ./harvest/... ./commit/... ./ti/...
@@ -173,172 +176,6 @@ test-graph-read-smoke:
 test-graph-engage-category:
 	chmod +x ./scripts/test/smoke-graph-engage-category.sh
 	./scripts/test/smoke-graph-engage-category.sh
-
-test-engage-ctf:
-	cd engage/serve && env GOWORK=$$(dirname $$(pwd))/go.work go test ./internal/usecase/ctf/... -count=1 -run Golden
-	chmod +x ./scripts/test/smoke-ctf-web.sh ./scripts/test/smoke-ctf-pwn.sh
-	./scripts/test/smoke-ctf-web.sh
-	./scripts/test/smoke-ctf-pwn.sh
-
-test-engage-bugbounty:
-	cd engage/serve && env GOWORK=$$(dirname $$(pwd))/go.work go test ./internal/usecase/bugbounty/... -count=1 -run Golden
-	chmod +x ./scripts/test/smoke-bugbounty-recon.sh ./scripts/test/smoke-bugbounty-recon-execute.sh
-	./scripts/test/smoke-bugbounty-recon.sh
-	./scripts/test/smoke-bugbounty-recon-execute.sh
-
-test-engage-cve:
-	chmod +x ./scripts/test/smoke-cve-monitor.sh
-	./scripts/test/smoke-cve-monitor.sh
-
-test-engage-benchmark:
-	chmod +x ./scripts/benchmark/engage-hexstrike-parity.sh
-	./scripts/benchmark/engage-hexstrike-parity.sh
-
-test-engage-benchmark-regression:
-	chmod +x ./scripts/test/engage-benchmark-baseline.sh
-	./scripts/test/engage-benchmark-baseline.sh
-
-test-engage-catalog-args:
-	chmod +x ./scripts/engage/check-catalog-args.sh
-	./scripts/engage/check-catalog-args.sh
-
-test-engage-tool-matrix:
-	chmod +x ./scripts/test/smoke-engage-tool-matrix.sh
-	./scripts/test/smoke-engage-tool-matrix.sh
-
-test-engage-tool-matrix-strict:
-	chmod +x ./scripts/test/smoke-engage-tool-matrix.sh
-	ENGAGE_TOOL_MATRIX_STRICT=1 ENGAGE_TOOL_MATRIX_MIN=30 ./scripts/test/smoke-engage-tool-matrix.sh
-
-test-engage:
-	cd engage/serve && env GOWORK=$$(dirname $$(pwd))/go.work go test ./... -count=1
-	cd engage/serve && env GOWORK=$$(dirname $$(pwd))/go.work go build -o /dev/null ./cmd/api ./cmd/mcp ./cmd/worker
-
-test-engage-smoke:
-	./scripts/test/smoke-engage.sh
-	./scripts/test/smoke-engage-mcp.sh
-
-test-engage-smoke-tool:
-	chmod +x ./scripts/test/smoke-engage-tool.sh
-	./scripts/test/smoke-engage-tool.sh
-
-test-engage-red-blue:
-	chmod +x ./scripts/test/smoke-engage-red-vs-blue.sh
-	./scripts/test/smoke-engage-red-vs-blue.sh
-
-engage-install-plan:
-	chmod +x ./scripts/ops/install-engage-host-tools.sh
-	./scripts/ops/install-engage-host-tools.sh --plan --profile recommended
-
-engage-install-host-tools:
-	chmod +x ./scripts/ops/install-engage-host-tools.sh
-	./scripts/ops/install-engage-host-tools.sh --yes --profile recommended
-
-engage-install-fallback:
-	chmod +x ./scripts/ops/install-engage-host-tools.sh
-	./scripts/ops/install-engage-host-tools.sh --yes --fallback --profile recommended
-
-engage-install-kali-fallback:
-	chmod +x ./scripts/ops/install-engage-host-tools.sh ./scripts/ops/install-engage-kali-fallback.sh
-	ENGAGE_INSTALL_POLICY=kali-fallback ./scripts/ops/install-engage-host-tools.sh --yes --profile recommended
-
-engage-tool-source-map:
-	python3 ./scripts/ops/generate-engage-tools-sources.py
-
-engage-tool-install-coverage:
-	python3 ./scripts/engage/generate-tool-install-coverage.py
-
-test-engage-install-matrix:
-	chmod +x ./scripts/test/smoke-engage-install-matrix.sh
-	./scripts/test/smoke-engage-install-matrix.sh
-
-test-engage-minimal:
-	ENGAGE_TOOLS_MINIMAL=1 ./scripts/engage/enable-catalog-by-category.sh network
-
-test-engage-parity:
-	./scripts/engage/check-catalog-parity.sh
-
-test-engage-route-parity:
-	python3 ./scripts/engage/check-route-parity.py
-
-test-engage-compose:
-	chmod +x ./scripts/test/smoke-engage-compose.sh
-	./scripts/test/smoke-engage-compose.sh
-
-test-engage-runner-profile:
-	chmod +x ./scripts/test/smoke-engage-runner-profile.sh
-	./scripts/test/smoke-engage-runner-profile.sh
-
-test-engage-runner-full-smoke:
-	chmod +x ./scripts/test/smoke-engage-runner-full.sh
-	./scripts/test/smoke-engage-runner-full.sh
-
-test-engage-executable-matrix-runner:
-	chmod +x ./scripts/test/engage-executable-matrix-runner.sh
-	./scripts/test/engage-executable-matrix-runner.sh
-
-test-engage-browser:
-	chmod +x ./scripts/test/smoke-engage-browser.sh
-	./scripts/test/smoke-engage-browser.sh
-
-test-engage-redis-workers:
-	chmod +x ./scripts/test/smoke-engage-redis-workers.sh
-	./scripts/test/smoke-engage-redis-workers.sh
-
-test-engage-secure:
-	chmod +x ./scripts/test/smoke-engage-secure.sh
-	./scripts/test/smoke-engage-secure.sh
-
-test-engage-hardening:
-	chmod +x ./scripts/test/engage-hardening-selftest.sh ./scripts/engage/hardening-compose-audit.py ./scripts/engage/hardening-framework-audit.py
-	./scripts/test/engage-hardening-selftest.sh
-
-test-engage-framework-audit:
-	python3 ./scripts/engage/hardening-framework-audit.py
-
-test-engage-metrics:
-	chmod +x ./scripts/test/smoke-engage-metrics.sh
-	./scripts/test/smoke-engage-metrics.sh
-
-test-engage-keycloak:
-	chmod +x ./scripts/test/smoke-engage-keycloak.sh
-	./scripts/test/smoke-engage-keycloak.sh
-
-test-engage-events-pipeline:
-	chmod +x ./scripts/test/smoke-engage-events-pipeline.sh
-	./scripts/test/smoke-engage-events-pipeline.sh
-
-test-engage-veil-stack:
-	chmod +x ./scripts/test/smoke-veil-engage-stack.sh
-	./scripts/test/smoke-veil-engage-stack.sh
-
-test-engage-veil-stack-ci:
-	chmod +x ./scripts/test/smoke-veil-engage-stack-ci.sh
-	./scripts/test/smoke-veil-engage-stack-ci.sh
-
-test-engage-decision-parity:
-	./scripts/engage/check-decision-parity.sh
-
-test-engage-na-matrix:
-	python3 ./scripts/engage/generate-tools-na-matrix.py --check
-
-test-engage-bridge-coverage:
-	python3 ./scripts/engage/audit-bridge-coverage.py --min-covered 54
-
-test-engage-executable-matrix:
-	python3 ./scripts/engage/check-executable-matrix.py
-
-test-engage-external-guard:
-	./scripts/engage/check-no-external-import.sh
-
-catalog-engage:
-	python3 ./scripts/engage/extract-legacy-catalog.py
-	python3 ./scripts/engage/generate-tools-catalog-live.py
-	python3 ./scripts/engage/generate-tools-na-matrix.py
-	./scripts/engage/check-catalog-parity.sh
-	$(MAKE) test-engage-catalog-args
-
-test-engage-tools: catalog-engage test-engage-catalog-args test-engage-tool-matrix
 
 graph-pack-export:
 	./scripts/graph-pack/export-cypher.sh

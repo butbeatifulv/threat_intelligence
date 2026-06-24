@@ -1,8 +1,0 @@
-#!/bin/sh
-# radare2 catalog binary — Debian package provides r2
-set -eu
-if command -v r2 >/dev/null 2>&1; then
-  exec r2 "$@"
-fi
-echo "radare2: r2 not found" >&2
-exit 1

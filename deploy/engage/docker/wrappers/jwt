@@ -1,9 +1,0 @@
-#!/bin/sh
-set -eu
-if command -v jwt_tool >/dev/null 2>&1; then
-  exec jwt_tool "$@"
-fi
-if command -v jwt-tool >/dev/null 2>&1; then
-  exec jwt-tool "$@"
-fi
-exec engage-stub "$@"

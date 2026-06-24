@@ -1,9 +1,0 @@
-[
-  {"title":"Example Template","severity":"high","description":"dup nuclei template","target":"https://example.com","tool":"nuclei_run","evidence":"{\"info\":{\"name\":\"Example Template\",\"severity\":\"high\"}}"},
-  {"title":"Example Template","severity":"high","description":"dup nuclei template","target":"https://example.com","tool":"nuclei_run","evidence":"{\"info\":{\"name\":\"Example Template\",\"severity\":\"high\"}}"},
-  {"title":"ffuf: https://example.com/admin","severity":"medium","description":"status 403","target":"https://example.com","tool":"ffuf","evidence":"{\"url\":\"https://example.com/admin\",\"status\":403}"},
-  {"title":"ffuf: https://example.com/admin","severity":"medium","description":"status 403","target":"https://example.com","tool":"ffuf","evidence":"{\"url\":\"https://example.com/admin\",\"status\":403}"},
-  {"title":"sqlmap: id GET","severity":"high","description":"injectable","target":"https://example.com","tool":"sqlmap","evidence":""},
-  {"title":"sqlmap: Boolean-based blind","severity":"high","description":"injection","target":"https://example.com","tool":"sqlmap","evidence":""},
-  {"title":"sqlmap: id GET","severity":"high","description":"injectable","target":"https://example.com","tool":"sqlmap","evidence":""}
-]

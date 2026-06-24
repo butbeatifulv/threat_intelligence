@@ -1,9 +1,0 @@
-#!/bin/sh
-set -eu
-if command -v scout-suite >/dev/null 2>&1; then
-  exec scout-suite "$@"
-fi
-if command -v scout >/dev/null 2>&1 && [ "$(command -v scout)" != "$0" ]; then
-  exec scout "$@"
-fi
-exec engage-stub "$@"

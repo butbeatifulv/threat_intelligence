@@ -1,8 +1,0 @@
-{
-  "workflow_count": 4,
-  "total_estimated_time_min": 2820,
-  "total_tools_min": 9,
-  "priority_score_min": 26,
-  "includes_osint": true,
-  "includes_business_logic": true
-}

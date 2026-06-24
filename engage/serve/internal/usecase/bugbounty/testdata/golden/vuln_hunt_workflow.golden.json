@@ -1,6 +1,0 @@
-{
-  "vulnerability_tests_min": 3,
-  "vulnerability_types": ["rce", "sqli", "xss"],
-  "estimated_time_min": 780,
-  "priority_score_min": 26
-}

@@ -1,6 +1,0 @@
-#!/bin/sh
-set -eu
-if command -v pwninit >/dev/null 2>&1; then
-  exec pwninit "$@"
-fi
-exec engage-stub "$@"

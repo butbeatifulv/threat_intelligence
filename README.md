@@ -4,9 +4,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**Veil** is a Neo4j-backed threat-intelligence platform with an optional **active security testing** layer. The graph holds CVE/CWE/CPE, LOLbins-style artifacts, detection content (Sigma/YARA/Caldera), TI feeds, SBOM advisories, and code-rule templates. Runtime is **four isolated Go modules** — **discovery**, **pipeline**, **knowledge** (read intel), **engage** (tool execution) — on **NATS JetStream** for ingestion and **dual MCP** servers for agents.
+**Veil** is a Neo4j-backed threat-intelligence platform: **discovery → pipeline → knowledge** on NATS JetStream, with **veil-api** and **veil-mcp** for graph read.
 
-**License:** [MIT](LICENSE) · **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md) · **Agents / AI:** [AGENTS.md](AGENTS.md) · **Security:** [SECURITY.md](SECURITY.md) · **Code of conduct:** [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+**Pentest execution** moved to **[veneno](https://github.com/butbeautifulv/veneno)** (successor to the engage layer).
+
+**License:** [MIT](LICENSE) · **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md) · **Agents / AI:** [AGENTS.md](AGENTS.md) · **Split ADR:** [veil-veneno-split.md](docs/architecture/veil-veneno-split.md)
 
 ---
 

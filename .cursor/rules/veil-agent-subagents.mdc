@@ -20,7 +20,7 @@ Orchestrator and **critic** spawn implementers from [`.cursor/agents/manifest.ya
    - `readonly: true` only for `docs-only` agent
    - Rendered prompt body
 4. Implementer: branch from manifest phase or user override; commit; push; PR; **no merge**.
-5. Critic reviews per [veil-agent-critic.mdc](veil-agent-critic.mdc).
+5. Critic reviews per [core-agent-critic.mdc](core-agent-critic.mdc).
 
 ## Extending the manifest
 
@@ -45,4 +45,4 @@ When approving parallel work, critic should:
 2. Spawn the matching agent via rendered prompt (not duplicate template text in chat).
 3. Verify branch name matches manifest `branch` or `branch_prefix` convention.
 
-See also [veil-agent-parallel-branches.mdc](veil-agent-parallel-branches.mdc).
+See also [core-parallel-branches.mdc](core-parallel-branches.mdc).

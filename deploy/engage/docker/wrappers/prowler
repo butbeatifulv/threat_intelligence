@@ -1,6 +1,0 @@
-#!/bin/sh
-set -eu
-if command -v prowler >/dev/null 2>&1 && [ "$(command -v prowler)" != "$0" ]; then
-  exec prowler "$@"
-fi
-exec engage-stub "$@"

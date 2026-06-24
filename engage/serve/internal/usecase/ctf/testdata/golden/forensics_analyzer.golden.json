@@ -1,6 +1,0 @@
-{
-  "analysis_type": "quick",
-  "recommended_tools_sorted": ["binwalk", "exiftool", "strings"],
-  "hidden_data_len": 0,
-  "steganography_results_len": 0
-}

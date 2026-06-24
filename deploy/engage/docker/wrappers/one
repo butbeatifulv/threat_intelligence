@@ -1,9 +1,0 @@
-#!/bin/sh
-set -eu
-if command -v one_gadget >/dev/null 2>&1; then
-  exec one_gadget "$@"
-fi
-if command -v one-gadget >/dev/null 2>&1; then
-  exec one-gadget "$@"
-fi
-exec engage-stub "$@"

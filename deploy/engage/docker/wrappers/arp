@@ -1,6 +1,0 @@
-#!/bin/sh
-set -eu
-if command -v arp-scan >/dev/null 2>&1; then
-  exec arp-scan "$@"
-fi
-exec nmap -sn "$@"
