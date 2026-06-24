@@ -14,9 +14,8 @@ Thank you for improving this project. Small, focused changes are easier to revie
 
    | Area | Command |
    |------|---------|
-   | Layer you changed | `make test-discovery` / `test-pipeline` / `test-knowledge` / `test-engage` |
-   | Catalog change | `make test-engage-parity` |
-   | Security guards | `make test-engage-hardening` |
+| Layer you changed | `make test-discovery` / `test-pipeline` / `test-knowledge` |
+| Veneno ingest bridge | `make test-engage-events-pipeline` |
    | Platform pkg/bus | `make test-platform-p7` |
    | Graph read path only | `make test-knowledge-serve` |
 

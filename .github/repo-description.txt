@@ -1,1 +1,1 @@
-Neo4j TI + Go engage (158-tool catalog, client-native PATH). discovery→pipeline→knowledge→engage on NATS; P12 unified TLS edge; dual MCP. Active: P9f executable matrix. MIT.
+Neo4j TI: discovery→pipeline→knowledge, veil-api + veil-mcp. Pentest execution in veneno. MIT.

@@ -28,30 +28,14 @@ Shared library: [lib/common.sh](lib/common.sh) (`COMPOSE_FILES`, `compose()`, pa
 | [test/smoke-discovery-e2e.sh](test/smoke-discovery-e2e.sh) | E2E smoke (default profile [deploy/profiles/smoke-minimal.env](../deploy/profiles/smoke-minimal.env)) |
 | [housekeeping/audit-repo-refs.sh](housekeeping/audit-repo-refs.sh) | Classify scripts as MAKE/CI/KEEP/ORPHAN (heuristic) |
 | [test/smoke-graph-read.sh](test/smoke-graph-read.sh) | Graph read smoke: Neo4j + API + MCP HTTP (no scrape/NATS) |
-| [test/smoke-unified-edge.sh](test/smoke-unified-edge.sh) | P12 unified TLS nginx edge: `/v1`, `/api`, `/mcp/graph`, `/mcp/engage` |
+| [test/smoke-unified-edge.sh](test/smoke-unified-edge.sh) | P12 unified TLS nginx edge (veneno upstream for `/api`, `/mcp/engage`) |
 | [mcp/run-veil-mcp.sh](mcp/run-veil-mcp.sh) | MCP stdio launcher for agents (logs on stderr) |
 | [smoke/mcp-smoke.sh](smoke/mcp-smoke.sh) | MCP stdio smoke against local Neo4j |
-| [mcp/run-veil-engage.sh](mcp/run-veil-engage.sh) | Engage MCP stdio launcher (`veil-engage`, `client-native` defaults) |
-| [engage/run-client-native-api.sh](engage/run-client-native-api.sh) | Engage HTTP API on host (`go run ./cmd/api`) |
-| [engage/run-client-native-api-instance.sh](engage/run-client-native-api-instance.sh) | Lab victim/attacker instance (ports + isolated dirs); see [docs/engage/engage-red-blue-lab.md](../docs/engage/engage-red-blue-lab.md) |
-| [engage/preflight-client-tools.sh](engage/preflight-client-tools.sh) | PATH check for core pentest CLIs (`--json`, `--emit-missing`, `--emit-install-plan`) |
-| [eval/pentest-veil-mcp.sh](eval/pentest-veil-mcp.sh) | Lab HTTP+MCP self-pentest vs Veil API + Engage — [docs/engage/engage-lab-pentest.md](../docs/engage/engage-lab-pentest.md) |
-| [ops/install-engage-host-tools.sh](ops/install-engage-host-tools.sh) | Multi-distro package install from `engage-tools-packages.yaml` (`--policy` supports repo/upstream/Kali/full-auto) |
-| [ops/install-engage-kali-fallback.sh](ops/install-engage-kali-fallback.sh) | Configure pinned Kali apt fallback allowlist for Debian/Ubuntu |
-| [ops/engage-tools-sources.yaml](ops/engage-tools-sources.yaml) | Source provenance for missing tools (Kali pages, trackers, upstream repos, fallback methods) |
-| [ops/engage-tools-packages.yaml](ops/engage-tools-packages.yaml) | Tool → distro package mapping for installer |
-| [ops/generate-engage-tools-sources.py](ops/generate-engage-tools-sources.py) | Generate full source map entries from 158-tool catalog + curated overrides |
-| [engage/generate-tool-install-coverage.py](engage/generate-tool-install-coverage.py) | Build `docs/engage/engage-tool-install-coverage.md` coverage matrix |
-| [engage/extract-legacy-catalog.py](engage/extract-legacy-catalog.py) | Regenerate `engage/serve/catalog/tools.yaml` |
-| [engage/enable-catalog-by-category.sh](engage/enable-catalog-by-category.sh) | Write `tools.enabled.yaml` when binaries on PATH |
-| [engage/check-catalog-parity.sh](engage/check-catalog-parity.sh) | Verify 158 catalog names vs legacy MCP reference |
-| [test/smoke-engage.sh](test/smoke-engage.sh) | Engage API health + tools list |
-| [test/smoke-engage-red-vs-blue.sh](test/smoke-engage-red-vs-blue.sh) | Aggressive HTTP harness vs local victim (`ENGAGE_VICTIM_URL`) |
-| [test/smoke-engage-mcp.sh](test/smoke-engage-mcp.sh) | Engage MCP initialize smoke |
+| [test/smoke-engage-events-pipeline.sh](test/smoke-engage-events-pipeline.sh) | Veneno `engage.events` → veil ingest bridge |
 | [test/verify-nvd-enrichment.sh](test/verify-nvd-enrichment.sh) | Cypher QA for NVD CWE/CPE |
 | [housekeeping/graph-dedup-cleanup.sh](housekeeping/graph-dedup-cleanup.sh) | Post-ingest Neo4j dedup |
 
-Platform / engage Docker smokes source [test/lib/smoke.sh](test/lib/smoke.sh) for docker skip and HTTP health polls:
+Platform Docker smokes source [test/lib/smoke.sh](test/lib/smoke.sh) for docker skip and HTTP health polls:
 
 ```bash
 source "$(dirname "$0")/lib/smoke.sh"

@@ -2,7 +2,9 @@
 
 **Core rules (DRY hub):** `make rules-link` from cxado meta-repo → [.cursor/rules/core-karpathy-guidelines.mdc](.cursor/rules/core-karpathy-guidelines.mdc), [core-agent-critic.mdc](.cursor/rules/core-agent-critic.mdc), [core-parallel-branches.mdc](.cursor/rules/core-parallel-branches.mdc), [core-kaizen.mdc](.cursor/rules/core-kaizen.mdc), [core-agent-documentation.mdc](.cursor/rules/core-agent-documentation.mdc). Generic skill: [cxado-skills/agent/karpathy-guidelines](https://github.com/butbeautifulv/cxado-skills). Upstream reference: [refs/andrej-karpathy-skills-main/](refs/andrej-karpathy-skills-main/) (do not edit).
 
-**Veil overlay:** [veil-agent-workflow.mdc](.cursor/rules/veil-agent-workflow.mdc) — Go layers, `make test-*`.
+**Veil overlay:** [veil-agent-workflow.mdc](.cursor/rules/veil-agent-workflow.mdc) — Go layers (discovery, pipeline, knowledge), `make test-*`.
+
+**Pentest execution** lives in **[veneno](https://github.com/butbeautifulv/veneno)** — not in this repo. See [veil-veneno-split.md](docs/architecture/veil-veneno-split.md).
 
 **Rules index (core + overlay):** [docs/agents/cursor-rules-index.md](docs/agents/cursor-rules-index.md) — catalog, orchestrator vs implementer, adaptation matrix.
 
@@ -18,24 +20,16 @@
 | Document | [core-agent-documentation.mdc](.cursor/rules/core-agent-documentation.mdc) — includes **README.md**, **CONTRIBUTING.md**, **`.github/repo-description.txt`** |
 | Security frameworks | [veil-agent-security-frameworks.mdc](.cursor/rules/veil-agent-security-frameworks.mdc), [docs/external/external-security-frameworks.md](docs/external/external-security-frameworks.md) |
 | Cyber playbooks (read) | [docs/playbooks/external-cybersecurity-skills.md](docs/playbooks/external-cybersecurity-skills.md), [docs/architecture/cyber-domain-model.md](docs/architecture/cyber-domain-model.md) — `make corpus-import`, `make skills-index`, veil-mcp `playbook_*` |
-| Agent evaluation | [docs/agents/agent-evaluation-gaia.md](docs/agents/agent-evaluation-gaia.md) — [arXiv:2311.12983](https://arxiv.org/abs/2311.12983); `make test-agent-eval-pilot` / `test-agent-eval-paper`; HF optional |
-| Engage tool coverage | [engage_tools_full_coverage.plan.md](.cursor/plans/engage_tools_full_coverage.plan.md) — legacy parity (**P9f**, 158/158) |
-| Repo cleanup (domain/pkg, bloat) | [veil_cleanup_domain_pkg_master.plan.md](.cursor/plans/veil_cleanup_domain_pkg_master.plan.md) — inventory [docs/development/cleanup-r0-inventory.md](docs/development/cleanup-r0-inventory.md) |
-| Engage client-native v3 | [engage_mcp_client_native_execution_master.plan.md](.cursor/plans/engage_mcp_client_native_execution_master.plan.md) — **active** |
-| Lab pentest & install | [engage-lab-pentest.md](docs/engage/engage-lab-pentest.md), [engage-red-blue-bugs.md](docs/engage/engage-red-blue-bugs.md) |
-| Archived plans | [.cursor/plans/archive/README.md](.cursor/plans/archive/README.md) — platform P6–P12, Engage phases, lab tracks |
+| Veneno (pentest) | [veneno](https://github.com/butbeautifulv/veneno) — tool catalog, MCP exec; veil ingests `engage.events` only |
+| Archived plans | [.cursor/plans/archive/README.md](.cursor/plans/archive/README.md) — platform P6–P12 |
 | Finish | This file § End-of-task checklist |
-
-**Completed program tracks:** indexed under [archive/README.md](.cursor/plans/archive/README.md). Sign-off KPIs: [engage-audit-report.md](docs/engage/engage-audit-report.md). Operator contract (P12): [platform-unified-access.md](docs/architecture/platform-unified-access.md). **Critical fix on main:** catalog merge order `tools.yaml` → `tools.live.yaml` (`634e067`).
-
-**Do not claim “HexStrike execution done” or “full port complete”** until `make test-engage-executable-matrix` is green (**158/158**, branch **P9f**) and docs KPIs match [engage-tools.md](docs/engage/engage-tools.md). Phase 30 sign-off alone is insufficient.
 
 ## Before you change code
 
-1. **Read and follow [docs/agents/coding-style.md](docs/agents/coding-style.md)** — CLEAN CODE, DRY, KISS, DDD; four isolated contexts (`discovery/`, `pipeline/`, `knowledge/`, `engage/`); domain packages per source; shared wire types in `pkg/`. Before merge, check the [PR checklist](docs/agents/coding-style.md#pr-checklist).
-2. **Do not add root `go.work`** or cross-layer Go imports between `discovery/`, `pipeline/`, `knowledge/`, `engage/`. Discovery/pipeline/knowledge integrate via NATS; engage calls knowledge only via HTTP veil-api; all layers may import `pkg/*`. Cross-contour taxonomy and source registry: **[pkg/domain/](pkg/domain/)** — see [docs/architecture/pkg-domain-model.md](docs/architecture/pkg-domain-model.md).
+1. **Read and follow [docs/agents/coding-style.md](docs/agents/coding-style.md)** — CLEAN CODE, DRY, KISS, DDD; three isolated contexts (`discovery/`, `pipeline/`, `knowledge/`); shared wire types in `pkg/`. Pentest execution: [veneno](https://github.com/butbeautifulv/veneno).
+2. **Do not add root `go.work`** or cross-layer Go imports between `discovery/`, `pipeline/`, `knowledge/`. Integrate via NATS; all layers may import `pkg/*`.
 3. Use **[CONTRIBUTING.md](CONTRIBUTING.md)** for tests; when changing [pkg/harvest/](pkg/harvest/) or [pkg/commit/](pkg/commit/), update [docs/schemas/](docs/schemas/) manually in the same PR.
-4. Runtime and deploy: **[docs/architecture/threatintel-runtime.md](docs/architecture/threatintel-runtime.md)**, **[docs/contracts/ingest-contract.md](docs/contracts/ingest-contract.md)**, **[deploy/README.md](deploy/README.md)**. Unified edge (P12): **[docs/architecture/platform-unified-access.md](docs/architecture/platform-unified-access.md)** — one TLS host, `/v1/*` + `/api/*` + `/mcp/graph` + `/mcp/engage`; stateless scale `VEIL_*_SCALE` ∈ {4,8,16}; prod Neo4j Enterprise 3-core.
+4. Runtime and deploy: **[docs/architecture/threatintel-runtime.md](docs/architecture/threatintel-runtime.md)**, **[docs/contracts/ingest-contract.md](docs/contracts/ingest-contract.md)**, **[deploy/README.md](deploy/README.md)**.
 5. Versions: **[versions.env](versions.env)** is the single source of truth for `APP_VERSION` and `GRAPH_PACK_VERSION`.
 
 Reference modules: [discovery/harvest/internal/sources/ti/](discovery/harvest/internal/sources/ti/), [knowledge/ingest/internal/sources/ti/](knowledge/ingest/internal/sources/ti/), [pipeline/ned/internal/sources/ti/](pipeline/ned/internal/sources/ti/).
@@ -69,28 +63,12 @@ Independent phases may run on **different branches at the same time** only if me
 
 Complete every step that applies before you consider the task done:
 
-1. **Tests** — run layer targets from repo root: `make test-discovery`, `make test-pipeline`, `make test-knowledge`, `make test-engage` for the layers you touched. For `knowledge/serve` only: `make test-knowledge-serve` (`-race`). Knowledge read Docker smoke: `make test-graph-read-smoke`. Engage: `make test-engage-parity` when changing catalog; before claiming full execution port, run `make test-engage-executable-matrix` (**P9f**, 158/158). Engage events bus (`engage/.../events`, `pipeline/engage-events`, `knowledge/ingest/.../engage`): also `make test-pipeline`; Docker `make test-engage-events-pipeline`, `make test-engage-veil-stack-ci`. Platform: `make test-platform-p7` (pkg domain + bus, no Docker), `make test-platform-p0` (bus unit tests), `make test-platform-unified-edge` (P12 Docker nginx edge), `make test-platform-closed-loop` (Docker pilot), optional `make test-platform-full-loop` (discovery + engage, heavy) — [docs/architecture/platform-unified-access.md](docs/architecture/platform-unified-access.md) — [docs/architecture/platform-closed-loop-pilot.md](docs/architecture/platform-closed-loop-pilot.md), [docs/architecture/platform-full-loop-smoke.md](docs/architecture/platform-full-loop-smoke.md). Engage hardening (secured infra): `make test-engage-hardening` — [docs/engage/engage-hardening.md](docs/engage/engage-hardening.md).
+1. **Tests** — run layer targets: `make test-discovery`, `make test-pipeline`, `make test-knowledge` for touched layers. Veneno ingest bridge: `make test-engage-events-pipeline`. Graph read smoke: `make test-graph-read-smoke`.
 2. **Graph version** — if you changed ingest-affecting paths (`discovery/harvest/internal/sources/`, `pipeline/ned/internal/sources/`, `knowledge/ingest/internal/sources/` including `engage/`, `pkg/harvest/`, `pkg/commit/`, `docs/schemas/`), run `./scripts/release/bump-graph-version.sh patch` and rebuild/publish the graph pack when a new ZIP is needed.
 3. **Pre-commit check** — `./scripts/release/check-graph-version-bump.sh` (or `make check-graph-version`).
 4. **Commit** — descriptive message (what changed and why). Do not commit secrets or `data/`. Use `git add -A -- . ':!data'` when `data/` causes permission errors. Exclude `**/__pycache__/`.
 5. **Push** — `git push origin HEAD` unless the user explicitly forbade push or there is no remote.
-6. **GitHub description** — if [.github/repo-description.txt](.github/repo-description.txt) changed, run `make sync-github-metadata` (or rely on [`.github/workflows/docs.yml`](.github/workflows/docs.yml) on push to `main`).
-
-### Engage 158 install quickstart (agent-first)
-
-When working on host-tool readiness for Engage, use this deterministic chain:
-
-1. `make engage-tool-source-map`
-2. `make engage-tool-install-coverage`
-3. `./scripts/engage/preflight-client-tools.sh --profile recommended --emit-install-plan --policy full-auto`
-4. `make engage-install-fallback` or `make engage-install-kali-fallback` (Debian/Ubuntu opt-in)
-5. `make test-engage-red-blue`
-
-Core47 parity quick path:
-
-1. `./scripts/ops/install-engage-host-tools.sh --yes --profile core47 --policy full-auto`
-2. `./scripts/engage/preflight-client-tools.sh --profile core47 --json`
-3. `make test-engage-red-blue`
+6. **GitHub description** — if [.github/repo-description.txt](.github/repo-description.txt) changed, run `make sync-github-metadata`.
 
 ## Graph pack releases
 
