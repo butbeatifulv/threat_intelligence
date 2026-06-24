@@ -15,7 +15,7 @@ Canonical rules live in [`.cursor/rules/`](../../.cursor/rules/). **Core rules**
 flowchart LR
   hub[cxado-agent-rules core]
   hub -->|make rules-link| veil[veil .cursor/rules/core-*]
-  hub --> cys[cys-agi .agents/rules/core-*]
+  hub --> cys[egregore .agents/rules/core-*]
 ```
 
 ## Agent chain
@@ -85,7 +85,7 @@ Fish uses `.agents/rules/` with copied rules (pre-DRY). New projects should use 
 | `veil-agent-workflow` | `fish-agent-workflow` | 4 Go layers → Next.js routes; `make test-*` → `npm run typecheck/lint/build` |
 | `veil-agent-security-frameworks` | `fish-agent-security` | Credential encryption, admin auth |
 
-**Path convention:** Veil uses `.cursor/rules/`; Fish and cys-agi use `.agents/rules/`. Both work with Cursor.
+**Path convention:** Veil uses `.cursor/rules/`; egregore and veneno use `.agents/rules/`. Both work with Cursor.
 
 ## Related
 
