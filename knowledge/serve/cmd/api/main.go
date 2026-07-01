@@ -15,6 +15,7 @@ import (
 	authmw "github.com/butbeautifulv/veil/knowledge/serve/internal/auth/middleware"
 	"github.com/butbeautifulv/veil/knowledge/serve/internal/transport/httpserver"
 	"github.com/butbeautifulv/veil/knowledge/serve/internal/transport/securityhttp"
+	"github.com/butbeautifulv/veil/pkg/observability"
 )
 
 func main() {
@@ -34,8 +35,9 @@ func main() {
 
 	mux := http.NewServeMux()
 	httpserver.Register(mux, c.Read, c.Playbook, c.Procedure, c.Framework)
+	observability.RegisterMetrics(mux)
 	handler := securityhttp.Harden(cfg.Security, cfg.Security.APIBodyLimit,
-		authmw.Auth(c.Auth, false, cfg.Security, mux))
+		authmw.Auth(c.Auth, false, cfg.Security, observability.InstrumentHTTP("veil-api", mux)))
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()

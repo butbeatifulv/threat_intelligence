@@ -167,6 +167,26 @@ func registerPlaybookRoutes(mux *http.ServeMux, uc *usecase.ReadUsecase, pb *pla
 				"catalog_tools": proc.CatalogToolsForTechnique(tid),
 			})
 		})
+	}
+	mux.HandleFunc("GET /v1/playbooks/search", func(w http.ResponseWriter, r *http.Request) {
+		q := r.URL.Query().Get("q")
+		sub := r.URL.Query().Get("subdomain")
+		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
+		hits := pb.Search(q, sub, limit)
+		api.WriteJSON(w, http.StatusOK, map[string]any{
+			"query": q, "subdomain": sub, "skills": usecase.Summaries(hits), "count": len(hits),
+		})
+	})
+	mux.HandleFunc("GET /v1/techniques/{technique_id}/playbooks", func(w http.ResponseWriter, r *http.Request) {
+		tid := r.PathValue("technique_id")
+		out, err := uc.ForTechnique(r.Context(), tid, pb.Catalog())
+		if err != nil {
+			writeErr(w, http.StatusBadRequest, err)
+			return
+		}
+		api.WriteJSON(w, http.StatusOK, out)
+	})
+	if proc != nil {
 		mux.HandleFunc("GET /v1/playbooks/{id}/procedure", func(w http.ResponseWriter, r *http.Request) {
 			id := r.PathValue("id")
 			spec, err := proc.GetSpec(id)
@@ -186,24 +206,6 @@ func registerPlaybookRoutes(mux *http.ServeMux, uc *usecase.ReadUsecase, pb *pla
 			api.WriteJSON(w, http.StatusOK, map[string]any{"id": id, "catalog_tools": tools})
 		})
 	}
-	mux.HandleFunc("GET /v1/playbooks/search", func(w http.ResponseWriter, r *http.Request) {
-		q := r.URL.Query().Get("q")
-		sub := r.URL.Query().Get("subdomain")
-		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
-		hits := pb.Search(q, sub, limit)
-		api.WriteJSON(w, http.StatusOK, map[string]any{
-			"query": q, "subdomain": sub, "skills": usecase.Summaries(hits), "count": len(hits),
-		})
-	})
-	mux.HandleFunc("GET /v1/playbooks/by-technique/{technique_id}", func(w http.ResponseWriter, r *http.Request) {
-		tid := r.PathValue("technique_id")
-		out, err := uc.ForTechnique(r.Context(), tid, pb.Catalog())
-		if err != nil {
-			writeErr(w, http.StatusBadRequest, err)
-			return
-		}
-		api.WriteJSON(w, http.StatusOK, out)
-	})
 	mux.HandleFunc("GET /v1/playbooks/{id}", func(w http.ResponseWriter, r *http.Request) {
 		id := r.PathValue("id")
 		detail, err := pb.Get(id)

@@ -14,6 +14,7 @@ import (
 	"github.com/butbeautifulv/veil/knowledge/serve/internal/components"
 	"github.com/butbeautifulv/veil/knowledge/serve/internal/config"
 	"github.com/butbeautifulv/veil/knowledge/serve/internal/transport/securityhttp"
+	"github.com/butbeautifulv/veil/pkg/observability"
 )
 
 func main() {
@@ -67,7 +68,7 @@ func main() {
 		rh, rt, wt, idle := securityhttp.HTTPServerTimeouts()
 		httpSrv = &http.Server{
 			Addr:              addr,
-			Handler:           c.MCPHTTPHandler(cfg),
+			Handler:           observability.WrapHandler("veil-mcp", c.MCPHTTPHandler(cfg)),
 			ReadHeaderTimeout: time.Duration(rh) * time.Second,
 			ReadTimeout:       time.Duration(rt) * time.Second,
 			WriteTimeout:      time.Duration(wt) * time.Second,

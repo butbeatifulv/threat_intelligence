@@ -8,6 +8,7 @@ require (
 	github.com/butbeautifulv/veil/pkg/api v0.0.0
 	github.com/butbeautifulv/veil/pkg/auth v0.0.0
 	github.com/butbeautifulv/veil/pkg/mcp v0.0.0
+	github.com/butbeautifulv/veil/pkg/observability v0.0.0
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/neo4j/neo4j-go-driver/v5 v5.28.4
 )
@@ -22,4 +23,5 @@ replace (
 	github.com/butbeautifulv/veil/pkg/api => ../../pkg/api
 	github.com/butbeautifulv/veil/pkg/auth => ../../pkg/auth
 	github.com/butbeautifulv/veil/pkg/mcp => ../../pkg/mcp
+	github.com/butbeautifulv/veil/pkg/observability => ../../pkg/observability
 )
