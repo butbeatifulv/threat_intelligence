@@ -1,16 +1,20 @@
 package httpserver
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"strconv"
 
+	"github.com/butbeautifulv/veil/knowledge/connector/query"
 	"github.com/butbeautifulv/veil/knowledge/serve/internal/domain"
 	"github.com/butbeautifulv/veil/knowledge/serve/internal/usecase"
 	playbookuc "github.com/butbeautifulv/veil/knowledge/serve/internal/usecase/playbook"
 	procedureuc "github.com/butbeautifulv/veil/knowledge/serve/internal/usecase/procedure"
 	frameworkuc "github.com/butbeautifulv/veil/knowledge/serve/internal/usecase/framework"
 	"github.com/butbeautifulv/veil/pkg/api"
+	"github.com/butbeautifulv/veil/pkg/observability"
+	pbdomain "github.com/butbeautifulv/veil/pkg/playbook/domain"
 )
 
 // SetProdMode toggles generic API error messages (no internal details).
@@ -25,7 +29,12 @@ func Register(mux *http.ServeMux, uc *usecase.ReadUsecase, pb *playbookuc.Servic
 	})
 	mux.HandleFunc("GET /v1/categories/{category}/kinds", func(w http.ResponseWriter, r *http.Request) {
 		cat := r.PathValue("category")
-		kinds, err := uc.ListKindsInCategory(r.Context(), cat)
+		var kinds []query.KindCount
+		err := withSpan(r, "neo4j.query", func(ctx context.Context) error {
+			var e error
+			kinds, e = uc.ListKindsInCategory(ctx, cat)
+			return e
+		})
 		if err != nil {
 			writeErr(w, http.StatusBadRequest, err)
 			return
@@ -37,7 +46,12 @@ func Register(mux *http.ServeMux, uc *usecase.ReadUsecase, pb *playbookuc.Servic
 		kind := r.URL.Query().Get("kind")
 		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
 		offset, _ := strconv.Atoi(r.URL.Query().Get("offset"))
-		nodes, err := uc.NodesByCategory(r.Context(), cat, kind, limit, offset)
+		var nodes []query.Node
+		err := withSpan(r, "neo4j.query", func(ctx context.Context) error {
+			var e error
+			nodes, e = uc.NodesByCategory(ctx, cat, kind, limit, offset)
+			return e
+		})
 		if err != nil {
 			writeErr(w, http.StatusBadRequest, err)
 			return
@@ -49,7 +63,12 @@ func Register(mux *http.ServeMux, uc *usecase.ReadUsecase, pb *playbookuc.Servic
 		q := r.URL.Query().Get("q")
 		kind := r.URL.Query().Get("kind")
 		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
-		nodes, err := uc.SearchInCategory(r.Context(), cat, q, kind, limit)
+		var nodes []query.Node
+		err := withSpan(r, "neo4j.query", func(ctx context.Context) error {
+			var e error
+			nodes, e = uc.SearchInCategory(ctx, cat, q, kind, limit)
+			return e
+		})
 		if err != nil {
 			writeErr(w, http.StatusBadRequest, err)
 			return
@@ -172,7 +191,16 @@ func registerPlaybookRoutes(mux *http.ServeMux, uc *usecase.ReadUsecase, pb *pla
 		q := r.URL.Query().Get("q")
 		sub := r.URL.Query().Get("subdomain")
 		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
-		hits := pb.Search(q, sub, limit)
+		var hits []pbdomain.SkillMeta
+		err := withSpan(r, "playbook.load", func(ctx context.Context) error {
+			_ = ctx
+			hits = pb.Search(q, sub, limit)
+			return nil
+		})
+		if err != nil {
+			writeErr(w, http.StatusInternalServerError, err)
+			return
+		}
 		api.WriteJSON(w, http.StatusOK, map[string]any{
 			"query": q, "subdomain": sub, "skills": usecase.Summaries(hits), "count": len(hits),
 		})
@@ -219,4 +247,14 @@ func registerPlaybookRoutes(mux *http.ServeMux, uc *usecase.ReadUsecase, pb *pla
 
 func writeErr(w http.ResponseWriter, status int, err error) {
 	api.WriteError(w, status, err)
+}
+
+func withSpan(r *http.Request, name string, fn func(context.Context) error) error {
+	ctx, span := observability.StartSpan(r.Context(), name)
+	defer span.End()
+	err := fn(ctx)
+	if err != nil {
+		observability.RecordError(span, err)
+	}
+	return err
 }

@@ -1,0 +1,17 @@
+{{- if .Values.graph.mcp.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "veil.fullname" . }}-mcp
+  labels:
+    app: veil-mcp
+spec:
+  type: ClusterIP
+  selector:
+    app: veil-mcp
+  ports:
+    - name: http
+      port: 8091
+      targetPort: 8091
+{{- end }}
+

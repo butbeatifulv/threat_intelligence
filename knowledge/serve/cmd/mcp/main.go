@@ -31,6 +31,20 @@ func main() {
 	)
 	flag.Parse()
 
+	obsCfg := observability.LoadConfigFromEnv("veil-mcp")
+	rootCtx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	shutdown, err := observability.Init(rootCtx, obsCfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		shCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		_ = shutdown(shCtx)
+	}()
+
 	logger := components.SetupMCPLogger(*env)
 	cfg := config.LoadMCP()
 	cfg.Neo4j = config.Neo4jConfig{
@@ -45,16 +59,6 @@ func main() {
 	if err := config.ValidateSecurity(cfg.Security, cfg.Auth.Enabled); err != nil {
 		log.Fatal(err)
 	}
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	sigQuit := make(chan os.Signal, 1)
-	signal.Notify(sigQuit, syscall.SIGINT, syscall.SIGTERM)
-	go func() {
-		<-sigQuit
-		cancel()
-	}()
 
 	c, err := components.InitMCP(cfg, logger)
 	if err != nil {
@@ -84,7 +88,7 @@ func main() {
 			}
 		}()
 		go func() {
-			<-ctx.Done()
+			<-rootCtx.Done()
 			shctx, cc := context.WithTimeout(context.Background(), 8*time.Second)
 			defer cc()
 			if httpSrv != nil {
@@ -94,16 +98,16 @@ func main() {
 	}
 
 	if cfg.MCPHTTP.Enabled {
-		<-ctx.Done()
+		<-rootCtx.Done()
 		return
 	}
 
 	go func() {
-		<-ctx.Done()
+		<-rootCtx.Done()
 		os.Exit(0)
 	}()
 
-	if err := c.MCPServer.Run(ctx, os.Stdin, os.Stdout); err != nil {
+	if err := c.MCPServer.Run(rootCtx, os.Stdin, os.Stdout); err != nil {
 		logger.Error("mcp server stopped", slog.Any("err", err))
 		time.Sleep(200 * time.Millisecond)
 		os.Exit(1)

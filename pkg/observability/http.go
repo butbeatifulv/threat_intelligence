@@ -65,5 +65,5 @@ func WrapHandler(service string, handler http.Handler) http.Handler {
 	mux := http.NewServeMux()
 	RegisterMetrics(mux)
 	mux.Handle("/", handler)
-	return InstrumentHTTP(service, mux)
+	return ChainHTTP(service, mux)
 }

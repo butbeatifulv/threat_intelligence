@@ -69,3 +69,11 @@ scrape:
     schedule: "0 3 * * *"
     profile: smoke-minimal
     concurrencyPolicy: Forbid
+
+observability:
+  enabled: false
+  otelEndpoint: "http://tempo.cxado-obs.svc.cluster.local:4317"
+  samplerRatio: 1.0
+  metricsListen: ":9090"
+  logFormat: json
+  logLevel: info

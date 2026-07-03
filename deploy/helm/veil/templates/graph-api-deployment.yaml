@@ -13,19 +13,35 @@ spec:
       labels:
         app: veil-api
     spec:
+      enableServiceLinks: false
       containers:
         - name: api
           image: "{{ .Values.global.imageRegistry }}veil-api:{{ .Values.global.imageTag }}"
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8090
           env:
+            - name: OTEL_SERVICE_NAME
+              value: veil-api
+            {{- include "veil.observabilityEnv" . | nindent 12 }}
+            - name: API_ENV
+              value: prod
             - name: NEO4J_URI
               value: {{ .Values.global.neo4jUri | quote }}
             - name: NATS_URL
               value: {{ .Values.global.natsUrl | quote }}
+          volumeMounts:
+            - name: veil-playbooks
+              mountPath: /home/nonroot/docs/skills-index
+              readOnly: true
           livenessProbe:
             httpGet:
               path: /health
               port: 8090
             initialDelaySeconds: 30
+      volumes:
+        - name: veil-playbooks
+          hostPath:
+            path: /var/lib/veil/playbooks/docs/skills-index
+            type: Directory
 {{- end }}

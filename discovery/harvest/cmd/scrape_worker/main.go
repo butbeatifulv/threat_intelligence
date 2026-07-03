@@ -5,8 +5,11 @@ import (
 	"log"
 	"log/slog"
 	"os"
+	"time"
 
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/factory"
+	"github.com/butbeautifulv/veil/pkg/observability"
+	"go.opentelemetry.io/otel/attribute"
 
 	_ "github.com/butbeautifulv/veil/discovery/harvest/internal/sources/coderules/scrapesource"
 	_ "github.com/butbeautifulv/veil/discovery/harvest/internal/sources/ds/scrapesource"
@@ -18,14 +21,32 @@ import (
 )
 
 func main() {
-	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
-	names := factory.ParseSourceNames(os.Getenv("SCRAPE_SOURCES"))
-	logger.Info("scrape_worker starting", slog.Any("sources", names))
+	obsCfg := observability.LoadConfigFromEnv("veil-scrape-worker")
+	ctx := context.Background()
+	shutdown, err := observability.Init(ctx, obsCfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		shCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		_ = shutdown(shCtx)
+	}()
 
-	if err := factory.Run(context.Background(), factory.RunOptions{
+	logger := observability.NewLogger("", "veil-scrape-worker", os.Stdout)
+	names := factory.ParseSourceNames(os.Getenv("SCRAPE_SOURCES"))
+
+	runCtx, span := observability.StartWorkerSpan(ctx, "scrape", "scrape.run",
+		attribute.StringSlice("scrape.sources", names),
+	)
+	defer span.End()
+
+	logger.Info("scrape_worker starting", slog.Any("sources", names))
+	if err := factory.Run(runCtx, factory.RunOptions{
 		SourceNames: names,
 		Log:         logger,
 	}); err != nil {
+		observability.RecordError(span, err)
 		log.Fatal(err)
 	}
 }

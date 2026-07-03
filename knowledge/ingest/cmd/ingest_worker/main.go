@@ -7,20 +7,36 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/butbeautifulv/veil/knowledge/ingest/internal/components"
 	"github.com/butbeautifulv/veil/knowledge/ingest/internal/config"
 	ingestloop "github.com/butbeautifulv/veil/knowledge/ingest/internal/ingest"
 	"github.com/butbeautifulv/veil/pkg/natsjet"
+	"github.com/butbeautifulv/veil/pkg/observability"
 	"github.com/nats-io/nats.go"
 	"golang.org/x/sync/errgroup"
 )
 
 func main() {
-	rootCtx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
-	defer cancel()
+	rootCtx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
 
-	log := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
+	obsCfg := observability.LoadConfigFromEnv("veil-ingest-worker")
+	shutdown, err := observability.Init(rootCtx, obsCfg)
+	if err != nil {
+		slog.Error("otel init", slog.String("err", err.Error()))
+		os.Exit(1)
+	}
+	defer func() {
+		shCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		_ = shutdown(shCtx)
+	}()
+
+	log := observability.NewLogger("", "veil-ingest-worker", os.Stdout)
+	observability.StartMetricsServer(rootCtx, obsCfg.MetricsListen, log)
+
 	if err := run(rootCtx, log); err != nil && !errors.Is(err, context.Canceled) {
 		log.Error("exit", slog.String("err", err.Error()))
 		os.Exit(1)

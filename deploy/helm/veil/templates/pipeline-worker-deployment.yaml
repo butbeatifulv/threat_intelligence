@@ -15,6 +15,15 @@ spec:
       containers:
         - name: pipeline-worker
           image: "{{ .Values.global.imageRegistry }}veil-pipeline-worker:{{ .Values.global.imageTag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: metrics
+              containerPort: 9090
           env:
+            - name: OTEL_SERVICE_NAME
+              value: veil-pipeline-worker
+            {{- include "veil.observabilityEnv" . | nindent 12 }}
+            - name: METRICS_LISTEN
+              value: {{ .Values.observability.metricsListen | quote }}
             - name: NATS_URL
               value: {{ .Values.global.natsUrl | quote }}

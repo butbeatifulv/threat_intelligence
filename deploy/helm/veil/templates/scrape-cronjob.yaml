@@ -14,7 +14,11 @@ spec:
           containers:
             - name: scrape-worker
               image: "{{ .Values.global.imageRegistry }}veil-scrape-worker:{{ .Values.global.imageTag }}"
+              imagePullPolicy: IfNotPresent
               env:
+                - name: OTEL_SERVICE_NAME
+                  value: veil-scrape-worker
+                {{- include "veil.observabilityEnv" . | nindent 16 }}
                 - name: NATS_URL
                   value: {{ .Values.global.natsUrl | quote }}
               # Profile env from ConfigMap (P5d): deploy/profiles/{{ .Values.scrape.cronJob.profile }}.env

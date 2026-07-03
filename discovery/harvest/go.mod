@@ -4,6 +4,7 @@ go 1.25.0
 
 require (
 	github.com/butbeautifulv/veil/pkg v0.0.0
+	github.com/butbeautifulv/veil/pkg/observability v0.0.0
 	github.com/butbeautifulv/veil/discovery/connector v0.0.0
 	github.com/butbeautifulv/veil/discovery/pkg v0.0.0
 	github.com/go-sql-driver/mysql v1.9.3
@@ -24,5 +25,7 @@ require (
 replace github.com/butbeautifulv/veil/discovery/connector => ../connector
 
 replace github.com/butbeautifulv/veil/pkg => ../../pkg
+
+replace github.com/butbeautifulv/veil/pkg/observability => ../../pkg/observability
 
 replace github.com/butbeautifulv/veil/discovery/pkg => ../pkg

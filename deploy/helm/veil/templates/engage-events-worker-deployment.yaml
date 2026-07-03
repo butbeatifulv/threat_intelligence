@@ -1,0 +1,31 @@
+{{- if .Values.engage.eventsWorker.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "veil.fullname" . }}-engage-events-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: veil-engage-events-worker
+  template:
+    metadata:
+      labels:
+        app: veil-engage-events-worker
+    spec:
+      containers:
+        - name: engage-events-worker
+          image: "{{ .Values.global.imageRegistry }}veil-engage-events-worker:{{ .Values.global.imageTag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: metrics
+              containerPort: 9090
+          env:
+            - name: OTEL_SERVICE_NAME
+              value: veil-engage-events-worker
+            {{- include "veil.observabilityEnv" . | nindent 12 }}
+            - name: METRICS_LISTEN
+              value: {{ .Values.observability.metricsListen | quote }}
+            - name: NATS_URL
+              value: {{ .Values.global.natsUrl | quote }}
+{{- end }}

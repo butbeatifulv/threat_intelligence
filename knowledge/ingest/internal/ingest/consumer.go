@@ -12,7 +12,9 @@ import (
 	nucleineo "github.com/butbeautifulv/veil/knowledge/ingest/internal/appsec/nuclei"
 	"github.com/butbeautifulv/veil/pkg/commit"
 	"github.com/butbeautifulv/veil/pkg/natsjet"
+	"github.com/butbeautifulv/veil/pkg/observability"
 	"github.com/nats-io/nats.go"
+	"go.opentelemetry.io/otel/attribute"
 )
 
 // RunPullLoop consumes JetStream messages until ctx is canceled.
@@ -28,30 +30,72 @@ func RunPullLoop(ctx context.Context, log *slog.Logger, sub *nats.Subscription, 
 }
 
 func handleMsg(ctx context.Context, log *slog.Logger, m *nats.Msg, rt *components.Runtime) error {
+	start := time.Now()
+	status := "ok"
+	subject := m.Subject
+	ctx, span := observability.StartWorkerSpan(ctx, "ingest", "ingest.process_message",
+		attribute.String("nats.subject", subject),
+	)
+	defer func() {
+		observability.RecordNatsMessage("ingest", subject, status, time.Since(start).Seconds())
+		span.End()
+	}()
+
 	var env commit.Envelope
-	if err := json.Unmarshal(m.Data, &env); err != nil {
-		return fmt.Errorf("decode envelope: %w", err)
+	{
+		decCtx, decSpan := observability.StartSpan(ctx, "ingest.decode_envelope")
+		err := json.Unmarshal(m.Data, &env)
+		decSpan.End()
+		ctx = decCtx
+		if err != nil {
+			status = "error"
+			observability.RecordError(span, err)
+			return fmt.Errorf("decode envelope: %w", err)
+		}
 	}
 	if err := env.Validate(); err != nil {
+		status = "error"
+		observability.RecordError(span, err)
 		return err
 	}
 	if err := validateEnvelopeSource(&env); err != nil {
+		status = "error"
+		observability.RecordError(span, err)
 		return err
 	}
+	span.SetAttributes(
+		attribute.String("envelope.source", env.Source),
+		attribute.String("envelope.kind", env.Kind),
+	)
 
+	applyCtx, applySpan := observability.StartSpan(ctx, "ingest.neo4j.apply."+env.Source)
+	defer applySpan.End()
+
+	var err error
 	switch env.Source {
 	case commit.SourceTI:
-		return rt.Apply.TI(ctx, &env)
+		err = rt.Apply.TI(applyCtx, &env)
 	case commit.SourceVuln:
-		return rt.Apply.Vuln(ctx, &env)
+		err = rt.Apply.Vuln(applyCtx, &env)
 	case commit.SourceLola:
-		return rt.Apply.Lola(ctx, &env)
+		err = rt.Apply.Lola(applyCtx, &env)
 	case commit.SourceDS:
-		return rt.Apply.DS(ctx, &env)
+		err = rt.Apply.DS(applyCtx, &env)
 	case commit.SourceEngage:
-		return rt.Apply.Engage(ctx, &env)
+		err = rt.Apply.Engage(applyCtx, &env)
+	default:
+		err = applyByKind(applyCtx, log, &env, rt)
 	}
+	if err != nil {
+		status = "error"
+		observability.RecordError(span, err)
+		observability.RecordError(applySpan, err)
+		return err
+	}
+	return nil
+}
 
+func applyByKind(ctx context.Context, log *slog.Logger, env *commit.Envelope, rt *components.Runtime) error {
 	switch env.Kind {
 	case commit.KindSBOMOSVRecord:
 		var p commit.SBOMOSVPayload

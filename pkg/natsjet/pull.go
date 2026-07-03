@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"time"
 
+	"github.com/butbeautifulv/veil/pkg/observability"
 	"github.com/nats-io/nats.go"
 )
 
@@ -60,7 +61,8 @@ func RunPullLoop(ctx context.Context, log *slog.Logger, sub *nats.Subscription, 
 			continue
 		}
 		for _, m := range msgs {
-			if err := handle(ctx, m); err != nil {
+			msgCtx := observability.ExtractTraceContext(ctx, m)
+			if err := handle(msgCtx, m); err != nil {
 				log.Warn("message", slog.String("err", err.Error()))
 				if opts.NakDelay > 0 {
 					_ = m.NakWithDelay(opts.NakDelay)

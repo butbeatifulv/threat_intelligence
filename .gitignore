@@ -69,6 +69,7 @@ Thumbs.db
 .vscode/
 
 .external/
+.codebase-memory/
 # Symlink to cxado-references (created by cxado `make refs-link`)
 refs/
 

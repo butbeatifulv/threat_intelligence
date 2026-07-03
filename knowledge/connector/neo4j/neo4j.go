@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/butbeautifulv/veil/pkg/observability"
 	driver "github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
@@ -53,22 +54,44 @@ func (c *Client) Session(ctx context.Context) driver.SessionWithContext {
 }
 
 func (c *Client) ExecWrite(ctx context.Context, fn func(tx driver.ManagedTransaction) error) error {
-	sess := c.Session(ctx)
-	defer sess.Close(ctx)
-	_, err := sess.ExecuteWrite(ctx, func(tx driver.ManagedTransaction) (any, error) {
-		return nil, fn(tx)
+	return c.observe(ctx, "write", func(ctx context.Context) error {
+		sess := c.Session(ctx)
+		defer sess.Close(ctx)
+		_, err := sess.ExecuteWrite(ctx, func(tx driver.ManagedTransaction) (any, error) {
+			return nil, fn(tx)
+		})
+		return err
 	})
-	return err
 }
 
 // ExecRead runs a read transaction (AccessModeRead).
 func (c *Client) ExecRead(ctx context.Context, fn func(tx driver.ManagedTransaction) (any, error)) (any, error) {
-	sess := c.driver.NewSession(ctx, driver.SessionConfig{
-		DatabaseName: c.database,
-		AccessMode:   driver.AccessModeRead,
+	var out any
+	err := c.observe(ctx, "read", func(ctx context.Context) error {
+		sess := c.driver.NewSession(ctx, driver.SessionConfig{
+			DatabaseName: c.database,
+			AccessMode:   driver.AccessModeRead,
+		})
+		defer sess.Close(ctx)
+		var err error
+		out, err = sess.ExecuteRead(ctx, fn)
+		return err
 	})
-	defer sess.Close(ctx)
-	return sess.ExecuteRead(ctx, fn)
+	return out, err
+}
+
+func (c *Client) observe(ctx context.Context, op string, fn func(context.Context) error) error {
+	start := time.Now()
+	ctx, span := observability.StartSpan(ctx, "neo4j.query")
+	defer span.End()
+	err := fn(ctx)
+	status := "ok"
+	if err != nil {
+		status = "error"
+		observability.RecordError(span, err)
+	}
+	observability.RecordNeo4jOperation(op, status, time.Since(start).Seconds())
+	return err
 }
 
 func EnsureConstraints(ctx context.Context, c *Client, queries []string) error {
@@ -81,4 +104,3 @@ func EnsureConstraints(ctx context.Context, c *Client, queries []string) error {
 		return nil
 	})
 }
-

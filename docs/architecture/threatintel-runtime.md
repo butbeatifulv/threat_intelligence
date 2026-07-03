@@ -317,3 +317,7 @@ services:
 ```
 
 The bootstrap script copies `/pack/host.zip` when it exists and is non-empty.
+
+## Observability
+
+Veil exports Prometheus RED metrics on graph HTTP services, OpenTelemetry traces to Tempo, and JSON logs with `trace_id` for Loki. See [OBSERVABILITY.md](../OBSERVABILITY.md) for env vars, k3s deploy, Grafana dashboards, and egregore cross-service trace verification.

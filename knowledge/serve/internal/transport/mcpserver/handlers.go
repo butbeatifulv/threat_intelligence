@@ -6,9 +6,13 @@ import (
 	"runtime"
 
 	"github.com/butbeautifulv/veil/knowledge/serve/internal/version"
+	"github.com/butbeautifulv/veil/pkg/observability"
+	"go.opentelemetry.io/otel/attribute"
 )
 
 func (s *Server) callTool(ctx context.Context, name string, args map[string]any) (any, error) {
+	ctx, span := observability.StartSpan(ctx, "mcp.tool.invoke", attribute.String("mcp.tool.name", name))
+	defer span.End()
 	for _, e := range allToolEntries() {
 		if e.name == name {
 			if e.deprecated {

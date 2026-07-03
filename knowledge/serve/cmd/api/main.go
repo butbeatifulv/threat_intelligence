@@ -24,6 +24,21 @@ func main() {
 	}
 
 	cfg := config.LoadAPI()
+	obsCfg := observability.LoadConfigFromEnv("veil-api")
+
+	rootCtx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	shutdown, err := observability.Init(rootCtx, obsCfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		shCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		_ = shutdown(shCtx)
+	}()
+
 	logger := components.SetupLogger(cfg.Env)
 	httpserver.SetProdMode(cfg.Security.Prod)
 
@@ -36,11 +51,9 @@ func main() {
 	mux := http.NewServeMux()
 	httpserver.Register(mux, c.Read, c.Playbook, c.Procedure, c.Framework)
 	observability.RegisterMetrics(mux)
+	inner := observability.ChainHTTP("veil-api", mux)
 	handler := securityhttp.Harden(cfg.Security, cfg.Security.APIBodyLimit,
-		authmw.Auth(c.Auth, false, cfg.Security, observability.InstrumentHTTP("veil-api", mux)))
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+		authmw.Auth(c.Auth, false, cfg.Security, inner))
 
 	rh, rt, wt, idle := securityhttp.HTTPServerTimeouts()
 	srv := &http.Server{
@@ -53,17 +66,10 @@ func main() {
 	}
 
 	go func() {
-		<-ctx.Done()
+		<-rootCtx.Done()
 		shctx, cc := context.WithTimeout(context.Background(), 8*time.Second)
 		defer cc()
 		_ = srv.Shutdown(shctx)
-	}()
-
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
-	go func() {
-		<-sig
-		cancel()
 	}()
 
 	logger.Info("api listening", slog.String("addr", cfg.ListenAddr))

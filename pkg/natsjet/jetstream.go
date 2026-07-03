@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 
+	"github.com/butbeautifulv/veil/pkg/observability"
 	"github.com/nats-io/nats.go"
 )
 
@@ -42,7 +43,13 @@ func (c *Conn) PublishJSON(ctx context.Context, subject string, v any, msgID str
 	if err != nil {
 		return err
 	}
-	if _, err := c.JS.Publish(subject, data, nats.MsgId(msgID)); err != nil {
+	msg := &nats.Msg{Subject: subject, Data: data, Header: nats.Header{}}
+	observability.InjectTraceContext(ctx, msg)
+	var pubOpts []nats.PubOpt
+	if msgID != "" {
+		pubOpts = append(pubOpts, nats.MsgId(msgID))
+	}
+	if _, err := c.JS.PublishMsg(msg, pubOpts...); err != nil {
 		return err
 	}
 	select {

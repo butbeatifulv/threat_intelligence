@@ -7,15 +7,31 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/butbeautifulv/veil/pipeline/ned/internal/components"
+	"github.com/butbeautifulv/veil/pkg/observability"
 )
 
 func main() {
-	rootCtx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
-	defer cancel()
+	rootCtx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
 
-	log := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
+	obsCfg := observability.LoadConfigFromEnv("veil-pipeline-worker")
+	shutdown, err := observability.Init(rootCtx, obsCfg)
+	if err != nil {
+		slog.Error("otel init", slog.String("err", err.Error()))
+		os.Exit(1)
+	}
+	defer func() {
+		shCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		_ = shutdown(shCtx)
+	}()
+
+	log := observability.NewLogger("", "veil-pipeline-worker", os.Stdout)
+	observability.StartMetricsServer(rootCtx, obsCfg.MetricsListen, log)
+
 	if err := components.Run(rootCtx, log); err != nil && !errors.Is(err, context.Canceled) {
 		log.Error("exit", slog.String("err", err.Error()))
 		os.Exit(1)

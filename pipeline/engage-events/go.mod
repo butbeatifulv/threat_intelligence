@@ -2,7 +2,10 @@ module github.com/butbeautifulv/veil/pipeline/engage-events
 
 go 1.25.0
 
-require github.com/butbeautifulv/veil/pipeline/connector v0.0.0
+require (
+	github.com/butbeautifulv/veil/pipeline/connector v0.0.0
+	github.com/butbeautifulv/veil/pkg/observability v0.0.0
+)
 
 require (
 	github.com/butbeautifulv/veil/pkg v0.0.0 // indirect
@@ -19,4 +22,5 @@ replace (
 	github.com/butbeautifulv/veil/pipeline/connector => ../connector
 	github.com/butbeautifulv/veil/pkg => ../../pkg
 	github.com/butbeautifulv/veil/pkg/engage => ../../pkg/engage
+	github.com/butbeautifulv/veil/pkg/observability => ../../pkg/observability
 )
