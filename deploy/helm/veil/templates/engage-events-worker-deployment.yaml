@@ -1,10 +1,10 @@
-{{- if .Values.engage.eventsWorker.enabled }}
+{{- if and .Values.engage.eventsWorker.enabled (gt (int (.Values.engage.eventsWorker.replicas | default 1)) 0) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "veil.fullname" . }}-engage-events-worker
 spec:
-  replicas: 1
+  replicas: {{ .Values.engage.eventsWorker.replicas | default 1 }}
   selector:
     matchLabels:
       app: veil-engage-events-worker

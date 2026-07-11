@@ -43,6 +43,7 @@ engage:
       maxReplicas: 16
   eventsWorker:
     enabled: true
+    replicas: 1
   runner:
     enabled: false  # isolate on dedicated pool / Ansible VM
 
