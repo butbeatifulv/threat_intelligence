@@ -71,7 +71,12 @@ services:
       NEO4J_USER: neo4j
       NEO4J_PASS: neo4jpassword
       NEO4J_DB: neo4j
-      # Optional Keycloak JWT (default off). See docs/deploy/auth-keycloak.md
+      VEIL_SEARCH_ENGINE: ${VEIL_SEARCH_ENGINE:-bleve}
+      VEIL_SEARCH_MODE: ${VEIL_SEARCH_MODE:-hybrid}
+      VEIL_BLEVE_INDEX_PATH: /app/docs/skills-index/playbook-search.bleve
+      VEIL_QDRANT_URL: ${VEIL_QDRANT_URL:-http://qdrant:6333}
+      VEIL_EMBED_PROVIDER: ${VEIL_EMBED_PROVIDER:-ollama}
+      VEIL_EMBED_URL: ${VEIL_EMBED_URL:-http://ollama:11434}
       # AUTH_ENABLED: "1"
       # RBAC_ENABLED: "1"
       # KEYCLOAK_ISSUER: https://keycloak.example/realms/veil
@@ -83,6 +88,33 @@ services:
         condition: service_completed_successfully
 
   # MCP: stdio (host) + optional Streamable HTTP on 8091 (see docs/agents/mcp-agents.md).
+  qdrant:
+    image: qdrant/qdrant:v1.13.2
+    ports:
+      - "${QDRANT_PORT:-6333}:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    profiles:
+      - embeddings
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    profiles:
+      - embeddings
+
+  rerank:
+    build:
+      context: ../..
+      dockerfile: deploy/knowledge/docker/rerank.Dockerfile
+    ports:
+      - "${RERANK_PORT:-8092}:8092"
+    profiles:
+      - rerank
+
   mcp:
     profiles:
       - mcp
@@ -96,6 +128,12 @@ services:
       NEO4J_USER: neo4j
       NEO4J_PASS: neo4jpassword
       NEO4J_DB: neo4j
+      VEIL_SEARCH_ENGINE: ${VEIL_SEARCH_ENGINE:-bleve}
+      VEIL_SEARCH_MODE: ${VEIL_SEARCH_MODE:-hybrid}
+      VEIL_BLEVE_INDEX_PATH: /app/docs/skills-index/playbook-search.bleve
+      VEIL_QDRANT_URL: ${VEIL_QDRANT_URL:-http://qdrant:6333}
+      VEIL_EMBED_PROVIDER: ${VEIL_EMBED_PROVIDER:-ollama}
+      VEIL_EMBED_URL: ${VEIL_EMBED_URL:-http://ollama:11434}
       # MCP_HTTP_ENABLED: "1"
       # MCP_HTTP_LISTEN: ":8091"
       # AUTH_ENABLED: "1"
@@ -110,3 +148,5 @@ services:
 
 volumes:
   neo4j_data:
+  qdrant_data:
+  ollama_data:

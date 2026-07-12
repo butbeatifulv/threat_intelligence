@@ -7,12 +7,14 @@ import (
 
 	"github.com/butbeautifulv/veil/knowledge/connector/query"
 	"github.com/butbeautifulv/veil/knowledge/serve/internal/domain"
+	"github.com/butbeautifulv/veil/pkg/retrieval"
 )
 
 // ReadUsecase exposes read-only graph operations for HTTP API and MCP.
 type ReadUsecase struct {
 	*query.Service
-	exec query.ReadExecutor
+	exec        query.ReadExecutor
+	categoryReg *retrieval.CategoryRegistry
 }
 
 func NewReadUsecase(exec query.ReadExecutor) *ReadUsecase {

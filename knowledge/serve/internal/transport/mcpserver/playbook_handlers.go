@@ -10,12 +10,14 @@ func (s *Server) handlePlaybookSearch(ctx context.Context, args map[string]any) 
 	q := getString(args, "query")
 	sub := getString(args, "subdomain")
 	limit := getInt(args, "limit", 15)
-	hits := s.playbook.Search(q, sub, limit)
+	mode := getString(args, "mode")
+	hits := s.playbook.SearchEnriched(q, sub, limit, mode)
 	return toolTextResult(map[string]any{
-		"query":     q,
-		"subdomain": sub,
-		"skills":    usecase.Summaries(hits),
-		"count":     len(hits),
+		"query":       q,
+		"subdomain":   sub,
+		"search_mode": s.playbook.SearchMode(),
+		"skills":      usecase.SearchSummaries(hits),
+		"count":       len(hits),
 	})
 }
 

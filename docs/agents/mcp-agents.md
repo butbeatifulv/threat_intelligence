@@ -127,7 +127,7 @@ docker run -i --rm --network host \
 | `ti_neighbors` | `GET /v1/nodes/{id}/neighbors` |
 | `ti_health` | connectivity + runtime |
 | `ping` | MCP keepalive (empty result) |
-| `playbook_search` | `GET /v1/playbooks/search` — Anthropic cybersecurity skills index |
+| `playbook_search` | `GET /v1/playbooks/search` — hybrid BM25 + vector (RRF); optional `mode`, returns `score`/`snippet` |
 | `playbook_get` | `GET /v1/playbooks/{id}` — full SKILL.md body (64KB cap) |
 | `playbook_for_technique` | `GET /v1/playbooks/by-technique/{technique_id}` — index + optional `HAS_PLAYBOOK` graph |
 | `playbook_framework` | `GET /v1/playbooks/framework/*` — MITRE Navigator layer, coverage, mapping docs |

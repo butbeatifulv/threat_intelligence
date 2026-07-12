@@ -1,4 +1,4 @@
-.PHONY: test-discovery test-discovery-p7c skills-index check-skills-index corpus-import check-corpus-mappings procedures-index check-procedures-index test-pipeline test-pipeline-p7d test-graph test-graph-ingest-p7e test-graph-serve-p7f test-graph-serve test-graph-read-smoke test-graph-engage-category test-engage-events-pipeline test-platform-p0 test-platform-p7 test-platform-closed-loop test-platform-full-loop test-platform-p3 test-platform-p4 test-platform-mcp-gateway test-platform-unified-edge graph-pack-export graph-pack-build graph-pack-publish test-smoke check-graph-version bump-graph-patch agents-list agents-render deploy-helm-template deploy-ansible-check sync-github-metadata external-clone-agent-store test-agent-eval-registry test-agent-eval-pilot test-agent-eval-paper test-pkg-shared test-pkg-domain test-pkg-all test-pkg-cover test-pkg-cover-strict test-knowledge test-knowledge-serve pentest-veil-mcp
+.PHONY: test-discovery test-discovery-p7c skills-index check-skills-index search-index check-search-index test-search-eval corpus-import check-corpus-mappings procedures-index check-procedures-index test-pipeline test-pipeline-p7d test-graph test-graph-ingest-p7e test-graph-serve-p7f test-graph-serve test-graph-read-smoke test-graph-engage-category test-engage-events-pipeline test-platform-p0 test-platform-p7 test-platform-closed-loop test-platform-full-loop test-platform-p3 test-platform-p4 test-platform-mcp-gateway test-platform-unified-edge graph-pack-export graph-pack-build graph-pack-publish test-smoke check-graph-version bump-graph-patch agents-list agents-render deploy-helm-template deploy-ansible-check sync-github-metadata external-clone-agent-store test-agent-eval-registry test-agent-eval-pilot test-agent-eval-paper test-pkg-shared test-pkg-domain test-pkg-all test-pkg-cover test-pkg-cover-strict test-knowledge test-knowledge-serve pentest-veil-mcp
 
 # Shared pkg contracts (harvest, commit, natsjet, auth, engage/events)
 test-pkg-shared:
@@ -13,7 +13,7 @@ test-pkg-shared:
 test-pkg-domain:
 	cd pkg && env -u GOWORK go test ./domain/... ./ti/... ./vuln/domain/... ./lola/domain/... \
 		./ds/domain/... ./sbom/domain/... ./nuclei/domain/... ./coderules/domain/... ./decision/... \
-		./playbook/...
+		./playbook/... ./retrieval/...
 	cd pkg/engage && env -u GOWORK go test ./domain/... ./contract/... ./toolid/...
 	cd pkg/auth && env -u GOWORK go test ./httpmiddleware/...
 
@@ -207,3 +207,12 @@ procedures-index:
 
 check-procedures-index:
 	python3 ./scripts/knowledge/extract-procedures-index.py --check
+
+search-index:
+	python3 ./scripts/knowledge/build-playbook-search-index.py
+
+check-search-index:
+	python3 ./scripts/knowledge/build-playbook-search-index.py --check
+
+test-search-eval:
+	cd pkg && env -u GOWORK go test ./retrieval/... -run Eval -v

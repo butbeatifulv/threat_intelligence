@@ -11,10 +11,9 @@ import (
 	"github.com/butbeautifulv/veil/knowledge/serve/internal/usecase"
 	playbookuc "github.com/butbeautifulv/veil/knowledge/serve/internal/usecase/playbook"
 	procedureuc "github.com/butbeautifulv/veil/knowledge/serve/internal/usecase/procedure"
-	frameworkuc "github.com/butbeautifulv/veil/knowledge/serve/internal/usecase/framework"
+	frameworkuc 	"github.com/butbeautifulv/veil/knowledge/serve/internal/usecase/framework"
 	"github.com/butbeautifulv/veil/pkg/api"
 	"github.com/butbeautifulv/veil/pkg/observability"
-	pbdomain "github.com/butbeautifulv/veil/pkg/playbook/domain"
 )
 
 // SetProdMode toggles generic API error messages (no internal details).
@@ -63,6 +62,13 @@ func Register(mux *http.ServeMux, uc *usecase.ReadUsecase, pb *playbookuc.Servic
 		q := r.URL.Query().Get("q")
 		kind := r.URL.Query().Get("kind")
 		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
+		if hybrid, ok := uc.CategoryHybridSearch(cat, q, limit); ok {
+			api.WriteJSON(w, http.StatusOK, map[string]any{
+				"category": cat, "query": q, "kind": kind,
+				"search_mode": "keyword", "hits": hybrid, "count": len(hybrid),
+			})
+			return
+		}
 		var nodes []query.Node
 		err := withSpan(r, "neo4j.query", func(ctx context.Context) error {
 			var e error
@@ -190,11 +196,12 @@ func registerPlaybookRoutes(mux *http.ServeMux, uc *usecase.ReadUsecase, pb *pla
 	mux.HandleFunc("GET /v1/playbooks/search", func(w http.ResponseWriter, r *http.Request) {
 		q := r.URL.Query().Get("q")
 		sub := r.URL.Query().Get("subdomain")
+		mode := r.URL.Query().Get("mode")
 		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
-		var hits []pbdomain.SkillMeta
+		var hits []playbookuc.SearchHit
 		err := withSpan(r, "playbook.load", func(ctx context.Context) error {
 			_ = ctx
-			hits = pb.Search(q, sub, limit)
+			hits = pb.SearchEnriched(q, sub, limit, mode)
 			return nil
 		})
 		if err != nil {
@@ -202,7 +209,9 @@ func registerPlaybookRoutes(mux *http.ServeMux, uc *usecase.ReadUsecase, pb *pla
 			return
 		}
 		api.WriteJSON(w, http.StatusOK, map[string]any{
-			"query": q, "subdomain": sub, "skills": usecase.Summaries(hits), "count": len(hits),
+			"query": q, "subdomain": sub, "mode": mode,
+			"search_mode": pb.SearchMode(),
+			"skills": usecase.SearchSummaries(hits), "count": len(hits),
 		})
 	})
 	mux.HandleFunc("GET /v1/techniques/{technique_id}/playbooks", func(w http.ResponseWriter, r *http.Request) {

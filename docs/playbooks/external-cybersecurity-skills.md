@@ -30,7 +30,8 @@ This is **agent procedure knowledge** (when/how to investigate), not subprocess 
 | `make check-corpus-mappings` | CI: mappings SOT present + valid Navigator JSON |
 | `make skills-index` | Regenerate index from committed `corpus/.../skills` |
 | `make check-skills-index` | CI: fail if index is stale |
-| `make procedures-index` | Regenerate structured `procedures-index.json` + import matrix |
+| `make search-index` | Build Bleve playbook search index (+ optional Qdrant vectors) |
+| `make check-search-index` | CI: fail if search index is stale |
 | `make check-procedures-index` | CI: fail if procedures index is stale |
 
 Bodies are read from disk using `corpus_path` in the index (under `corpus/anthropic-cybersecurity-skills/skills/`). Regenerate: `make corpus-import` then `make skills-index` and `make procedures-index`.
@@ -39,7 +40,7 @@ Bodies are read from disk using `corpus_path` in the index (under `corpus/anthro
 
 | Tool | Purpose |
 |------|---------|
-| `playbook_search` | Keyword search over summaries |
+| `playbook_search` | Hybrid search over playbook chunks (BM25 + optional vector RRF); returns `score`, `snippet`, `match_type` |
 | `playbook_get` | Full markdown for one skill id |
 | `playbook_for_technique` | Skills referencing MITRE id (e.g. `T1003.001`) |
 | `playbook_procedure` | Structured steps (`WhenToUse`, `Steps`, tool mentions) |
