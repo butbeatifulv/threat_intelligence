@@ -88,3 +88,6 @@ deploy/terraform/**/.terraform/
 
 # Parallel agent worktrees (local only)
 .worktrees/
+
+# scripts/ci/go-security-checks.sh output (local runs / CI artifact)
+/gosec-sarif/

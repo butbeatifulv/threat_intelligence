@@ -1,14 +1,29 @@
 # Security Gate (`.github/workflows/security-gate.yml`)
 
 DevSecOps gate for veil's Go monorepo: gosec, govulncheck and golangci-lint
-run as a per-module matrix (21 independent `go.mod`s under `pkg/`,
-`discovery/`, `pipeline/`, `knowledge/`, `platform/`, discovered at runtime
-by `discover-modules` rather than hardcoded), plus repo-wide CodeQL (Go) and
-gitleaks. All five are blocking — there is no warn-only tier in this gate,
-because every finding it started with has been fixed rather than deferred
-(see below). `.golangci.yml` at the repo root configures the one legitimate
-exception: `errcheck` doesn't flag the `defer resp.Body.Close()` /
-`nc.Drain()` / `sub.Unsubscribe()` idiom used consistently across this repo.
+run against every one of the 21 independent `go.mod`s under `pkg/`,
+`discovery/`, `pipeline/`, `knowledge/`, `platform/`, via one loop in
+`scripts/ci/go-security-checks.sh` inside a single `go-checks` job (checkout
++ tool install once, not once per module) — plus repo-wide CodeQL (Go) and
+gitleaks as their own jobs. 4 jobs total, all blocking — there is no
+warn-only tier in this gate, because every finding it started with has been
+fixed rather than deferred (see below). `.golangci.yml` at the repo root
+configures the one legitimate exception: `errcheck` doesn't flag the
+`defer resp.Body.Close()` / `nc.Drain()` / `sub.Unsubscribe()` idiom used
+consistently across this repo.
+
+Run the same checks locally exactly as CI does:
+
+```
+scripts/ci/go-security-checks.sh
+```
+
+(An earlier version of this gate matrixed gosec/govulncheck/golangci-lint
+across all 21 modules as separate jobs — 67 jobs total. That's a lot of
+duplicated checkout/setup-go/tool-install for no functional gain over one
+job with a loop, so it was collapsed into `go-checks` + `scripts/ci/
+go-security-checks.sh`; per-module output is still fully visible via
+`::group::`-collapsed log sections.)
 
 ## What this gate found and fixed on its first real run
 
@@ -105,12 +120,16 @@ alias + `toRPCError`/`rpcErr` helpers in `knowledge/serve`).
   called reusable workflow's job requested a `permissions:` scope its caller
   didn't hold at the top level. This workflow is a single flat file
   specifically to avoid that failure class.
-- **Per-module matrix, not a single `./...`.** Go workspace mode doesn't let
+- **Per-module loop, not a single `./...`.** Go workspace mode doesn't let
   `./...` reach across module boundaries; each of the 21 `go.mod`s is
-  scanned standalone (`GOWORK=off`), matching how this repo's own `Makefile`
-  already runs tests per module.
-- **gosec's own exit code is the gate**, verified empirically (0 = clean,
-  1 = findings) — no SARIF-severity-inference layer needed, unlike CodeQL.
+  scanned standalone (`GOWORK=off`) inside `scripts/ci/go-security-checks.sh`,
+  matching how this repo's own `Makefile` already runs tests per module —
+  one job with a loop instead of a 21-way matrix per tool.
+- **gosec's own exit code is NOT the gate.** It exits 1 on some packages
+  purely from an SSA-analyser panic (seen on generics-using code) with zero
+  real findings — confirmed on a live CI run, not just locally. The script
+  always parses the SARIF it produces and gates on real finding count
+  instead, same as the CodeQL job already did.
 - **CodeQL's local SARIF has no severity metadata** (confirmed the same way
   egregore's did) — the `Gate check CodeQL` step fails on any finding
   (`COUNT > 0`), not severity-graded. Coarser, but never silently passes a
