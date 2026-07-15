@@ -345,11 +345,20 @@ func zipPathsUnderPrefix(zr *zip.Reader, pathPrefix string) []string {
 			continue
 		}
 		name := strings.ReplaceAll(f.Name, "\\", "/")
+		if strings.HasPrefix(name, "/") || strings.Contains(name, "../") || name == ".." {
+			// Zip Slip: codeload archives are fetched from GitHub over HTTPS, but a
+			// compromised/malicious repo could still ship a crafted entry name; never
+			// trust it enough to let it leave this function unsanitized.
+			continue
+		}
 		slash := strings.Index(name, "/")
 		if slash < 0 {
 			continue
 		}
 		rel := name[slash+1:]
+		if strings.Contains(rel, "../") || strings.HasPrefix(rel, "/") {
+			continue
+		}
 		if pfx != "" && !strings.HasPrefix(rel, pfx) {
 			continue
 		}
