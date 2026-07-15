@@ -70,6 +70,9 @@ Thumbs.db
 
 .external/
 .codebase-memory/
+# Local IDE / agent tooling
+.cursor/
+.agents/
 # Symlink to cxado-references (created by cxado `make refs-link`)
 refs/
 
