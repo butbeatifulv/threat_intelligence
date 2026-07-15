@@ -91,3 +91,4 @@ deploy/terraform/**/.terraform/
 
 # scripts/ci/go-security-checks.sh output (local runs / CI artifact)
 /gosec-sarif/
+/gosec-sarif-raw/
