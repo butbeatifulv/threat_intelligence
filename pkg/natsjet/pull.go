@@ -62,13 +62,31 @@ func RunPullLoop(ctx context.Context, log *slog.Logger, sub *nats.Subscription, 
 		}
 		for _, m := range msgs {
 			msgCtx := observability.ExtractTraceContext(ctx, m)
-			if err := handle(msgCtx, m); err != nil {
-				log.Warn("message", slog.String("err", err.Error()))
-				if opts.NakDelay > 0 {
-					_ = m.NakWithDelay(opts.NakDelay)
-				} else {
-					_ = m.Nak()
+			handled := false
+			func() {
+				defer func() {
+					if r := recover(); r != nil {
+						log.Warn("message handler panicked", slog.Any("panic", r))
+						if opts.NakDelay > 0 {
+							_ = m.NakWithDelay(opts.NakDelay)
+						} else {
+							_ = m.Nak()
+						}
+						handled = true
+					}
+				}()
+				if err := handle(msgCtx, m); err != nil {
+					log.Warn("message", slog.String("err", err.Error()))
+					if opts.NakDelay > 0 {
+						_ = m.NakWithDelay(opts.NakDelay)
+					} else {
+						_ = m.Nak()
+					}
+					handled = true
+					return
 				}
+			}()
+			if handled {
 				continue
 			}
 			if err := m.Ack(); err != nil {

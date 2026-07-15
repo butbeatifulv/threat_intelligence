@@ -10,7 +10,9 @@ import (
 )
 
 // StartMetricsServer serves GET /metrics until ctx is canceled.
-func StartMetricsServer(ctx context.Context, listen string, log *slog.Logger) {
+// The returned channel receives a non-nil error if ListenAndServe fails (except ErrServerClosed).
+func StartMetricsServer(ctx context.Context, listen string, log *slog.Logger) <-chan error {
+	errCh := make(chan error, 1)
 	if listen == "" {
 		listen = ":9090"
 	}
@@ -37,7 +39,11 @@ func StartMetricsServer(ctx context.Context, listen string, log *slog.Logger) {
 	go func() {
 		log.Info("metrics server listening", slog.String("addr", listen))
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			errCh <- err
 			log.Warn("metrics server stopped", slog.String("err", err.Error()))
+			return
 		}
+		close(errCh)
 	}()
+	return errCh
 }

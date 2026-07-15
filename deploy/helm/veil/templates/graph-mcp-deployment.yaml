@@ -14,6 +14,18 @@ spec:
         app: veil-mcp
     spec:
       enableServiceLinks: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.graph.mcp.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.graph.mcp.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: mcp
           image: "{{ .Values.global.imageRegistry }}veil-mcp:{{ .Values.global.imageTag }}"
@@ -24,6 +36,7 @@ spec:
             - name: OTEL_SERVICE_NAME
               value: veil-mcp
             {{- include "veil.observabilityEnv" . | nindent 12 }}
+            {{- include "veil.playbookEnv" . | nindent 12 }}
             - name: MCP_ENV
               value: prod
             - name: NEO4J_URI
@@ -33,17 +46,12 @@ spec:
             - name: MCP_HTTP_LISTEN
               value: ":8091"
           volumeMounts:
-            - name: veil-playbooks
-              mountPath: /home/nonroot/docs/skills-index
-              readOnly: true
+            {{- include "veil.playbookVolumeMount" . | nindent 12 }}
           livenessProbe:
             httpGet:
               path: /health
               port: 8091
             initialDelaySeconds: 30
       volumes:
-        - name: veil-playbooks
-          hostPath:
-            path: /var/lib/veil/playbooks/docs/skills-index
-            type: Directory
+        {{- include "veil.playbookVolume" . | nindent 8 }}
 {{- end }}

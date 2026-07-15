@@ -5,13 +5,12 @@ import (
 	"context"
 	"log"
 	"os"
-	"strings"
 	"time"
 
 	graphneo4j "github.com/butbeautifulv/veil/knowledge/connector/neo4j"
+	"github.com/butbeautifulv/veil/knowledge/ingest/internal/usecase/playbookseed"
 	pbindex "github.com/butbeautifulv/veil/pkg/playbook/index"
 	pbprocedure "github.com/butbeautifulv/veil/pkg/playbook/procedure"
-	driver "github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
 func main() {
@@ -41,46 +40,22 @@ func main() {
 	}
 	defer client.Close(ctx)
 
-	if err := graphneo4j.EnsureConstraints(ctx, client, []string{
-		`CREATE CONSTRAINT cyber_skill_id IF NOT EXISTS FOR (n:CyberSkill) REQUIRE n.id IS UNIQUE`,
-	}); err != nil {
-		log.Fatal(err)
-	}
-
 	meta := cat.Meta()
-	linked := 0
+	seeds := make([]playbookseed.SkillSeed, 0, len(meta.Skills))
 	for _, s := range meta.Skills {
 		steps := procByID[s.ID]
-		hasStructured := steps > 0
-		if err := client.ExecWrite(ctx, func(tx driver.ManagedTransaction) error {
-			_, err := tx.Run(ctx, `
-MERGE (sk:CyberSkill {id: $id})
-SET sk.title = $title, sk.subdomain = $subdomain, sk.source = 'anthropic-cyber-skills',
-    sk.stepCount = $stepCount, sk.hasStructured = $hasStructured, sk.updatedAt = datetime()`,
-				map[string]any{
-					"id": s.ID, "title": s.Name, "subdomain": s.Subdomain,
-					"stepCount": steps, "hasStructured": hasStructured,
-				})
-			return err
-		}); err != nil {
-			log.Printf("skill %s: %v", s.ID, err)
-			continue
-		}
-		for _, tid := range s.AttackIDs {
-			err := client.ExecWrite(ctx, func(tx driver.ManagedTransaction) error {
-				_, err := tx.Run(ctx, `
-MATCH (t:AttackTechnique {id: $tid}), (sk:CyberSkill {id: $sid})
-MERGE (t)-[r:HAS_PLAYBOOK]->(sk)
-SET r.updatedAt = datetime()`,
-					map[string]any{"tid": strings.ToUpper(tid), "sid": s.ID})
-				return err
-			})
-			if err == nil {
-				linked++
-			}
-		}
+		seeds = append(seeds, playbookseed.SkillSeed{
+			ID: s.ID, Name: s.Name, Subdomain: s.Subdomain,
+			StepCount: steps, HasStructured: steps > 0,
+			AttackIDs: s.AttackIDs,
+		})
 	}
-	log.Printf("seeded %d skills, %d HAS_PLAYBOOK edges", len(meta.Skills), linked)
+	repo := &playbookseed.Neo4jRepository{Client: client}
+	skills, linked, err := playbookseed.Run(ctx, repo, playbookseed.CatalogMeta{Skills: seeds}, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("seeded %d skills, %d HAS_PLAYBOOK edges", skills, linked)
 }
 
 func envOr(k, def string) string {

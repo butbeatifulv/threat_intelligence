@@ -1,6 +1,7 @@
 package cataloglink
 
 import (
+	"log/slog"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -12,8 +13,9 @@ import (
 )
 
 var (
-	catalogOnce sync.Once
+	catalogOnce  sync.Once
 	catalogNames map[string]struct{}
+	catalogLog   = slog.Default()
 	aliases      = map[string]string{
 		"nmap":          "nmap_scan",
 		"nuclei":        "nuclei_scan",
@@ -35,22 +37,36 @@ var (
 
 var catalogRepoRoot = pbindex.RepoRoot
 
-func loadCatalog() {
+func catalogPaths() []string {
+	if p := strings.TrimSpace(os.Getenv("VENENO_CATALOG_PATH")); p != "" {
+		var out []string
+		for _, part := range strings.Split(p, string(os.PathListSeparator)) {
+			part = strings.TrimSpace(part)
+			if part != "" {
+				out = append(out, part)
+			}
+		}
+		return out
+	}
 	root, err := catalogRepoRoot()
 	if err != nil {
-		catalogNames = map[string]struct{}{}
-		return
+		return nil
 	}
+	return []string{
+		filepath.Join(root, "engage/serve/catalog/tools.yaml"),
+		filepath.Join(root, "engage/serve/catalog/tools.live.yaml"),
+	}
+}
+
+func loadCatalog() {
 	catalogNames = map[string]struct{}{}
-	for _, rel := range []string{
-		"engage/serve/catalog/tools.yaml",
-		"engage/serve/catalog/tools.live.yaml",
-	} {
-		path := filepath.Join(root, rel)
+	loaded := 0
+	for _, path := range catalogPaths() {
 		raw, err := os.ReadFile(path)
 		if err != nil {
 			continue
 		}
+		loaded++
 		for _, line := range strings.Split(string(raw), "\n") {
 			if m := toolNameLineRe.FindStringSubmatch(line); len(m) > 1 {
 				catalogNames[m[1]] = struct{}{}
@@ -59,6 +75,9 @@ func loadCatalog() {
 				catalogNames[m[1]] = struct{}{}
 			}
 		}
+	}
+	if loaded == 0 {
+		catalogLog.Warn("playbook catalog: no tool catalog files loaded; set VENENO_CATALOG_PATH to veneno catalog YAML (see docs/playbooks/external-cybersecurity-skills.md)")
 	}
 }
 

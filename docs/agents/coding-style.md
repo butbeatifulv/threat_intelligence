@@ -22,12 +22,13 @@ Conventions for the three runtime layers — **Discovery**, **pipeline**, **grap
 | **Discovery** | [discovery/](../discovery/) | Fetch + ledger → `scrape.>` |
 | **Pipeline** | [pipeline/](../pipeline/) | `scrape.>` → NED → `ingest.>` |
 | **Graph** | [knowledge/](../knowledge/) | Consume `ingest.>` → Neo4j; API/MCP read |
-| **Engage** | [engage/](../engage/) | Tool execution, workflows, reports (HTTP API/MCP) |
-| **Wire types** | [pkg/](../pkg/) | `harvest`, `commit`, `natsjet`, `ti/*`, `auth`, `engage/*` |
+| **Veneno (pentest)** | [veneno](https://github.com/butbeautifulv/veneno) | Tool execution, workflows, reports (HTTP API/MCP) — separate repo |
+| **Engage ingest bridge** | [pipeline/engage-events/](../pipeline/engage-events/) | NATS `engage.events.*` → `ingest.engage.*` (veneno → veil) |
+| **Wire types** | [pkg/](../pkg/) | `harvest`, `commit`, `natsjet`, `ti/*`, `auth`, `engage/*` (events wire types for bridge) |
 
-Layers **Discovery / pipeline / graph** communicate **only via NATS** and documented JSON schemas. **Engage** calls graph only via **HTTP veil-api** (no Bolt, no NATS). No Go imports across `discovery/`, `pipeline/`, `knowledge/`, `engage/`. All layers may import `pkg/*`. NVD parse/map lives in [pipeline/pkg/nvd](../pipeline/pkg/nvd/) (pipeline only).
+Layers **Discovery / pipeline / graph** communicate **only via NATS** and documented JSON schemas. **Veneno** calls graph only via **HTTP veil-api** (no Bolt, no NATS). No Go imports across `discovery/`, `pipeline/`, `knowledge/`. All layers may import `pkg/*`. NVD parse/map lives in [pipeline/pkg/nvd](../pipeline/pkg/nvd/) (pipeline only).
 
-**Logical layers (v8 target)** — see [platform-architecture.md](../architecture/platform-architecture.md): **Discovery** (`discovery/`, P8h done), **Pipeline**, **Knowledge** (`knowledge/` → `knowledge/`, P8i), **Engage**, shared **Report**, API/MCP façade. **Discovery `factory`** orchestrates sources; **engage `runner`** executes catalog tools — share only **`pkg/exec`**, do not rename factory to runner.
+**Logical layers (v8 target)** — see [platform-architecture.md](../architecture/platform-architecture.md): **Discovery** (`discovery/`, P8h done), **Pipeline**, **Knowledge** (`knowledge/`, P8i), **Veneno** (pentest, external repo), shared **Report**, API/MCP façade. **Discovery `factory`** orchestrates sources; **veneno runner** executes catalog tools — share only **`pkg/exec`**, do not rename factory to runner. Split: [veil-veneno-split.md](../architecture/veil-veneno-split.md).
 
 Layer-specific layout, env vars, and build commands:
 
@@ -44,7 +45,7 @@ Layer-specific layout, env vars, and build commands:
 | **Discovery** | [discovery/](../discovery/) | Publish `scrape.>` | `commit`, Bolt, normalize |
 | **Pipeline (NED)** | [pipeline/](../pipeline/) | `scrape.>` → `ingest.>` | HTTP feeds, Bolt, MERGE |
 | **Graph** | [knowledge/](../knowledge/) | Consume `ingest.>` | `harvest`, feeds, Vitess |
-| **Engage** | [engage/](../engage/) | Optional publish `engage.events.>` (`ENGAGE_EVENTS_NATS_ENABLED`); bridge via [pipeline/engage-events](../pipeline/engage-events/) → `ingest.engage.*` | Bolt, direct `ingest.>`, `scrape.>`, cross-layer Go imports |
+| **Engage ingest** | [pipeline/engage-events/](../pipeline/engage-events/), [knowledge/ingest/internal/sources/engage/](../knowledge/ingest/internal/sources/engage/) | Consume veneno `engage.events.>` → `ingest.engage.*` → Neo4j | Bolt from bridge code, direct `scrape.>`, cross-layer Go imports |
 
 Shared fetch policy (Discovery only): [discovery/harvest/internal/feeds](../discovery/harvest/internal/feeds/), [discovery/harvest/internal/ledger](../discovery/harvest/internal/ledger/) (`VITESS_DSN`, `SCRAPE_MIN_REFETCH_AFTER`, `SCRAPE_FORCE_REFETCH`).
 

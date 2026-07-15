@@ -1,0 +1,31 @@
+# Corp / offline build — Nexus base images + Go module proxy, no BuildKit cache mounts (Kaniko-compatible).
+# MCP stdio + optional Streamable HTTP (MCP_HTTP_ENABLED=1).
+# Go proxy once: ./scripts/k8s/nexus-npm-go-proxy-setup.sh --ssh bbv-p30-wifi
+ARG NEXUS_REGISTRY=nexus.svo.aero:8345
+ARG NEXUS_GROUP_REGISTRY=nexus.svo.aero:8374
+ARG NEXUS_GO_HOST=nexus.svo.aero:8443
+ARG NEXUS_GO_REPO=go-proxy
+ARG NEXUS_USER
+ARG NEXUS_PASSWORD
+
+FROM ${NEXUS_REGISTRY}/library/golang:1.25-bookworm AS build
+WORKDIR /build
+ARG NEXUS_GO_HOST
+ARG NEXUS_GO_REPO
+ARG NEXUS_USER
+ARG NEXUS_PASSWORD
+ENV GOPROXY=https://${NEXUS_USER}:${NEXUS_PASSWORD}@${NEXUS_GO_HOST}/repository/${NEXUS_GO_REPO}/,direct
+COPY knowledge/ knowledge/
+COPY pkg/ pkg/
+ENV GOWORK=/build/knowledge/go.work
+ENV CGO_ENABLED=0
+WORKDIR /build/knowledge/serve
+RUN go build -trimpath -buildvcs=false -ldflags="-s -w" -o /out/mcp ./cmd/mcp
+
+FROM ${NEXUS_GROUP_REGISTRY}/distroless/static-debian12:nonroot AS runtime
+COPY --from=build /out/mcp /mcp
+USER nonroot:nonroot
+EXPOSE 8091
+HEALTHCHECK --interval=20s --timeout=5s --start-period=30s --retries=3 \
+  CMD ["/mcp", "healthcheck"]
+ENTRYPOINT ["/mcp"]

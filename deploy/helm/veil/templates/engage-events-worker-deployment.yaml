@@ -13,6 +13,10 @@ spec:
       labels:
         app: veil-engage-events-worker
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: engage-events-worker
           image: "{{ .Values.global.imageRegistry }}veil-engage-events-worker:{{ .Values.global.imageTag }}"

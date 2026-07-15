@@ -18,3 +18,29 @@
 - name: LOG_LEVEL
   value: {{ .Values.observability.logLevel | quote }}
 {{- end }}
+
+{{- define "veil.playbookEnv" -}}
+- name: VEIL_REPO_ROOT
+  value: {{ .Values.playbooks.mountPath | quote }}
+- name: VEIL_CYBER_SKILLS_INDEX
+  value: {{ printf "%s/docs/skills-index/cyber-skills.json" .Values.playbooks.mountPath | quote }}
+- name: VEIL_BLEVE_INDEX_PATH
+  value: {{ printf "%s/docs/skills-index/playbook-search.bleve" .Values.playbooks.mountPath | quote }}
+- name: VEIL_SEARCH_ENGINE
+  value: {{ .Values.playbooks.searchEngine | quote }}
+- name: VEIL_SEARCH_MODE
+  value: {{ .Values.playbooks.searchMode | quote }}
+{{- end }}
+
+{{- define "veil.playbookVolume" -}}
+- name: veil-playbooks
+  hostPath:
+    path: {{ .Values.playbooks.hostPath | quote }}
+    type: Directory
+{{- end }}
+
+{{- define "veil.playbookVolumeMount" -}}
+- name: veil-playbooks
+  mountPath: {{ .Values.playbooks.mountPath | quote }}
+  readOnly: true
+{{- end }}

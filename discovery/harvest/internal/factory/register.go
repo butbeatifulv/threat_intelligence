@@ -25,7 +25,7 @@ func SourcesFor(names []string) ([]Source, error) {
 		}
 		newSrc, ok := sourceBuilders[name]
 		if !ok {
-			return nil, fmt.Errorf("scrape source %q is not implemented in scrape-worker yet", name)
+			return nil, fmt.Errorf("unknown scrape source %q", name)
 		}
 		out = append(out, newSrc())
 	}

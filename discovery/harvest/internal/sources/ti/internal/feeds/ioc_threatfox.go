@@ -8,8 +8,8 @@ import (
 	"github.com/butbeautifulv/veil/pkg/ti/domain"
 )
 
-// iocFromThreatFoxExport maps ThreatFox export / API row fields to a domain IOC (normalize in pipeline).
-func iocFromThreatFoxExport(iocValue, iocType string) (domain.IOC, bool) {
+// IOCFromThreatFoxExport maps ThreatFox export / API row fields to a domain IOC (normalize in pipeline).
+func IOCFromThreatFoxExport(iocValue, iocType string) (domain.IOC, bool) {
 	t := strings.ToLower(strings.TrimSpace(iocType))
 	v := strings.TrimSpace(iocValue)
 	if v == "" {

@@ -15,10 +15,10 @@ import (
 
 	"log/slog"
 
-	"github.com/butbeautifulv/veil/discovery/harvest/internal/cache"
+	"log/slog"
+
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/feeds"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/ledger"
-	"github.com/butbeautifulv/veil/discovery/pkg/proxypool"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/sources/vuln/internal/repository"
 )
 
@@ -28,55 +28,20 @@ type ScraperUsecase struct {
 	repo   repository.VulnerabilityRepository
 	logger *slog.Logger
 	apiKey string
-	http   *http.Client
-	cache  string
 	delay  time.Duration
 	feeds  *feeds.Client
 	ledger *ledger.Store
 }
 
 func NewScraperUsecase(repo repository.VulnerabilityRepository, logger *slog.Logger, apiKey string, fc *feeds.Client, led *ledger.Store) *ScraperUsecase {
-	base := http.DefaultTransport.(*http.Transport).Clone()
-	base.TLSHandshakeTimeout = 30 * time.Second
-
-	var rt http.RoundTripper = base
-	if env := strings.TrimSpace(os.Getenv("VULN_PROXY_URLS")); env != "" {
-		p, err := proxypool.New(proxypool.SplitEnvList(env), 2*time.Minute)
-		if err == nil {
-			only := strings.EqualFold(strings.TrimSpace(os.Getenv("VULN_PROXY_MODE")), "only")
-			rt = proxypool.NewTransport(base, p, only)
-			logger.Info("vuln proxy pool enabled", slog.Int("count", len(proxypool.SplitEnvList(env))))
-		} else {
-			logger.Warn("vuln proxy pool invalid; running direct", slog.String("err", err.Error()))
-		}
-	}
-
-	cache := firstNonEmpty(os.Getenv("VULN_CACHE_DIR"), cache.DefaultDir())
-	if fc == nil {
-		fc = feeds.NewClient(cache, logger)
-	}
-	if fc.Cache == "" {
-		fc.Cache = cache
-	}
-	hc := &http.Client{Timeout: 60 * time.Second, Transport: rt}
-	fc.HTTP = hc
 	return &ScraperUsecase{
 		repo:   repo,
 		logger: logger,
 		apiKey: apiKey,
-		http:   hc,
-		cache:  fc.Cache,
 		delay:  parseDelayEnv(os.Getenv("VULN_REQUEST_DELAY"), 1200*time.Millisecond),
 		feeds:  fc,
 		ledger: led,
 	}
-}
-
-func firstNonEmpty(a, b string) string {
-	if strings.TrimSpace(a) != "" {
-		return a
-	}
-	return b
 }
 
 func parseDelayEnv(v string, def time.Duration) time.Duration {
@@ -84,7 +49,6 @@ func parseDelayEnv(v string, def time.Duration) time.Duration {
 	if v == "" {
 		return def
 	}
-	// Accept Go durations ("1500ms", "2s") or plain milliseconds ("1200").
 	if d, err := time.ParseDuration(v); err == nil && d >= 0 {
 		return d
 	}
@@ -130,23 +94,28 @@ func (u *ScraperUsecase) downloadNVDPage(ctx context.Context, startIndex, result
 	backoff := 1 * time.Second
 	for attempt := 0; attempt < 6; attempt++ {
 		if u.delay > 0 {
-			time.Sleep(u.delay)
+			if !sleepOrCancel(ctx, u.delay) {
+				return nil, ctx.Err()
+			}
 		}
-		resp, err := u.http.Do(req)
+		resp, err := u.feeds.HTTP.Do(req)
 		if err != nil {
 			if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 				return nil, err
 			}
-			time.Sleep(backoff)
+			if !sleepOrCancel(ctx, backoff) {
+				return nil, ctx.Err()
+			}
 			backoff *= 2
 			continue
 		}
 
 		if resp.StatusCode == http.StatusTooManyRequests || resp.StatusCode == http.StatusServiceUnavailable {
-			// Read and discard to reuse connections.
 			_, _ = io.Copy(io.Discard, resp.Body)
 			_ = resp.Body.Close()
-			time.Sleep(backoff)
+			if !sleepOrCancel(ctx, backoff) {
+				return nil, ctx.Err()
+			}
 			backoff *= 2
 			continue
 		}
@@ -163,6 +132,20 @@ func (u *ScraperUsecase) downloadNVDPage(ctx context.Context, startIndex, result
 		return b, rerr
 	}
 	return nil, fmt.Errorf("nvd fetch failed after retries")
+}
+
+func sleepOrCancel(ctx context.Context, d time.Duration) bool {
+	if d <= 0 {
+		return true
+	}
+	t := time.NewTimer(d)
+	defer t.Stop()
+	select {
+	case <-ctx.Done():
+		return false
+	case <-t.C:
+		return true
+	}
 }
 
 func (u *ScraperUsecase) nvdRequest(ctx context.Context, urlStr string) (*http.Request, error) {
@@ -214,12 +197,6 @@ func (u *ScraperUsecase) ScrapeNVD(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
-		pub, ok := u.repo.(interface {
-			PublishNVDPage(context.Context, int, []byte) error
-		})
-		if !ok {
-			return fmt.Errorf("vuln: repository must support PublishNVDPage")
-		}
 		tr, itemCount, err := nvdPageStats(data)
 		if err != nil {
 			return err
@@ -227,7 +204,7 @@ func (u *ScraperUsecase) ScrapeNVD(ctx context.Context) error {
 		if total < 0 {
 			total = tr
 		}
-		if err := pub.PublishNVDPage(ctx, start, data); err != nil {
+		if err := u.repo.PublishNVDPage(ctx, start, data); err != nil {
 			return err
 		}
 		count += itemCount
@@ -246,4 +223,3 @@ func (u *ScraperUsecase) ScrapeNVD(ctx context.Context) error {
 	u.logger.Info("finished NVD scraping", slog.Int("count", count))
 	return nil
 }
-

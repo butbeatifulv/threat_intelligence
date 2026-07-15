@@ -3,8 +3,6 @@ package usecase
 import (
 	"context"
 
-	driver "github.com/neo4j/neo4j-go-driver/v5/neo4j"
-
 	"github.com/butbeautifulv/veil/knowledge/connector/query"
 	"github.com/butbeautifulv/veil/knowledge/serve/internal/domain"
 	"github.com/butbeautifulv/veil/pkg/retrieval"
@@ -47,9 +45,5 @@ func (u *ReadUsecase) EngageTargetContext(ctx context.Context, host string) (*qu
 
 // Ping verifies Neo4j read connectivity.
 func (u *ReadUsecase) Ping(ctx context.Context) error {
-	_, err := u.exec.ExecRead(ctx, func(tx driver.ManagedTransaction) (any, error) {
-		_, err := tx.Run(ctx, `RETURN 1`, nil)
-		return nil, err
-	})
-	return err
+	return u.Service.Ping(ctx)
 }

@@ -30,7 +30,11 @@ func main() {
 	}()
 
 	log := observability.NewLogger("", "veil-pipeline-worker", os.Stdout)
-	observability.StartMetricsServer(rootCtx, obsCfg.MetricsListen, log)
+	go func() {
+		if err := <-observability.StartMetricsServer(rootCtx, obsCfg.MetricsListen, log); err != nil {
+			log.Warn("metrics server failed", slog.String("err", err.Error()))
+		}
+	}()
 
 	if err := components.Run(rootCtx, log); err != nil && !errors.Is(err, context.Canceled) {
 		log.Error("exit", slog.String("err", err.Error()))

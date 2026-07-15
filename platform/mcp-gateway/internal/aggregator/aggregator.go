@@ -79,6 +79,9 @@ func (a *Aggregator) handle(ctx context.Context, method string, params json.RawM
 		}
 		raw, err := client.Call(ctx, "tools/call", callParams, authorizationHeader(ctx))
 		if err != nil {
+			if strings.HasPrefix(p.Name, EngagePrefix) {
+				return nil, mcp.Errf(mcp.CodeInternal, "engage backend not configured — see UNIFIED_MCP_ENGAGE_URL: %v", err)
+			}
 			return nil, err
 		}
 		var out map[string]any
@@ -121,15 +124,21 @@ func (a *Aggregator) listTools(ctx context.Context) (map[string]any, error) {
 		engageListed.tools, engageListed.err = toolsFromResult(raw)
 	}()
 	wg.Wait()
+	if graphListed.err != nil && engageListed.err != nil {
+		return nil, fmt.Errorf("graph tools/list: %v; engage tools/list: %v", graphListed.err, engageListed.err)
+	}
 	if graphListed.err != nil {
 		return nil, fmt.Errorf("graph tools/list: %w", graphListed.err)
 	}
 	if engageListed.err != nil {
-		return nil, fmt.Errorf("engage tools/list: %w", engageListed.err)
+		a.logger.Warn("engage tools/list unavailable; returning graph tools only",
+			slog.String("err", engageListed.err.Error()))
 	}
 	merged := make([]any, 0, len(graphListed.tools)+len(engageListed.tools))
 	merged = append(merged, prefixTools(graphListed.tools, GraphPrefix, "graph")...)
-	merged = append(merged, prefixTools(engageListed.tools, EngagePrefix, "engage")...)
+	if engageListed.err == nil {
+		merged = append(merged, prefixTools(engageListed.tools, EngagePrefix, "engage")...)
+	}
 	return map[string]any{"tools": merged}, nil
 }
 

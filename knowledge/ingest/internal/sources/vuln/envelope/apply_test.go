@@ -22,10 +22,6 @@ func (f *fakeVulnRepo) Save(ctx context.Context, v *domain.Vulnerability) error 
 	return f.Upsert(ctx, v)
 }
 
-func (f *fakeVulnRepo) FindByCVE(ctx context.Context, id string) (*domain.Vulnerability, error) {
-	return nil, nil
-}
-
 func (f *fakeVulnRepo) Upsert(ctx context.Context, v *domain.Vulnerability) error {
 	f.upserted = append(f.upserted, v)
 	return nil

@@ -21,7 +21,7 @@ func TestIocFromThreatFoxExport(t *testing.T) {
 		{strings.Repeat("a", 64), "sha256", domain.IOCHash},
 	}
 	for _, tc := range cases {
-		ioc, ok := iocFromThreatFoxExport(tc.val, tc.typ)
+		ioc, ok := IOCFromThreatFoxExport(tc.val, tc.typ)
 		if !ok {
 			t.Fatalf("expected ok for %q %q", tc.val, tc.typ)
 		}

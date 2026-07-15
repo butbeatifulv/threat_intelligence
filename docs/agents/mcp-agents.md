@@ -1,11 +1,11 @@
 # MCP for agents (Veil)
 
-Veil exposes **two MCP servers** for agents — keep them separate. **Tool execution runs only through veil-engage** (Go `engage` layer). Do not point agents at legacy HexStrike MCP or a Flask HTTP API on **`:8888`** — see [migration runbook](#migration-runbook-hexstrike-flask-8888--veil-engage) below.
+Veil exposes **veil-mcp** (graph read) in this repo. **Tool execution** lives in **[veneno](https://github.com/butbeautifulv/veneno)** (`veneno-mcp`, `veneno-api`). Keep graph read and pentest exec as separate MCP processes.
 
-| MCP | Layer | Purpose |
-|-----|-------|---------|
-| **veil-mcp** | Graph read | Query Neo4j TI data (categories, nodes, search) |
-| **veil-engage** | Engage exec | Run security tools from YAML catalog (~158 names); replaces Python `hexstrike_mcp.py` + `hexstrike_server.py` |
+| MCP | Repo | Purpose |
+|-----|------|---------|
+| **veil-mcp** | veil | Query Neo4j TI data (categories, nodes, search, playbooks) |
+| **veneno-mcp** | veneno | Run security tools from YAML catalog (~158 names) |
 
 Do not merge offensive tool execution into the graph MCP process.
 
@@ -185,98 +185,28 @@ Example unified HTTP config (after P12b edge is up):
 }
 ```
 
-## veil-engage (tool execution)
+## Tool execution (veneno)
 
-Engage MCP runs separately from graph read:
+Pentest MCP/API docs moved to **[veneno](https://github.com/butbeautifulv/veneno)** (`docs/engage/`).
 
-```bash
-./scripts/mcp/run-veil-engage.sh
-```
+Veil retains the **ingest bridge** only:
 
-| Client | Example |
-|--------|---------|
-| Cursor / Cline | [engage.stdio.json.example](../examples/mcp/engage.stdio.json.example) |
-| HTTP MCP | [engage.http.json.example](../examples/mcp/engage.http.json.example) |
+- `pipeline/engage-events/` — NATS `engage.events.*` → `ingest.engage.*`
+- `knowledge/ingest/internal/sources/engage/` — Neo4j `EngageToolRun` / `EngageFinding`
+- `GET /v1/categories/engage/context` — read API for veneno scan results
 
-- Server name: `veil-engage`
-- Methods: `initialize`, `tools/list` (~158 catalog tools), `tools/call` → `POST /api/tools/{name}` equivalent
-- Auth: `AuthorizeEngageMCP` + role `veil-engage-runner` when `AUTH_ENABLED=1`
-- Logs on **stderr** (same stdio rule as veil-mcp)
-- Supported execution model: **client-native** (`ENGAGE_EXECUTION_PROFILE=client-native`) — tools run on the same host where this MCP process runs. Install CLI binaries on that execution host per [engage-client-dependencies.md](engage-client-dependencies.md).
+After a veneno scan, query results with **veil-mcp** or veil-api (`GET /v1/categories/engage/search`, `GET /v1/categories/engage/context`). Smoke: `make test-engage-events-pipeline`.
 
-Compose: `deploy/engage/compose.yml` (`engage-mcp` on :8892). Runner overlay `compose.runner.yml` is legacy lab/CI only (`ENGAGE_EXECUTION_PROFILE=docker-exec`). Docs: [engage-runtime.md](engage-runtime.md), [engage-legacy-parity.md](engage-legacy-parity.md).
+Unified edge: configure `UNIFIED_MCP_ENGAGE_URL` to veneno MCP when `/mcp/engage` routing is enabled — [platform-unified-access.md](../architecture/platform-unified-access.md).
 
-### Cross-layer workflow (engage scan → graph read)
-
-When `ENGAGE_EVENTS_NATS_ENABLED=1` and the events bus is running, tool runs and findings are ingested into Neo4j as `EngageToolRun` / `EngageFinding` nodes (category **`engage`**).
-
-1. Run a scan with **veil-engage** (`httpx_probe`, `smart-scan`, etc.).
-2. Query results with **veil-mcp** or veil-api: `GET /v1/categories/engage/search?q=example.com`.
-3. Structured subgraph (findings + linked CVEs): `GET /v1/categories/engage/context?q=example.com`.
-4. Resolve ingested target by hostname: `GET /v1/nodes/example.com` (`EngageTarget.name`).
-5. Unified agent read-back: engage-api `POST /api/intelligence/target-timeline` or MCP `target_timeline_intelligence` (audit + graph + correlation).
-6. Optional: `correlate_threat_intelligence` merges TI/vuln/engage hits and `related_cves` when `ENGAGE_VEIL_API_URL` is set.
-7. Bug bounty phased plan: `POST /api/bugbounty/reconnaissance-workflow` with `{"domain":"example.com"}` or MCP `bugbounty_reconnaissance_workflow` — returns `workflow.phases` before optional tool execution.
-8. CTF: `POST /api/ctf/create-challenge-workflow` or MCP `ctf_create_challenge_workflow`; auto-solve with `ctf_auto_solve_challenge`; playbooks `ctf-web` / `ctf-pwn`.
-9. CVE intel: MCP `monitor_cve_feeds` or `POST /api/vuln-intel/cve-monitor` → `correlate_threat_intelligence` with `CVE-…` indicators → `generate_exploit_from_cve` / `POST /api/vuln-intel/exploit-generate` for deterministic PoC templates (lab only).
-10. Browser/visual: `browser_agent_inspect` (forms + security score) → `smart-scan` with `scan_id` → poll `GET /api/visual/scan-progress/{id}` → `assessment-report` for `executive_summary`.
-
-Smoke: `make test-engage-events-pipeline` (Docker, includes Neo4j assert with `--profile graph-ingest`). CTF: `make test-engage-ctf`. CVE: `make test-engage-cve`. Browser: `make test-engage-browser`.
-
-## Migration runbook (HexStrike / Flask `:8888` → veil-engage)
-
-Use this sequence when retiring the MIT reference stack (`hexstrike_mcp.py` FastMCP stdio → `hexstrike_server.py` Flask on **`:8888`**).
-
-### 1. Disable legacy MCP and HTTP backend
-
-| Step | Action |
-|------|--------|
-| MCP client | Remove or disable any MCP server whose `command` runs `hexstrike_mcp.py` (or wrappers that spawn it). |
-| Processes | Ensure **no** dependency on **`http://…:8888`** for agent tool calls — that port is **not** part of Veil. |
-| Compose / scripts | Drop any compose service or systemd unit that starts the Python Flask tool server alongside Veil. |
-
-### 2. Enable veil-engage (execution)
-
-Recommended launcher from repo root (sets `ENGAGE_*` defaults and `GOWORK`):
-
-```bash
-./scripts/mcp/run-veil-engage.sh
-```
-
-**Cursor / VS-style clients:** merge the `veil-engage` stanza from [engage.stdio.json.example](../examples/mcp/engage.stdio.json.example) into project `.cursor/mcp.json` (or Settings → MCP). Adjust `cwd` and `ENGAGE_CATALOG_PATH` paths to your checkout.
-
-Optional **Streamable HTTP** MCP on the engage MCP process (`POST` …`/mcp`): set `ENGAGE_MCP_HTTP_ENABLED=1` and tune `ENGAGE_MCP_HTTP_LISTEN` / `ENGAGE_MCP_HTTP_PATH`; default listen **`:8892`** in config (see Compose `engage-mcp`). On the **unified edge**, use `https://<veil-host>/mcp/engage` instead of `:8892`. Do not confuse this with legacy **`:8888`**.
-
-Default/Recommended: run `veil-engage` on the analyst host via [`scripts/mcp/run-veil-engage.sh`](../scripts/mcp/run-veil-engage.sh), install tools on that host, and keep graph read as a separate MCP. Compose runner overlay is optional legacy lab/CI path only — details in [engage-runtime.md](engage-runtime.md).
-
-### 3. Keep graph read separate (unchanged)
-
-After migration you still configure **veil-mcp** for Neo4j TI tools (same as before). Removing HexStrike **does not** collapse graph + exec into one process.
-
-### 4. Environment quick reference (veil-engage MCP)
-
-| Variable | Typical role |
-|----------|----------------|
-| `ENGAGE_ENV` | Log / behavior profile (`local` / `dev` / `prod`) |
-| `ENGAGE_CATALOG_PATH` | Absolute or repo-relative path to `engage/serve/catalog/tools.yaml` |
-| `AUTH_ENABLED` / `ENGAGE_AUTH_ENABLED` | `0` local; `1` with Keycloak per [auth-keycloak.md](auth-keycloak.md); MCP role **`veil-engage-runner`** when auth on |
-| `ENGAGE_VEIL_API_URL` | Base URL for correlate / intelligence features that call veil-api |
-
-Full engage API/runtime variables: [engage-runtime.md](engage-runtime.md).
-
-### 5. Verify
-
-| Check | Expected |
-|-------|-----------|
-| `tools/list` on **veil-engage** | ~158 catalog tools (parity: `make test-engage-parity`) |
-| Legacy `:8888` | Nothing listening / not referenced in MCP config |
-| **`make test-engage`** | Green in CI/local after any automation changes |
+See [engage/README.md](../engage/README.md) and [veil-veneno-split.md](../architecture/veil-veneno-split.md).
 
 ## Related
 
 - [platform-unified-access.md](../architecture/platform-unified-access.md) — single TLS hostname, `/v1` + `/api` + MCP paths, scale 4/8/16
-- [engage-runtime.md](engage-runtime.md) — engage API, runner modes, ports
-- [external-hexstrike.md](../external/external-hexstrike.md) — MIT reference in `.external/` (superseded by engage layer)
+- [veneno](https://github.com/butbeautifulv/veneno) — pentest API, MCP, tool catalog
+- [veil-veneno-split.md](../architecture/veil-veneno-split.md) — integration contracts
+- [external-hexstrike.md](../external/external-hexstrike.md) — MIT reference in `.external/` (superseded by veneno)
 - [auth-keycloak.md](auth-keycloak.md) — Keycloak, RBAC
 - [deploy-secure.md](../deploy/deploy-secure.md) — production hardening
 - [threatintel-runtime.md](../architecture/threatintel-runtime.md) — compose, ports

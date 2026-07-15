@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/butbeautifulv/veil/pkg/commit"
-	nvdmap "github.com/butbeautifulv/veil/pipeline/pkg/nvd/map"
+	"github.com/butbeautifulv/veil/pkg/vuln/domain"
 	"github.com/butbeautifulv/veil/pipeline/pkg/nvd/parse"
 )
 
@@ -24,7 +24,7 @@ func TestFromNVD_mapsFixtureToCanonical(t *testing.T) {
 		t.Fatalf("parsed: total=%d len=%d", total, len(parsed))
 	}
 
-	m := nvdmap.FromNVD(parsed[0])
+	m := parsed[0]
 	if m.CVE != "CVE-2024-0001" || m.ID != "CVE-2024-0001" {
 		t.Fatalf("id/cve: %#v", m)
 	}
@@ -54,7 +54,7 @@ func TestFromNVD_toCommitEnvelopes(t *testing.T) {
 
 	var envelopes []*commit.Envelope
 	for _, p := range parsed {
-		m := nvdmap.FromNVD(p)
+		m := p
 		e, err := commit.NewEnvelope(commit.SourceVuln, commit.KindVulnUpsert, commit.VulnUpsertIdempotencyKey(m.CVE), m)
 		if err != nil {
 			t.Fatal(err)
@@ -68,7 +68,7 @@ func TestFromNVD_toCommitEnvelopes(t *testing.T) {
 	if envelopes[0].Kind != commit.KindVulnUpsert || envelopes[0].Source != commit.SourceVuln {
 		t.Fatalf("first envelope: source=%s kind=%s", envelopes[0].Source, envelopes[0].Kind)
 	}
-	var v0 nvdmap.Vulnerability
+	var v0 domain.Vulnerability
 	if err := json.Unmarshal(envelopes[0].Payload, &v0); err != nil {
 		t.Fatal(err)
 	}

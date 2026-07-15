@@ -16,9 +16,19 @@ Domain model: [cyber-domain-model.md](../architecture/cyber-domain-model.md). Ma
 |-------|------|
 | **Knowledge / veil-mcp** | Read-only **playbook** category — search and fetch procedure text for agents |
 | **Neo4j (optional)** | `(:CyberSkill)` linked to `(:AttackTechnique)` via `HAS_PLAYBOOK` after seed |
-| **Engage** | Does **not** register skills as catalog tools; may surface playbook hints via veil-api (P2) |
+| **Veneno** | Does **not** register skills as catalog tools; may surface playbook hints via veil-api (P2) |
 
-This is **agent procedure knowledge** (when/how to investigate), not subprocess execution. Tool runs stay on **veil-engage** ([engage-tools.md](engage-tools.md)).
+This is **agent procedure knowledge** (when/how to investigate), not subprocess execution. Tool runs stay on **[veneno](https://github.com/butbeautifulv/veneno)** MCP/API.
+
+### `VENENO_CATALOG_PATH`
+
+`playbook_recommend_tools` and `playbook_procedure` tool mentions resolve against the veneno tool catalog YAML (read-only). Set:
+
+| Variable | Role |
+|----------|------|
+| `VENENO_CATALOG_PATH` | Absolute path, or `path1:path2` on Unix (`PATH`-style separator), to veneno catalog files (e.g. `tools.yaml`, `tools.live.yaml`) |
+
+If unset, veil falls back to legacy in-repo paths under `engage/serve/catalog/` (removed post-split). When no catalog loads, logs warn and recommend-tool mapping returns empty — configure `VENENO_CATALOG_PATH` in dev/CI that runs playbook catalog linking.
 
 ## Index (operational truth)
 

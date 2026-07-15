@@ -1,9 +1,9 @@
-package usecase
+package repository
 
 import "context"
 
-// graphStore publishes raw scrape events (pipeline-worker → ingest.>).
-type graphStore interface {
+// GraphStore publishes raw scrape events (pipeline-worker → ingest.>).
+type GraphStore interface {
 	EnsureSchema(ctx context.Context) error
 	UpsertSigmaRaw(ctx context.Context, path, rawYAML string) error
 	UpsertYaraRaw(ctx context.Context, path, name, rawBody string) error

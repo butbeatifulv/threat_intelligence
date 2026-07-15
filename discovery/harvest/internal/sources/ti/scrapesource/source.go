@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/factory"
-	"github.com/butbeautifulv/veil/discovery/harvest/internal/sources/ti/internal/feeds"
-	tiscrapepub "github.com/butbeautifulv/veil/discovery/harvest/internal/sources/ti/internal/scrapepub"
+	"github.com/butbeautifulv/veil/discovery/harvest/internal/sources/ti/internal/scrapepub"
+	"github.com/butbeautifulv/veil/discovery/harvest/internal/sources/ti/internal/usecase"
 )
 
 func init() {
@@ -29,8 +29,8 @@ func (s *Source) Run(ctx context.Context, deps *factory.ScrapeDeps) error {
 	if err != nil {
 		return err
 	}
-	repo := tiscrapepub.NewFromRaw(pub)
-	runner := feeds.NewRunner(repo, deps.Log, deps.Feeds, deps.Ledger)
+	repo := scrapepub.NewFromRaw(pub)
+	runner := usecase.NewRunner(repo, deps.Log, deps.Feeds, deps.Ledger)
 
 	if env := strings.TrimSpace(os.Getenv("TI_FEEDS")); env != "" {
 		kinds := strings.Split(env, ",")
@@ -51,7 +51,7 @@ func (s *Source) Run(ctx context.Context, deps *factory.ScrapeDeps) error {
 	return nil
 }
 
-func ingestJSONLFile(ctx context.Context, repo *tiscrapepub.Publisher, path string) error {
+func ingestJSONLFile(ctx context.Context, repo *scrapepub.Publisher, path string) error {
 	f, err := os.Open(path)
 	if err != nil {
 		return err

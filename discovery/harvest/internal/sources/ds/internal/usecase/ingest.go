@@ -10,46 +10,21 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/feeds"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/ledger"
-
-	"github.com/butbeautifulv/veil/discovery/pkg/proxypool"
+	"github.com/butbeautifulv/veil/discovery/harvest/internal/sources/ds/internal/repository"
 )
 
 type Ingestor struct {
-	store  graphStore
+	store  repository.GraphStore
 	logger *slog.Logger
-	http   *http.Client
-	cache  string
 	feeds  *feeds.Client
 	ledger *ledger.Store
 }
 
-func NewIngestor(store graphStore, logger *slog.Logger, cacheDir string, fc *feeds.Client, led *ledger.Store) *Ingestor {
-	base := http.DefaultTransport.(*http.Transport).Clone()
-	base.TLSHandshakeTimeout = 30 * time.Second
-	var rt http.RoundTripper = base
-	if env := strings.TrimSpace(os.Getenv("DS_PROXY_URLS")); env != "" {
-		p, err := proxypool.New(proxypool.SplitEnvList(env), 2*time.Minute)
-		if err == nil {
-			only := strings.EqualFold(strings.TrimSpace(os.Getenv("DS_PROXY_MODE")), "only")
-			rt = proxypool.NewTransport(base, p, only)
-			logger.Info("ds proxy pool enabled", slog.Int("count", len(proxypool.SplitEnvList(env))))
-		} else {
-			logger.Warn("ds proxy pool invalid; running without proxy", slog.String("err", err.Error()))
-		}
-	}
-	if fc == nil {
-		fc = feeds.NewClient(cacheDir, logger)
-	}
-	hc := &http.Client{Timeout: 120 * time.Second, Transport: rt}
-	fc.HTTP = hc
-	if fc.Cache == "" {
-		fc.Cache = cacheDir
-	}
-	return &Ingestor{store: store, logger: logger, http: hc, cache: fc.Cache, feeds: fc, ledger: led}
+func NewIngestor(store repository.GraphStore, logger *slog.Logger, fc *feeds.Client, led *ledger.Store) *Ingestor {
+	return &Ingestor{store: store, logger: logger, feeds: fc, ledger: led}
 }
 
 func dsGitRef() string {

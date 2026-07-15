@@ -23,6 +23,15 @@ func NewService(exec ReadExecutor) *Service {
 	return &Service{exec: exec}
 }
 
+// Ping verifies Neo4j read connectivity.
+func (s *Service) Ping(ctx context.Context) error {
+	_, err := s.exec.ExecRead(ctx, func(tx driver.ManagedTransaction) (any, error) {
+		_, err := tx.Run(ctx, `RETURN 1`, nil)
+		return nil, err
+	})
+	return err
+}
+
 // nodeTextSearchPredicate matches common TI fields plus engage scan metadata.
 // Neo4j 5+ requires IS NOT NULL (exists(n.prop) predicate syntax removed).
 const nodeTextSearchPredicate = `

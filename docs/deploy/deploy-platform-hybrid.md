@@ -4,7 +4,7 @@ Mature production model: **Terraform** provisions cloud resources, **Ansible** c
 
 ## Prerequisites
 
-- Engage / HexStrike migration **signed off** — [engage-audit-report.md](engage-audit-report.md) Phase 30; operators use **veil-engage** only ([mcp-agents.md](../agents/mcp-agents.md)).
+- Pentest execution runs in **[veneno](https://github.com/butbeautifulv/veneno)**; veil provides graph read + `engage.events` ingest bridge ([veil-veneno-split.md](../architecture/veil-veneno-split.md), [mcp-agents.md](../agents/mcp-agents.md)).
 - Application config: [deploy/profiles/](../deploy/profiles/) + [versions.env](../versions.env).
 
 ## Layer responsibilities

@@ -114,6 +114,42 @@ func TestAggregator_listTools_mergesWithPrefixes(t *testing.T) {
 	}
 }
 
+func TestAggregator_listTools_graphOnlyWhenEngageDown(t *testing.T) {
+	graphSrv := mockMCPBackend(t,
+		[]map[string]any{{"name": "ti_health", "description": "graph health"}},
+		nil,
+	)
+	defer graphSrv.Close()
+	engageSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "engage down", http.StatusServiceUnavailable)
+	}))
+	defer engageSrv.Close()
+
+	agg := aggregator.New(
+		&backend.Client{Name: "graph", URL: graphSrv.URL, HTTP: graphSrv.Client()},
+		&backend.Client{Name: "engage", URL: engageSrv.URL, HTTP: engageSrv.Client()},
+		nil,
+		nil,
+	)
+
+	raw, _, err := agg.ProcessMessage(context.Background(), mcp.Message{
+		JSONRPC: "2.0",
+		ID:      9,
+		Method:  "tools/list",
+	}, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	result := raw.Result.(map[string]any)
+	tools := result["tools"].([]any)
+	if len(tools) != 1 {
+		t.Fatalf("want 1 graph tool, got %#v", tools)
+	}
+	if tools[0].(map[string]any)["name"] != "graph_ti_health" {
+		t.Fatalf("tool %#v", tools[0])
+	}
+}
+
 func TestAggregator_callTool_routesByPrefix(t *testing.T) {
 	graphSrv := mockMCPBackend(t, nil, map[string]any{
 		"ti_health": map[string]any{"content": []any{map[string]any{"type": "text", "text": "ok"}}},

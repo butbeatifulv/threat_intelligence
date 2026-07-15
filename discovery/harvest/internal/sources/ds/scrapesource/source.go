@@ -8,6 +8,7 @@ import (
 
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/cache"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/factory"
+	"github.com/butbeautifulv/veil/discovery/harvest/internal/feeds"
 	dsscrapepub "github.com/butbeautifulv/veil/discovery/harvest/internal/sources/ds/internal/scrapepub"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/sources/ds/internal/usecase"
 )
@@ -29,7 +30,16 @@ func (s *Source) Run(ctx context.Context, deps *factory.ScrapeDeps) error {
 		return err
 	}
 	repo := dsscrapepub.NewFromRaw(pub)
-	ing := usecase.NewIngestor(repo, deps.Log, cacheDir(), deps.Feeds, deps.Ledger)
+	fc := feeds.NewSourceClient(feeds.SourceHTTPConfig{
+		CacheDir: cacheDir(),
+		Log:      deps.Log,
+		Proxy: feeds.ProxyOptions{
+			URLsEnv: "DS_PROXY_URLS",
+			ModeEnv: "DS_PROXY_MODE",
+			Label:   "ds",
+		},
+	})
+	ing := usecase.NewIngestor(repo, deps.Log, fc, deps.Ledger)
 	return ing.Run(ctx)
 }
 

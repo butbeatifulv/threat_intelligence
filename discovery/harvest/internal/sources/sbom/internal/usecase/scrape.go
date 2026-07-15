@@ -110,7 +110,9 @@ func (r *Runner) runOSV(ctx context.Context) error {
 		if (i+1)%20 == 0 {
 			r.log.Info("osv progress", slog.Int("done", i+1), slog.Int("total", len(cves)))
 		}
-		time.Sleep(150 * time.Millisecond)
+		if !feeds.SleepOrCancel(ctx, 150*time.Millisecond) {
+			return ctx.Err()
+		}
 	}
 	return nil
 }
@@ -134,7 +136,9 @@ func (r *Runner) runGHSA(ctx context.Context) error {
 		if (i+1)%10 == 0 {
 			r.log.Info("ghsa progress", slog.Int("done", i+1), slog.Int("total", len(paths)))
 		}
-		time.Sleep(100 * time.Millisecond)
+		if !feeds.SleepOrCancel(ctx, 100*time.Millisecond) {
+			return ctx.Err()
+		}
 	}
 	return nil
 }

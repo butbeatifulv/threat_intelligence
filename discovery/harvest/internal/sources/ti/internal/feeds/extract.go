@@ -17,7 +17,8 @@ var (
 	reIPv4   = regexp.MustCompile(`\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b`)
 )
 
-func extractIOCsFromText(s string) []domain.IOC {
+// ExtractIOCsFromText pulls IOC-shaped tokens from unstructured text.
+func ExtractIOCsFromText(s string) []domain.IOC {
 	seen := map[string]struct{}{}
 	var out []domain.IOC
 	add := func(t domain.IOC) {

@@ -1,4 +1,4 @@
-package feeds
+package usecase
 
 import (
 	"context"
@@ -7,86 +7,35 @@ import (
 	"fmt"
 	"log/slog"
 	"net"
-	"net/http"
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
-	scrapecache "github.com/butbeautifulv/veil/discovery/harvest/internal/cache"
 	scrapefeeds "github.com/butbeautifulv/veil/discovery/harvest/internal/feeds"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/ledger"
-
-	"github.com/butbeautifulv/veil/pkg/ti/domain"
-	"github.com/butbeautifulv/veil/discovery/pkg/proxypool"
+	"github.com/butbeautifulv/veil/discovery/harvest/internal/sources/ti/internal/feeds"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/sources/ti/internal/repository"
+	"github.com/butbeautifulv/veil/pkg/ti/domain"
 )
 
 const kevURL = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
 
+const threatFoxExportURL = "https://threatfox.abuse.ch/export/json/recent/"
+const threatFoxAPIURL = "https://threatfox-api.abuse.ch/api/v1/"
+
+// Runner orchestrates TI feed fetch → parse → repository upsert.
 type Runner struct {
-	Repo   repository.GraphRepository
-	Logger *slog.Logger
-	HTTP   *http.Client
-	Cache  string
-	Delay  time.Duration
-	Feeds  *scrapefeeds.Client
-	Ledger scrapefeeds.CrawlLedger
+	Repo    repository.GraphRepository
+	Logger  *slog.Logger
+	Fetcher *feeds.Fetcher
 }
 
 func NewRunner(repo repository.GraphRepository, logger *slog.Logger, fc *scrapefeeds.Client, led scrapefeeds.CrawlLedger) *Runner {
-	base := http.DefaultTransport.(*http.Transport).Clone()
-	base.TLSHandshakeTimeout = 30 * time.Second
-	var rt http.RoundTripper = base
-	if env := strings.TrimSpace(os.Getenv("TI_PROXY_URLS")); env != "" {
-		p, err := proxypool.New(proxypool.SplitEnvList(env), 2*time.Minute)
-		if err == nil {
-			only := strings.EqualFold(strings.TrimSpace(os.Getenv("TI_PROXY_MODE")), "only")
-			rt = proxypool.NewTransport(base, p, only)
-			logger.Info("ti proxy pool enabled", slog.Int("count", len(proxypool.SplitEnvList(env))))
-		} else {
-			logger.Warn("ti proxy pool invalid; running without proxy", slog.String("err", err.Error()))
-		}
-	}
-	cache := firstNonEmpty(os.Getenv("TI_CACHE_DIR"), scrapecache.DefaultDir())
-	if fc == nil {
-		fc = scrapefeeds.NewClient(cache, logger)
-	}
-	if fc.Cache == "" {
-		fc.Cache = cache
-	}
-	hc := &http.Client{Timeout: 120 * time.Second, Transport: rt}
-	fc.HTTP = hc
 	return &Runner{
-		Repo:   repo,
-		Logger: logger,
-		HTTP:   hc,
-		Cache:  fc.Cache,
-		Delay:  parseDelayEnv(os.Getenv("TI_REQUEST_DELAY"), 1200*time.Millisecond),
-		Feeds:  fc,
-		Ledger: led,
+		Repo:    repo,
+		Logger:  logger,
+		Fetcher: feeds.NewFetcher(logger, fc, led),
 	}
-}
-
-func firstNonEmpty(a, b string) string {
-	if strings.TrimSpace(a) != "" {
-		return a
-	}
-	return b
-}
-
-func parseDelayEnv(v string, def time.Duration) time.Duration {
-	v = strings.TrimSpace(v)
-	if v == "" {
-		return def
-	}
-	if d, err := time.ParseDuration(v); err == nil && d >= 0 {
-		return d
-	}
-	if ms, err := strconv.Atoi(v); err == nil && ms >= 0 {
-		return time.Duration(ms) * time.Millisecond
-	}
-	return def
 }
 
 func (r *Runner) Run(ctx context.Context, kinds []string) error {
@@ -140,21 +89,9 @@ type kevFile struct {
 	} `json:"vulnerabilities"`
 }
 
-func (r *Runner) fetchLedger(ctx context.Context, key, url, cacheRel string, policy ledger.FetchPolicy) (scrapefeeds.FetchResult, error) {
-	r.preNetworkDelay()
-	return scrapefeeds.FetchIfDue(ctx, r.Feeds, r.Ledger, key, "ti", url, policy, cacheRel, func() (*http.Request, error) {
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-		if err != nil {
-			return nil, err
-		}
-		req.Header.Set("User-Agent", "veil-scrape/1.0")
-		return req, nil
-	})
-}
-
 func (r *Runner) runKEV(ctx context.Context) error {
 	r.Logger.Info("ingesting CISA KEV")
-	res, err := r.fetchLedger(ctx, "ti:kev", kevURL, "ti/kev.json", ledger.PolicyDaily)
+	res, err := r.Fetcher.FetchLedger(ctx, "ti:kev", kevURL, "ti/kev.json", ledger.PolicyDaily)
 	if err != nil {
 		return err
 	}
@@ -203,7 +140,7 @@ func (r *Runner) runPTRSS(ctx context.Context) error {
 		u = "https://www.ptsecurity.com/rss/all.xml"
 	}
 	r.Logger.Info("ingesting PT RSS", slog.String("url", u))
-	res, err := r.fetchLedger(ctx, "ti:pt:rss", u, "ti/pt.xml", ledger.PolicyDaily)
+	res, err := r.Fetcher.FetchLedger(ctx, "ti:pt:rss", u, "ti/pt.xml", ledger.PolicyDaily)
 	if err != nil {
 		return err
 	}
@@ -236,13 +173,13 @@ func (r *Runner) runPTRSS(ctx context.Context) error {
 			Provider:     "Positive Technologies",
 			Link:         it.Link,
 			PublishedAt:  it.PubDate,
-			BodyMarkdown: stripHTML(it.Description),
+			BodyMarkdown: feeds.StripHTML(it.Description),
 			Source:       "pt-rss",
 		}
 		if err := r.Repo.UpsertReport(ctx, rep); err != nil {
 			return err
 		}
-		for _, ioc := range extractIOCsFromText(it.Title + "\n" + it.Description + "\n" + rep.BodyMarkdown) {
+		for _, ioc := range feeds.ExtractIOCsFromText(it.Title + "\n" + it.Description + "\n" + rep.BodyMarkdown) {
 			if err := r.Repo.UpsertIOC(ctx, ioc); err != nil {
 				return err
 			}
@@ -253,27 +190,10 @@ func (r *Runner) runPTRSS(ctx context.Context) error {
 	return nil
 }
 
-func stripHTML(s string) string {
-	// minimal: remove tags
-	out := s
-	for {
-		i := strings.Index(out, "<")
-		if i < 0 {
-			break
-		}
-		j := strings.Index(out[i:], ">")
-		if j < 0 {
-			break
-		}
-		out = out[:i] + out[i+j+1:]
-	}
-	return strings.TrimSpace(out)
-}
-
 func (r *Runner) runURLhaus(ctx context.Context) error {
 	u := "https://urlhaus.abuse.ch/downloads/csv_recent/"
 	r.Logger.Info("ingesting URLhaus recent CSV", slog.String("url", u))
-	res, err := r.fetchLedger(ctx, "ti:urlhaus:recent", u, "ti/urlhaus_recent.csv", ledger.PolicyDaily)
+	res, err := r.Fetcher.FetchLedger(ctx, "ti:urlhaus:recent", u, "ti/urlhaus_recent.csv", ledger.PolicyDaily)
 	if err != nil {
 		return err
 	}
@@ -302,7 +222,6 @@ func (r *Runner) runURLhaus(ctx context.Context) error {
 		if strings.HasPrefix(ln, "#") || strings.TrimSpace(ln) == "" {
 			continue
 		}
-		// CSV: id,dateadded,url,url_status,last_online,threat,tags,urlhaus_link,reporter
 		parts := strings.Split(ln, `","`)
 		if len(parts) < 3 {
 			parts = strings.Split(ln, ",")
@@ -328,9 +247,6 @@ func (r *Runner) runURLhaus(ctx context.Context) error {
 	return nil
 }
 
-const threatFoxExportURL = "https://threatfox.abuse.ch/export/json/recent/"
-const threatFoxAPIURL = "https://threatfox-api.abuse.ch/api/v1/"
-
 func (r *Runner) runThreatFox(ctx context.Context) error {
 	if k := strings.TrimSpace(os.Getenv("THREATFOX_AUTH_KEY")); k != "" {
 		return r.runThreatFoxAPI(ctx, k)
@@ -349,7 +265,7 @@ func (r *Runner) runThreatFoxAPI(ctx context.Context, authKey string) error {
 	cacheRel := fmt.Sprintf("ti/threatfox_api_days_%d.json", days)
 	key := fmt.Sprintf("ti:threatfox:api:days:%d", days)
 	r.Logger.Info("ingesting ThreatFox API", slog.Int("days", days))
-	res, err := r.fetchLedgerPOST(ctx, key, threatFoxAPIURL, cacheRel, ledger.PolicyDaily, authKey, []byte(body))
+	res, err := r.Fetcher.FetchLedgerPOST(ctx, key, threatFoxAPIURL, cacheRel, ledger.PolicyDaily, authKey, []byte(body))
 	if err != nil {
 		return err
 	}
@@ -385,7 +301,7 @@ func (r *Runner) runThreatFoxAPI(ctx context.Context, authKey string) error {
 		if count >= max {
 			break
 		}
-		ioc, ok := iocFromThreatFoxExport(row.IOC, row.IOCType)
+		ioc, ok := feeds.IOCFromThreatFoxExport(row.IOC, row.IOCType)
 		if !ok {
 			continue
 		}
@@ -400,7 +316,7 @@ func (r *Runner) runThreatFoxAPI(ctx context.Context, authKey string) error {
 
 func (r *Runner) runThreatFoxExport(ctx context.Context) error {
 	r.Logger.Info("ingesting ThreatFox public export", slog.String("url", threatFoxExportURL))
-	res, err := r.fetchLedger(ctx, "ti:threatfox:export", threatFoxExportURL, "ti/threatfox_recent.json", ledger.PolicyDaily)
+	res, err := r.Fetcher.FetchLedger(ctx, "ti:threatfox:export", threatFoxExportURL, "ti/threatfox_recent.json", ledger.PolicyDaily)
 	if err != nil {
 		return err
 	}
@@ -436,7 +352,7 @@ outer:
 			if count >= max {
 				break outer
 			}
-			ioc, ok := iocFromThreatFoxExport(row.IOCValue, row.IOCType)
+			ioc, ok := feeds.IOCFromThreatFoxExport(row.IOCValue, row.IOCType)
 			if !ok {
 				continue
 			}
@@ -470,7 +386,7 @@ func (r *Runner) runMalwareBazaar(ctx context.Context) error {
 	const mbURL = "https://mb-api.abuse.ch/api/v1/"
 	body := []byte(`{"query":"get_recent","selector":"time"}`)
 	r.Logger.Info("ingesting MalwareBazaar recent (API)")
-	res, err := r.fetchLedgerPOST(ctx, "ti:malwarebazaar:recent", mbURL, "ti/malwarebazaar_recent.json", ledger.PolicyDaily, key, body)
+	res, err := r.Fetcher.FetchLedgerPOST(ctx, "ti:malwarebazaar:recent", mbURL, "ti/malwarebazaar_recent.json", ledger.PolicyDaily, key, body)
 	if err != nil {
 		return err
 	}
@@ -526,7 +442,7 @@ func (r *Runner) runFeodo(ctx context.Context) error {
 		u = "https://feodotracker.abuse.ch/downloads/ipblocklist_recommended.txt"
 	}
 	r.Logger.Info("ingesting Feodo Tracker blocklist", slog.String("url", u))
-	res, err := r.fetchLedger(ctx, "ti:feodo:blocklist", u, "ti/feodo_ipblocklist.txt", ledger.PolicyDaily)
+	res, err := r.Fetcher.FetchLedger(ctx, "ti:feodo:blocklist", u, "ti/feodo_ipblocklist.txt", ledger.PolicyDaily)
 	if err != nil {
 		return err
 	}
@@ -572,7 +488,7 @@ func (r *Runner) runOpenPhish(ctx context.Context) error {
 		u = "https://openphish.com/feed.txt"
 	}
 	r.Logger.Info("ingesting OpenPhish feed", slog.String("url", u))
-	res, err := r.fetchLedger(ctx, "ti:openphish:feed", u, "ti/openphish_feed.txt", ledger.PolicyDaily)
+	res, err := r.Fetcher.FetchLedger(ctx, "ti:openphish:feed", u, "ti/openphish_feed.txt", ledger.PolicyDaily)
 	if err != nil {
 		r.Logger.Warn("openphish feed skipped after retries", slog.String("err", err.Error()))
 		return nil

@@ -1,3 +1,5 @@
+imagePullSecrets: []
+
 global:
   imageRegistry: ""
   imageTag: ""  # set from versions.env at deploy time
@@ -78,3 +80,9 @@ observability:
   metricsListen: ":9090"
   logFormat: json
   logLevel: info
+
+playbooks:
+  hostPath: /var/lib/veil/playbooks
+  mountPath: /home/nonroot
+  searchEngine: bleve
+  searchMode: keyword

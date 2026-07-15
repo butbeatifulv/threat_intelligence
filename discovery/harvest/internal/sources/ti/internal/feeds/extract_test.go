@@ -10,7 +10,7 @@ import (
 func TestExtractIOCsFromText_dedupes(t *testing.T) {
 	sha := strings.Repeat("a", 64)
 	text := "seen " + sha + " again " + sha
-	out := extractIOCsFromText(text)
+	out := ExtractIOCsFromText(text)
 	var hashes int
 	for _, ioc := range out {
 		if ioc.Type == domain.IOCHash && ioc.Value == sha {
@@ -24,7 +24,7 @@ func TestExtractIOCsFromText_dedupes(t *testing.T) {
 
 func TestExtractIOCsFromText_mixedTypes(t *testing.T) {
 	text := "ip 203.0.113.10 url https://evil.example/x md5 deadbeefdeadbeefdeadbeefdeadbeef"
-	out := extractIOCsFromText(text)
+	out := ExtractIOCsFromText(text)
 	types := map[domain.IOCType]bool{}
 	for _, ioc := range out {
 		types[ioc.Type] = true

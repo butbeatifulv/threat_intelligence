@@ -1,6 +1,6 @@
 # Platform unified access (ADR — P12)
 
-**Status:** Implemented (P12 complete — merged on `main`)  
+**Status:** Implemented (P12 complete — merged on `main`). Post **veil/veneno split**, engage exec is **optional**: deploy tool execution from [veneno](https://github.com/butbeautifulv/veneno); veil graph read and unified edge routing remain in this repo.  
 **Supersedes:** per-layer nginx on `:443` with path `/mcp` only (graph) and separate engage host ports (`:8890`, `:8892`) as the **operator-facing** contract.  
 **Implementation:** P12a–j ([veil_platform_p12_unified_access.plan.md](../.cursor/plans/archive/veil_platform_p12_unified_access.plan.md)); CI smoke: `make test-platform-unified-edge`.
 
@@ -65,6 +65,8 @@ Legacy direct URLs and examples under `examples/mcp/*.example` remain valid unti
 **stdio rules (unchanged):** JSON-RPC only on **stdout**; logs on **stderr** (`pkg/mcp` framing). Do not combine graph tools and engage tools in one MCP process.
 
 **HTTP rules:** Streamable HTTP POST (+ optional SSE) per [MCP spec](https://modelcontextprotocol.io/); auth via `Authorization: Bearer` when `AUTH_ENABLED=1` / `VEIL_REQUIRE_AUTH=1`. Graph tools require read RBAC (`veil-reader`); engage `tools/call` requires engage run permission.
+
+**Post-split (veneno):** when tool execution runs in veneno, set `UNIFIED_MCP_ENGAGE_URL` to the veneno MCP upstream (e.g. `http://veneno-mcp:8892/mcp`). The platform MCP gateway and unified nginx edge proxy `/mcp/engage` to that URL when configured; graph-only deployments omit it.
 
 **Agent config (target after P12f/j):**
 
@@ -140,20 +142,19 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 
 set -a
 source deploy/profiles/secure-graph.env
-source deploy/profiles/secure-engage.env
 set +a
 
 docker compose \
   -f deploy/knowledge/compose.yml \
   -f deploy/knowledge/compose.secure.yml \
-  -f deploy/engage/compose.yml \
-  -f deploy/engage/compose.secure.yml \
   -f deploy/platform/compose.secure-unified.yml \
   --profile mcp \
   up -d --build
 ```
 
-Verify host binding: only `443` (or `UNIFIED_NGINX_HTTPS_PORT`). Call graph and engage paths with the appropriate role-bearing JWT.
+Optional veneno stack (tool exec): deploy from [veneno](https://github.com/butbeautifulv/veneno) and point `UNIFIED_MCP_ENGAGE_URL` at veneno MCP. See [veil-veneno-split.md](veil-veneno-split.md).
+
+Verify host binding: only `443` (or `UNIFIED_NGINX_HTTPS_PORT`). Call graph paths with a reader JWT; call `/api/*` and `/mcp/engage` only when veneno is wired, with engage-runner roles.
 
 ---
 

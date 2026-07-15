@@ -12,6 +12,10 @@ spec:
       labels:
         app: veil-ingest-worker
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: ingest-worker
           image: "{{ .Values.global.imageRegistry }}veil-ingest-worker:{{ .Values.global.imageTag }}"

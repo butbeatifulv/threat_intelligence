@@ -7,9 +7,12 @@ import (
 	"github.com/butbeautifulv/veil/pkg/harvest"
 	sharedpub "github.com/butbeautifulv/veil/discovery/harvest/internal/scrapepub"
 	connats "github.com/butbeautifulv/veil/discovery/connector/nats"
+	"github.com/butbeautifulv/veil/discovery/harvest/internal/sources/ds/internal/repository"
 )
 
-// Publisher implements graphStore via a raw scrape publisher.
+var _ repository.GraphStore = (*Publisher)(nil)
+
+// Publisher implements repository.GraphStore via a raw scrape publisher.
 type Publisher struct {
 	sharedpub.Base
 }

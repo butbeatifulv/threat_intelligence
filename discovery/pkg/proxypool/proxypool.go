@@ -156,7 +156,14 @@ func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	t.pool.mu.Unlock()
 
 	if !nextAfter.IsZero() && nextAfter.After(now) {
-		time.Sleep(time.Until(nextAfter))
+		wait := time.Until(nextAfter)
+		t := time.NewTimer(wait)
+		select {
+		case <-req.Context().Done():
+			t.Stop()
+			return nil, req.Context().Err()
+		case <-t.C:
+		}
 	}
 
 	rt := t.transportFor(proxyURL)

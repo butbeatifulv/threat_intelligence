@@ -3,7 +3,6 @@ package usecase
 import (
 	"context"
 	"fmt"
-	"io"
 	"log/slog"
 	"net/http"
 	"os"
@@ -24,65 +23,33 @@ func (u *ScraperUsecase) IngestLOFTS(ctx context.Context) error {
 	u.logger.Info("ingesting LOFTS", slog.String("url", url))
 
 	var body []byte
-	if u.feeds != nil {
-		res, err := feeds.FetchIfDue(ctx, u.feeds, u.ledger, "lola:lofts:index", "lola", url, ledger.PolicyPeriodic, "lofts/index.html", func() (*http.Request, error) {
-			req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-			if err != nil {
-				return nil, err
-			}
-			req.Header.Set("User-Agent", "veil-lola/1.0")
-			return req, nil
-		})
-		if err != nil {
-			if skip {
-				u.logger.Warn("lofts fetch failed; skipping", slog.String("err", err.Error()))
-				return nil
-			}
-			return err
-		}
-		if res.Unchanged {
-			u.logger.Info("LOFTS index unchanged, skip ingest")
-			return nil
-		}
-		if res.Skipped && len(res.Body) == 0 {
-			if skip {
-				u.logger.Warn("lofts skipped by ledger without cache")
-				return nil
-			}
-			return fmt.Errorf("lola:lofts skipped by ledger without cache")
-		}
-		body = res.Body
-	} else {
+	res, err := feeds.FetchIfDue(ctx, u.feeds, u.ledger, "lola:lofts:index", "lola", url, ledger.PolicyPeriodic, "lofts/index.html", func() (*http.Request, error) {
 		req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		req.Header.Set("User-Agent", "veil-lola/1.0")
-		resp, err := u.http.Do(req)
-		if err != nil {
-			if skip {
-				u.logger.Warn("lofts fetch failed; skipping", slog.String("err", err.Error()))
-				return nil
-			}
-			return err
+		return req, nil
+	})
+	if err != nil {
+		if skip {
+			u.logger.Warn("lofts fetch failed; skipping", slog.String("err", err.Error()))
+			return nil
 		}
-		defer resp.Body.Close()
-		if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-			if skip {
-				u.logger.Warn("lofts http error; skipping", slog.Int("code", resp.StatusCode))
-				return nil
-			}
-			return fmt.Errorf("lofts http %d", resp.StatusCode)
-		}
-		body, err = io.ReadAll(resp.Body)
-		if err != nil {
-			if skip {
-				u.logger.Warn("lofts read failed; skipping", slog.String("err", err.Error()))
-				return nil
-			}
-			return err
-		}
+		return err
 	}
+	if res.Unchanged {
+		u.logger.Info("LOFTS index unchanged, skip ingest")
+		return nil
+	}
+	if res.Skipped && len(res.Body) == 0 {
+		if skip {
+			u.logger.Warn("lofts skipped by ledger without cache")
+			return nil
+		}
+		return fmt.Errorf("lola:lofts skipped by ledger without cache")
+	}
+	body = res.Body
 
 	doc, err := html.Parse(strings.NewReader(string(body)))
 	if err != nil {

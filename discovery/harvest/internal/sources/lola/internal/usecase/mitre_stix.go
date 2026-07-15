@@ -5,11 +5,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log/slog"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -52,40 +50,25 @@ func (u *ScraperUsecase) IngestMITREEnterprise(ctx context.Context) error {
 	u.logger.Info("ingesting MITRE ATT&CK STIX", slog.String("url", url))
 
 	cacheRel := "mitre/enterprise-attack.json"
-	var stixReader io.Reader
-	if u.feeds != nil {
-		res, err := feeds.FetchIfDue(ctx, u.feeds, u.ledger, "lola:mitre:enterprise-stix", "lola", url, ledger.PolicyStatic, cacheRel, func() (*http.Request, error) {
-			req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-			if err != nil {
-				return nil, err
-			}
-			req.Header.Set("User-Agent", "veil-lola/1.0")
-			return req, nil
-		})
+	res, err := feeds.FetchIfDue(ctx, u.feeds, u.ledger, "lola:mitre:enterprise-stix", "lola", url, ledger.PolicyStatic, cacheRel, func() (*http.Request, error) {
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 		if err != nil {
-			return err
+			return nil, err
 		}
-		if res.Unchanged {
-			u.logger.Info("MITRE STIX unchanged, skip publish")
-			return nil
-		}
-		if len(res.Body) > 0 {
-			stixReader = bytes.NewReader(res.Body)
-		} else if res.Skipped {
-			return fmt.Errorf("lola:mitre skipped by ledger without cache")
-		}
-	} else if err := u.downloadToCache(ctx, url, filepath.Join(u.cache, cacheRel)); err != nil {
+		req.Header.Set("User-Agent", "veil-lola/1.0")
+		return req, nil
+	})
+	if err != nil {
 		return err
 	}
-	if stixReader == nil {
-		cacheFile := filepath.Join(u.cache, cacheRel)
-		f, err := os.Open(cacheFile)
-		if err != nil {
-			return err
-		}
-		defer f.Close()
-		stixReader = f
+	if res.Unchanged {
+		u.logger.Info("MITRE STIX unchanged, skip publish")
+		return nil
 	}
+	if res.Skipped && len(res.Body) == 0 {
+		return fmt.Errorf("lola:mitre skipped by ledger without cache")
+	}
+	stixReader := bytes.NewReader(res.Body)
 
 	stixToExt := map[string]string{}
 	var rels []stixRel
@@ -214,45 +197,6 @@ func (u *ScraperUsecase) IngestMITREEnterprise(ctx context.Context) error {
 	}
 	u.logger.Info("MITRE STIX ingest done", slog.Int("stix_ids", len(stixToExt)), slog.Int("relationships", len(rels)))
 	return nil
-}
-
-func (u *ScraperUsecase) downloadToCache(ctx context.Context, urlStr, cacheFile string) error {
-	if u.cache != "" && cacheFile != "" {
-		if b, err := os.ReadFile(cacheFile); err == nil && len(b) > 1024 {
-			return nil
-		}
-	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, urlStr, nil)
-	if err != nil {
-		return err
-	}
-	req.Header.Set("User-Agent", "veil-lola/1.0")
-	resp, err := u.http.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		b, _ := io.ReadAll(io.LimitReader(resp.Body, 2048))
-		return fmt.Errorf("mitre download %d: %s", resp.StatusCode, string(b))
-	}
-	if err := os.MkdirAll(filepath.Dir(cacheFile), 0o755); err != nil {
-		return err
-	}
-	tmp := cacheFile + ".tmp"
-	out, err := os.Create(tmp)
-	if err != nil {
-		return err
-	}
-	if _, err := io.Copy(out, resp.Body); err != nil {
-		_ = out.Close()
-		_ = os.Remove(tmp)
-		return err
-	}
-	if err := out.Close(); err != nil {
-		return err
-	}
-	return os.Rename(tmp, cacheFile)
 }
 
 func envIntLola(key string, def int) int {

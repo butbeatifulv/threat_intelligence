@@ -2,24 +2,19 @@ package usecase
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"io"
 	"log/slog"
 	"net/http"
-	"os"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"gopkg.in/yaml.v3"
 
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/feeds"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/ledger"
 
-	"github.com/butbeautifulv/veil/pkg/lola/domain"
-	"github.com/butbeautifulv/veil/discovery/pkg/proxypool"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/sources/lola/internal/repository"
+	"github.com/butbeautifulv/veil/pkg/lola/domain"
 )
 
 const (
@@ -35,42 +30,12 @@ const (
 type ScraperUsecase struct {
 	repo   repository.LolaRepository
 	logger *slog.Logger
-	http   *http.Client
-	cache  string
 	feeds  *feeds.Client
 	ledger *ledger.Store
 }
 
-func NewScraperUsecase(repo repository.LolaRepository, logger *slog.Logger, cacheDir string, fc *feeds.Client, led *ledger.Store) *ScraperUsecase {
-	tr := http.DefaultTransport.(*http.Transport).Clone()
-	tr.TLSHandshakeTimeout = 30 * time.Second
-	var rt http.RoundTripper = tr
-	if env := strings.TrimSpace(os.Getenv("LOLA_PROXY_URLS")); env != "" {
-		p, err := proxypool.New(proxypool.SplitEnvList(env), 2*time.Minute)
-		if err == nil {
-			only := strings.EqualFold(strings.TrimSpace(os.Getenv("LOLA_PROXY_MODE")), "only")
-			rt = proxypool.NewTransport(tr, p, only)
-			logger.Info("lola proxy pool enabled", slog.Int("count", len(proxypool.SplitEnvList(env))))
-		} else {
-			logger.Warn("lola proxy pool invalid; running direct", slog.String("err", err.Error()))
-		}
-	}
-	if fc == nil {
-		fc = feeds.NewClient(cacheDir, logger)
-	}
-	hc := &http.Client{Timeout: 120 * time.Second, Transport: rt}
-	fc.HTTP = hc
-	if fc.Cache == "" {
-		fc.Cache = cacheDir
-	}
-	return &ScraperUsecase{
-		repo:   repo,
-		logger: logger,
-		http:   hc,
-		cache:  fc.Cache,
-		feeds:  fc,
-		ledger: led,
-	}
+func NewScraperUsecase(repo repository.LolaRepository, logger *slog.Logger, fc *feeds.Client, led *ledger.Store) *ScraperUsecase {
+	return &ScraperUsecase{repo: repo, logger: logger, feeds: fc, ledger: led}
 }
 
 type ghContent = feeds.GHContent
@@ -178,26 +143,18 @@ func (u *ScraperUsecase) IngestGTFOBins(ctx context.Context) error {
 }
 
 func (u *ScraperUsecase) githubListDir(ctx context.Context, owner, repo, path string) ([]ghContent, error) {
-	fc := u.feeds
-	if fc == nil {
-		fc = feeds.NewClient(u.cache, u.logger)
-	}
-	return feeds.GitHubListDir(ctx, fc, owner, repo, path)
+	return feeds.GitHubListDir(ctx, u.feeds, owner, repo, path)
 }
 
 func (u *ScraperUsecase) fetchBytes(ctx context.Context, owner, repo, ghPath, cacheRel string) (body []byte, unchanged bool, err error) {
 	ref := lolaGitRef()
 	rawURL := feeds.GitHubRawURL(owner, repo, ref, ghPath)
-	fc := u.feeds
-	if fc == nil {
-		fc = feeds.NewClient(u.cache, u.logger)
-	}
 	if u.ledger == nil {
-		raw, err := feeds.GitHubFetchRaw(ctx, fc, owner, repo, ref, ghPath)
+		raw, err := feeds.GitHubFetchRaw(ctx, u.feeds, owner, repo, ref, ghPath)
 		return raw, false, err
 	}
 	key := fmt.Sprintf("lola:file:%s:%s:%s", owner, repo, ghPath)
-	res, err := feeds.FetchIfDue(ctx, fc, u.ledger, key, "lola", rawURL, ledger.PolicyPeriodic, cacheRel, func() (*http.Request, error) {
+	res, err := feeds.FetchIfDue(ctx, u.feeds, u.ledger, key, "lola", rawURL, ledger.PolicyPeriodic, cacheRel, func() (*http.Request, error) {
 		req, err := http.NewRequestWithContext(ctx, http.MethodGet, rawURL, nil)
 		if err != nil {
 			return nil, err
@@ -215,55 +172,6 @@ func (u *ScraperUsecase) fetchBytes(ctx context.Context, owner, repo, ghPath, ca
 		return nil, false, fmt.Errorf("download %s skipped without cache", ghPath)
 	}
 	return res.Body, false, nil
-}
-
-func (u *ScraperUsecase) fetchBytesDirect(ctx context.Context, downloadURL, cacheFile string) ([]byte, error) {
-	if u.cache != "" && cacheFile != "" {
-		if b, err := os.ReadFile(cacheFile); err == nil && len(b) > 0 {
-			return b, nil
-		}
-	}
-	backoff := 1 * time.Second
-	var lastErr error
-	for attempt := 0; attempt < 5; attempt++ {
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, downloadURL, nil)
-		if err != nil {
-			return nil, err
-		}
-		req.Header.Set("User-Agent", "veil-lola/1.0")
-		resp, err := u.http.Do(req)
-		if err != nil {
-			if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
-				return nil, err
-			}
-			lastErr = err
-			time.Sleep(backoff)
-			backoff *= 2
-			continue
-		}
-		if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-			b, _ := io.ReadAll(io.LimitReader(resp.Body, 2048))
-			_ = resp.Body.Close()
-			return nil, fmt.Errorf("download %s: %d %s", downloadURL, resp.StatusCode, string(b))
-		}
-		b, rerr := io.ReadAll(resp.Body)
-		_ = resp.Body.Close()
-		if rerr != nil {
-			lastErr = rerr
-			time.Sleep(backoff)
-			backoff *= 2
-			continue
-		}
-		if u.cache != "" && cacheFile != "" {
-			_ = os.MkdirAll(filepath.Dir(cacheFile), 0o755)
-			_ = os.WriteFile(cacheFile, b, 0o644)
-		}
-		return b, nil
-	}
-	if lastErr != nil {
-		return nil, lastErr
-	}
-	return nil, fmt.Errorf("download failed: %s", downloadURL)
 }
 
 func parseLOLBASYAML(raw []byte) (*domain.Artifact, error) {

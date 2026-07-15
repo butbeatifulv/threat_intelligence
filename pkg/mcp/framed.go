@@ -25,6 +25,24 @@ func NewFramedRW(r io.Reader, w io.Writer) *FramedRW {
 }
 
 func (rw *FramedRW) Read(ctx context.Context) ([]byte, error) {
+	type result struct {
+		buf []byte
+		err error
+	}
+	ch := make(chan result, 1)
+	go func() {
+		buf, err := rw.readFrame()
+		ch <- result{buf: buf, err: err}
+	}()
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case r := <-ch:
+		return r.buf, r.err
+	}
+}
+
+func (rw *FramedRW) readFrame() ([]byte, error) {
 	var contentLen int
 	for {
 		line, err := rw.r.ReadString('\n')

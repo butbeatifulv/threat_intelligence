@@ -29,7 +29,11 @@ func main() {
 	}()
 
 	logger := observability.NewLogger("", "veil-engage-events-worker", os.Stdout)
-	observability.StartMetricsServer(rootCtx, obsCfg.MetricsListen, logger)
+	go func() {
+		if err := <-observability.StartMetricsServer(rootCtx, obsCfg.MetricsListen, logger); err != nil {
+			logger.Warn("metrics server failed", slog.String("err", err.Error()))
+		}
+	}()
 
 	natsURL := env("NATS_URL", "nats://127.0.0.1:4222")
 	filter := env("ENGAGE_EVENTS_FILTER", "engage.events.>")

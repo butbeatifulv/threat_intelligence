@@ -9,7 +9,7 @@ GAIA measures **general AI assistants** (reasoning, multi-modality, web browsing
 | Harness smoke | `eval/gaia/fixtures/pilot/` | `make test-agent-eval-pilot` |
 | Paper-aligned format | `eval/gaia/fixtures/paper-examples/` | `make test-agent-eval-paper` |
 | Full 466 questions | Local JSONL only | not in CI |
-| Security tools | `make test-engage-parity` | engage PRs |
+| Security tools | veneno catalog parity tests | veneno PRs |
 
 ## Hugging Face — optional, not required for Veil
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"log"
 	"log/slog"
@@ -102,12 +103,10 @@ func main() {
 		return
 	}
 
-	go func() {
-		<-rootCtx.Done()
-		os.Exit(0)
-	}()
-
 	if err := c.MCPServer.Run(rootCtx, os.Stdin, os.Stdout); err != nil {
+		if errors.Is(err, context.Canceled) {
+			return
+		}
 		logger.Error("mcp server stopped", slog.Any("err", err))
 		time.Sleep(200 * time.Millisecond)
 		os.Exit(1)

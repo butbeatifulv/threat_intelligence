@@ -8,6 +8,7 @@ import (
 
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/cache"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/factory"
+	"github.com/butbeautifulv/veil/discovery/harvest/internal/feeds"
 	lolascrapepub "github.com/butbeautifulv/veil/discovery/harvest/internal/sources/lola/internal/scrapepub"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/sources/lola/internal/usecase"
 )
@@ -29,7 +30,16 @@ func (s *Source) Run(ctx context.Context, deps *factory.ScrapeDeps) error {
 		return err
 	}
 	repo := lolascrapepub.NewFromRaw(pub)
-	scraper := usecase.NewScraperUsecase(repo, deps.Log, cacheDir(), deps.Feeds, deps.Ledger)
+	fc := feeds.NewSourceClient(feeds.SourceHTTPConfig{
+		CacheDir: cacheDir(),
+		Log:      deps.Log,
+		Proxy: feeds.ProxyOptions{
+			URLsEnv: "LOLA_PROXY_URLS",
+			ModeEnv: "LOLA_PROXY_MODE",
+			Label:   "lola",
+		},
+	})
+	scraper := usecase.NewScraperUsecase(repo, deps.Log, fc, deps.Ledger)
 	return scraper.Run(ctx)
 }
 

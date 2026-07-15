@@ -32,10 +32,10 @@ func TestParseDelayEnv(t *testing.T) {
 
 func TestStripHTML(t *testing.T) {
 	in := "<p>hello <b>world</b></p>"
-	if got := stripHTML(in); got != "hello world" {
+	if got := StripHTML(in); got != "hello world" {
 		t.Fatalf("got %q", got)
 	}
-	if got := stripHTML("plain"); got != "plain" {
+	if got := StripHTML("plain"); got != "plain" {
 		t.Fatalf("got %q", got)
 	}
 }

@@ -1,4 +1,4 @@
-.PHONY: test-discovery test-discovery-p7c skills-index check-skills-index search-index check-search-index test-search-eval corpus-import check-corpus-mappings procedures-index check-procedures-index test-pipeline test-pipeline-p7d test-graph test-graph-ingest-p7e test-graph-serve-p7f test-graph-serve test-graph-read-smoke test-graph-engage-category test-engage-events-pipeline test-platform-p0 test-platform-p7 test-platform-closed-loop test-platform-full-loop test-platform-p3 test-platform-p4 test-platform-mcp-gateway test-platform-unified-edge graph-pack-export graph-pack-build graph-pack-publish test-smoke check-graph-version bump-graph-patch agents-list agents-render deploy-helm-template deploy-ansible-check sync-github-metadata external-clone-agent-store test-agent-eval-registry test-agent-eval-pilot test-agent-eval-paper test-pkg-shared test-pkg-domain test-pkg-all test-pkg-cover test-pkg-cover-strict test-knowledge test-knowledge-serve pentest-veil-mcp
+.PHONY: test-discovery test-discovery-p7c skills-index check-skills-index search-index check-search-index test-search-eval corpus-import check-corpus-mappings procedures-index check-procedures-index test-pipeline test-pipeline-p7d test-graph test-graph-ingest-p7e test-graph-serve-p7f test-graph-serve test-graph-read-smoke test-graph-engage-category test-engage-events-pipeline test-platform-p0 test-platform-p7 test-platform-closed-loop test-platform-full-loop test-platform-p3 test-platform-p4 test-platform-mcp-gateway test-platform-unified-edge graph-pack-export graph-pack-build graph-pack-publish test-smoke check-graph-version bump-graph-patch agents-list agents-render deploy-helm-template deploy-ansible-check sync-github-metadata external-clone-agent-store test-agent-eval-registry test-agent-eval-pilot test-agent-eval-paper test-pkg-shared test-pkg-domain test-pkg-all test-pkg-cover test-pkg-cover-strict test-knowledge test-knowledge-serve pentest-veil-mcp verify-import-boundaries
 
 # Shared pkg contracts (harvest, commit, natsjet, auth, engage/events)
 test-pkg-shared:
@@ -37,7 +37,10 @@ test-pkg-cover-strict:
 	./scripts/test/pkg-cover-strict.sh
 
 # P7 gate: pkg + bus + layer unit tests (wave-1 parallel branches merged)
-test-platform-p7: test-pkg-cover-strict test-platform-p0 test-discovery-p7c test-pipeline-p7d test-graph-ingest-p7e test-graph-serve-p7f
+test-platform-p7: test-pkg-cover-strict test-platform-p0 test-discovery-p7c test-pipeline-p7d test-graph-ingest-p7e test-graph-serve-p7f verify-import-boundaries
+
+verify-import-boundaries:
+	python3 ./scripts/verify_import_boundaries.py
 
 # GOWORK may point at discovery/go.work in the shell; each target uses the matching workspace.
 test-platform-p0: test-pkg-shared

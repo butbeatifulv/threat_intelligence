@@ -15,6 +15,18 @@ func setRepoRoot(t *testing.T) {
 		t.Skip("repo root not found (versions.env)")
 	}
 	t.Setenv("VEIL_REPO_ROOT", root)
+	catalog := filepath.Join(t.TempDir(), "tools.yaml")
+	if err := os.WriteFile(catalog, []byte(`tools:
+  - name: nmap_scan
+    binary: nmap
+  - name: nuclei_scan
+    binary: nuclei
+  - name: httpx_probe
+    binary: httpx
+`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("VENENO_CATALOG_PATH", catalog)
 	ResetCatalogForTest()
 }
 
