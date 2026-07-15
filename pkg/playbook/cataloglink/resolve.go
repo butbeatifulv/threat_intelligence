@@ -62,7 +62,7 @@ func loadCatalog() {
 	catalogNames = map[string]struct{}{}
 	loaded := 0
 	for _, path := range catalogPaths() {
-		raw, err := os.ReadFile(path)
+		raw, err := os.ReadFile(path) // #nosec G304 -- catalogPaths() returns only literal committed-file paths joined with the discovered repo root
 		if err != nil {
 			continue
 		}

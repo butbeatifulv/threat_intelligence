@@ -52,11 +52,11 @@ func (s *Source) Run(ctx context.Context, deps *factory.ScrapeDeps) error {
 }
 
 func ingestJSONLFile(ctx context.Context, repo *scrapepub.Publisher, path string) error {
-	f, err := os.Open(path)
+	f, err := os.Open(path) // #nosec G304 -- path is the TI_JSONL_FILE deploy-time env var, operator-controlled, not request/network input
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	sc := bufio.NewScanner(f)
 	sc.Buffer(make([]byte, 0, 64*1024), 10*1024*1024)
 	for sc.Scan() {

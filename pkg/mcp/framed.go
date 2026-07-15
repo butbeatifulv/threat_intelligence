@@ -82,7 +82,7 @@ func (rw *FramedRW) WriteJSON(ctx context.Context, v any) error {
 	rw.m.Lock()
 	defer rw.m.Unlock()
 	var out bytes.Buffer
-	out.WriteString(fmt.Sprintf("Content-Length: %d\r\n\r\n", len(b)))
+	_, _ = fmt.Fprintf(&out, "Content-Length: %d\r\n\r\n", len(b))
 	out.Write(b)
 	_, err = rw.w.Write(out.Bytes())
 	return err

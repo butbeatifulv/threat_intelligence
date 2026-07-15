@@ -66,7 +66,7 @@ func InitMCP(cfg *config.Config, logger *slog.Logger) (*MCPComponents, error) {
 // Otherwise tool calls are authorized inside ProcessMessage (initialize may be unauthenticated).
 func (c *MCPComponents) MCPHTTPHandler(cfg *config.Config) http.Handler {
 	h := mcpserver.HTTPHandler(c.MCPServer, cfg.MCPHTTP)
-	var inner http.Handler = h
+	inner := h
 	if c.Auth != nil && c.Auth.Config.Enabled && cfg.Security.MCPHTTPAuthStrict {
 		inner = authmw.Auth(c.Auth, true, cfg.Security, h)
 	}

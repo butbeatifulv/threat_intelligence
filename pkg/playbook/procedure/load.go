@@ -45,7 +45,7 @@ func Open(path string) (*Catalog, error) {
 	} else if !filepath.IsAbs(path) {
 		path = filepath.Join(root, path)
 	}
-	raw, err := os.ReadFile(path)
+	raw, err := os.ReadFile(path) // #nosec G304 -- path defaults to a committed index file under repoRoot; caller-supplied override is a config value, not network input
 	if err != nil {
 		return nil, fmt.Errorf("procedure index: read %s: %w", path, err)
 	}
@@ -74,7 +74,7 @@ func (c *Catalog) GetSpec(id string) (domain.ProcedureSpec, error) {
 		return domain.ProcedureSpec{}, fmt.Errorf("procedure: unknown skill %q", id)
 	}
 	path := filepath.Join(c.repoRoot, filepath.FromSlash(sum.CorpusPath))
-	raw, err := os.ReadFile(path)
+	raw, err := os.ReadFile(path) // #nosec G304 -- sum.CorpusPath is a map lookup constrained to keys loaded from the committed procedures-index.json, not attacker-controlled
 	if err != nil {
 		return domain.ProcedureSpec{}, fmt.Errorf("procedure: read %s: %w", path, err)
 	}

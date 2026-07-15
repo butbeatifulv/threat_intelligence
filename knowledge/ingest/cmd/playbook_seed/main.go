@@ -38,7 +38,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer client.Close(ctx)
+	defer func() { _ = client.Close(ctx) }()
 
 	meta := cat.Meta()
 	seeds := make([]playbookseed.SkillSeed, 0, len(meta.Skills))

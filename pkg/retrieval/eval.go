@@ -61,7 +61,7 @@ func LoadEvalFile(repoRoot, rel string) (EvalFile, error) {
 	if !filepath.IsAbs(path) {
 		path = filepath.Join(repoRoot, rel)
 	}
-	raw, err := os.ReadFile(path)
+	raw, err := os.ReadFile(path) // #nosec G304 -- repoRoot/rel are caller-supplied config values (default: committed eval fixture path), not network input
 	if err != nil {
 		return EvalFile{}, fmt.Errorf("eval: read %s: %w", path, err)
 	}

@@ -38,7 +38,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "remove index: %v\n", err)
 		os.Exit(1)
 	}
-	if err := os.MkdirAll(filepath.Dir(indexDir), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(indexDir), 0o750); err != nil {
 		fmt.Fprintf(os.Stderr, "mkdir: %v\n", err)
 		os.Exit(1)
 	}
@@ -47,7 +47,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "bleve new: %v\n", err)
 		os.Exit(1)
 	}
-	defer idx.Close()
+	defer func() { _ = idx.Close() }()
 	batch := idx.NewBatch()
 	for _, row := range rows {
 		doc := map[string]any{
@@ -95,7 +95,7 @@ func indexMapping() mapping.IndexMapping {
 }
 
 func loadChunks(path string) ([]chunkRow, error) {
-	raw, err := os.ReadFile(path)
+	raw, err := os.ReadFile(path) // #nosec G304 -- path is os.Args[1], an operator-supplied CLI argument to this offline indexing tool, not network input
 	if err != nil {
 		return nil, err
 	}

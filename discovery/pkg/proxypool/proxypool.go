@@ -104,7 +104,7 @@ func (p *Pool) MarkBad(proxy *url.URL) {
 		return
 	}
 	now := time.Now()
-	jitter := time.Duration(rand.IntN(750)+250) * time.Millisecond
+	jitter := time.Duration(rand.IntN(750)+250) * time.Millisecond // #nosec G404 -- cooldown jitter timing, not security-sensitive
 	p.mu.Lock()
 	p.state[proxy.String()] = now.Add(p.cooldown + jitter)
 	p.mu.Unlock()
@@ -115,7 +115,7 @@ func (p *Pool) MarkMaybeBad(proxy *url.URL) {
 		return
 	}
 	now := time.Now()
-	jitter := time.Duration(rand.IntN(400)+150) * time.Millisecond
+	jitter := time.Duration(rand.IntN(400)+150) * time.Millisecond // #nosec G404 -- cooldown jitter timing, not security-sensitive
 	p.mu.Lock()
 	p.state[proxy.String()] = now.Add(p.cooldown/2 + jitter)
 	p.mu.Unlock()

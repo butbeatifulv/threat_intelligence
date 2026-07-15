@@ -29,7 +29,7 @@ type Stream struct {
 }
 
 func NewStreamFromFile(path string) (*Stream, func() error, error) {
-	f, err := os.Open(path)
+	f, err := os.Open(path) // #nosec G304 -- path is a caller-supplied local file argument (sole caller passes a deploy-time env var), not network/request input
 	if err != nil {
 		return nil, nil, err
 	}

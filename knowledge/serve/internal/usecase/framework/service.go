@@ -37,7 +37,7 @@ func (s *Service) RawMitreLayerJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return os.ReadFile(filepath.Join(dir, "attack-navigator-layer.json"))
+	return os.ReadFile(filepath.Join(dir, "attack-navigator-layer.json")) // #nosec G304 -- dir is the discovered committed mappings dir; filename is a literal
 }
 
 // ListMappingDocs returns relative paths to committed mapping markdown/json.

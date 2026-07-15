@@ -55,7 +55,7 @@ func TestEvalBleveEngine(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer eng.Close()
+	defer func() { _ = eng.Close() }()
 	file, err := retrieval.LoadEvalFile(root, retrieval.DefaultEvalRel)
 	if err != nil {
 		t.Fatal(err)

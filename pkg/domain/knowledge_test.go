@@ -7,8 +7,8 @@ import (
 )
 
 func TestKnowledgeAliasesCompile(t *testing.T) {
-	var _ SkillMeta = playbookdomain.SkillMeta{}
-	var _ ProcedureSpec = playbookdomain.ProcedureSpec{}
+	var _ = SkillMeta(playbookdomain.SkillMeta{})
+	var _ = ProcedureSpec(playbookdomain.ProcedureSpec{})
 	if StepShell != playbookdomain.StepShell {
 		t.Fatal("StepShell alias mismatch")
 	}

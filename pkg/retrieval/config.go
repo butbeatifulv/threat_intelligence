@@ -16,7 +16,7 @@ const (
 	EnvEmbedProvider  = "VEIL_EMBED_PROVIDER"
 	EnvEmbedURL       = "VEIL_EMBED_URL"
 	EnvEmbedModel     = "VEIL_EMBED_MODEL"
-	EnvEmbedAPIKey    = "VEIL_EMBED_API_KEY"
+	EnvEmbedAPIKey    = "VEIL_EMBED_API_KEY" // #nosec G101 -- this is the name of an env var to read from, not a credential value
 	EnvRerankEnabled  = "VEIL_RERANK_ENABLED"
 	EnvRerankURL      = "VEIL_RERANK_URL"
 	EnvRepoRoot       = "VEIL_REPO_ROOT"

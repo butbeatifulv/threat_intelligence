@@ -1,0 +1,241 @@
+name: Security Gate
+
+# DevSecOps gate for veil's Go monorepo — the single required status check
+# meant to block known vulnerabilities and unreviewed findings from reaching
+# main/master. veil is a multi-module workspace (21 independent go.mod files
+# under pkg/, discovery/, pipeline/, knowledge/, platform/), so gosec,
+# govulncheck and golangci-lint all run as a per-module matrix (discovered
+# at runtime by discover-modules) rather than a single repo-wide `./...` —
+# Go workspace mode does not let `./...` reach across module boundaries, and
+# scanning each module standalone (GOWORK=off) is also what this repo's own
+# Makefile does for tests (see test-pkg-shared, test-pkg-domain).
+#
+# CodeQL and gitleaks are repo-wide (both understand multi-module Go/git
+# history natively). See docs/CI_CD_SECURITY_GATE.md for the fixes applied
+# to get every one of these gates to a real, verified-clean baseline before
+# this workflow shipped (toolchain CVEs, a dangling pkg/exec dependency that
+# had broken platform.yml's `unit` job since 2026-06-24, 28 real gosec
+# findings, 47 golangci-lint findings, one real go.mod resolution bug in
+# pkg/engage) — nothing here starts pre-broken or silently warn-only.
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+env:
+  GO_VERSION: "1.25.12"
+  GOSEC_VERSION: "v2.22.2"
+  GOLANGCI_LINT_VERSION: "v2.12.2"
+
+jobs:
+  # -------------------------------------------------------------------
+  # Discover every Go module (go.mod directory) in the repo so the three
+  # per-module scanners below can matrix over them without a hardcoded list
+  # going stale as modules are added/removed.
+  # -------------------------------------------------------------------
+  discover-modules:
+    runs-on: ubuntu-latest
+    outputs:
+      modules: ${{ steps.find.outputs.modules }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: find
+        run: |
+          modules=$(find . -maxdepth 4 -name go.mod -not -path './var/*' \
+            | sed 's#/go.mod##; s#^\./##' | sort \
+            | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "modules=$modules" >> "$GITHUB_OUTPUT"
+          echo "Discovered modules: $modules"
+
+  # -------------------------------------------------------------------
+  # gosec — Go-specific SAST (hardcoded creds, path injection, weak crypto,
+  # unsafe permissions, missing timeouts, unchecked errors, ...).
+  # -------------------------------------------------------------------
+  gosec:
+    needs: discover-modules
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ${{ fromJson(needs.discover-modules.outputs.modules) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - name: Install gosec
+        run: go install github.com/securego/gosec/v2/cmd/gosec@${{ env.GOSEC_VERSION }}
+      - name: Module slug
+        id: slug
+        run: echo "slug=$(echo '${{ matrix.module }}' | tr '/' '_')" >> "$GITHUB_OUTPUT"
+      - name: gosec scan
+        working-directory: ${{ matrix.module }}
+        env:
+          GOWORK: "off"
+        run: gosec -exclude-dir=.cache -exclude-dir=vendor -exclude-generated -fmt sarif -out gosec.sarif ./...
+      - name: Print findings
+        if: always()
+        working-directory: ${{ matrix.module }}
+        run: |
+          [ -f gosec.sarif ] || { echo "no gosec.sarif produced"; exit 0; }
+          python3 - <<'PYEOF'
+          import json
+          d = json.load(open("gosec.sarif"))
+          for run in d.get("runs", []):
+              for r in run.get("results", []):
+                  loc = r.get("locations", [{}])[0].get("physicalLocation", {}).get("artifactLocation", {}).get("uri", "?")
+                  line = r.get("locations", [{}])[0].get("physicalLocation", {}).get("region", {}).get("startLine", "?")
+                  msg = (r.get("message", {}).get("text") or "").splitlines()[0][:160]
+                  print(f"[{r.get('ruleId', '?')}] {loc}:{line} — {msg}")
+          PYEOF
+      - uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: ${{ matrix.module }}/gosec.sarif
+          category: gosec-${{ steps.slug.outputs.slug }}
+
+  # -------------------------------------------------------------------
+  # govulncheck — official Go tool; flags known CVEs your code actually
+  # reaches (stdlib + third-party), not just anything in the dep graph.
+  # -------------------------------------------------------------------
+  govulncheck:
+    needs: discover-modules
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ${{ fromJson(needs.discover-modules.outputs.modules) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - name: Install govulncheck
+        run: go install golang.org/x/vuln/cmd/govulncheck@latest
+      - name: govulncheck
+        working-directory: ${{ matrix.module }}
+        env:
+          GOWORK: "off"
+        run: govulncheck ./...
+
+  # -------------------------------------------------------------------
+  # golangci-lint — errcheck/staticcheck/govet/etc; catches real bugs
+  # (dead stores, wrong loop conditions, resource leaks), not just style.
+  # -------------------------------------------------------------------
+  golangci-lint:
+    needs: discover-modules
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ${{ fromJson(needs.discover-modules.outputs.modules) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - name: Install golangci-lint
+        run: go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@${{ env.GOLANGCI_LINT_VERSION }}
+      - name: golangci-lint
+        working-directory: ${{ matrix.module }}
+        env:
+          GOWORK: "off"
+        run: golangci-lint run --config "$GITHUB_WORKSPACE/.golangci.yml" ./...
+
+  # -------------------------------------------------------------------
+  # gitleaks — secret scanning across full git history.
+  # -------------------------------------------------------------------
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # -------------------------------------------------------------------
+  # CodeQL — Go SAST, repo-wide (autobuild handles the multi-module
+  # workspace by discovering each go.mod on its own).
+  # -------------------------------------------------------------------
+  codeql:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - uses: github/codeql-action/init@v4
+        with:
+          languages: go
+          build-mode: autobuild
+      - uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:go"
+          output: codeql-sarif
+      - name: Gate check CodeQL
+        if: always()
+        run: |
+          REPORT="codeql-sarif/go.sarif"
+          [ -f "$REPORT" ] || { echo "::error::CodeQL did not produce $REPORT — check the analyze step above; refusing to silently pass a SAST gate with no real report." >&2; exit 1; }
+          python3 - <<'PYEOF'
+          import json
+          d = json.load(open("codeql-sarif/go.sarif"))
+          for run in d.get("runs", []):
+              for r in run.get("results", []):
+                  loc = r.get("locations", [{}])[0].get("physicalLocation", {}).get("artifactLocation", {}).get("uri", "?")
+                  line = r.get("locations", [{}])[0].get("physicalLocation", {}).get("region", {}).get("startLine", "?")
+                  msg = (r.get("message", {}).get("text") or "").splitlines()[0][:160]
+                  print(f"[{r.get('ruleId', '?')}] {loc}:{line} — {msg}")
+          PYEOF
+          COUNT=$(python3 -c "import json; d=json.load(open('$REPORT')); print(sum(len(r.get('results', [])) for r in d.get('runs', [])))")
+          echo "[codeql-go] findings=${COUNT}"
+          if [ "$COUNT" -gt 0 ]; then
+            echo "::error::${COUNT} CodeQL finding(s) present — see above for file:line and message"
+            exit 1
+          fi
+
+  # -------------------------------------------------------------------
+  # Aggregate gate — THE status check to require in branch protection.
+  # -------------------------------------------------------------------
+  security-gate:
+    if: always()
+    runs-on: ubuntu-latest
+    needs:
+      - gosec
+      - govulncheck
+      - golangci-lint
+      - gitleaks
+      - codeql
+    steps:
+      - name: Evaluate required checks
+        run: |
+          set -eu
+          fail=0
+          declare -A results=(
+            [gosec]="${{ needs.gosec.result }}"
+            [govulncheck]="${{ needs.govulncheck.result }}"
+            [golangci-lint]="${{ needs['golangci-lint'].result }}"
+            [gitleaks]="${{ needs.gitleaks.result }}"
+            [codeql]="${{ needs.codeql.result }}"
+          )
+          for job in "${!results[@]}"; do
+            r="${results[$job]}"
+            echo "$job: $r"
+            if [ "$r" != "success" ]; then
+              fail=1
+            fi
+          done
+          if [ "$fail" -ne 0 ]; then
+            echo "::error::One or more required gate jobs did not succeed."
+            exit 1
+          fi
+          echo "All required gates passed."

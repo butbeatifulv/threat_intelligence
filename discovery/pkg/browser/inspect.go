@@ -2,7 +2,7 @@ package browser
 
 import (
 	"encoding/json"
-	"fmt"
+	"strconv"
 )
 
 // InspectRequest configures browser inspection.
@@ -37,17 +37,15 @@ func InspectFromParams(target string, params map[string]string) InspectRequest {
 	wait := 5
 	if params != nil {
 		if w := params["wait_time"]; w != "" {
-			fmt.Sscanf(w, "%d", &wait)
+			if n, err := strconv.Atoi(w); err == nil {
+				wait = n
+			}
 		}
 	}
-	headless := true
-	if params != nil && (params["headless"] == "false" || params["headless"] == "False") {
-		headless = false
-	}
-	active := false
-	if params != nil && (params["active_tests"] == "true" || params["active_tests"] == "True") {
-		active = true
-	}
+	headless := params == nil || (params["headless"] != "false" && params["headless"] != "False")
+
+	active := params != nil && (params["active_tests"] == "true" || params["active_tests"] == "True")
+
 	return InspectRequest{
 		URL:         url,
 		WaitTime:    wait,

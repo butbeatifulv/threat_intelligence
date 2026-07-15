@@ -2,6 +2,8 @@ module github.com/butbeautifulv/veil/discovery/connector
 
 go 1.25.0
 
+toolchain go1.25.12
+
 require (
 	github.com/butbeautifulv/veil/pkg v0.0.0
 	github.com/nats-io/nats.go v1.48.0

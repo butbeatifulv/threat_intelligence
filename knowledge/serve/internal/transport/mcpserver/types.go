@@ -7,10 +7,7 @@ import (
 	"github.com/butbeautifulv/veil/pkg/mcp"
 )
 
-type (
-	rpcMessage = mcp.Message
-	rpcError   = mcp.RPCError
-)
+type rpcMessage = mcp.Message
 
 const (
 	codeParseError      = mcp.CodeParseError
@@ -34,12 +31,9 @@ func wantsSSE(r *http.Request, preferSSE bool) bool {
 	return mcp.WantsSSE(r, preferSSE)
 }
 
-func rpcErr(code int, msg string) error  { return mcp.Err(code, msg) }
 func rpcErrf(code int, format string, args ...any) error {
 	return mcp.Errf(code, format, args...)
 }
-
-func toRPCError(err error) *rpcError { return mcp.ToRPCError(err) }
 
 func negotiateProtocol(params []byte) string {
 	return mcp.NegotiateProtocol(params)

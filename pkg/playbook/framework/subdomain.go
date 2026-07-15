@@ -47,7 +47,7 @@ func LoadSubdomains() ([]SubdomainEntry, error) {
 		return nil, err
 	}
 	path := filepath.Join(root, pbindex.DefaultIndexRel)
-	raw, err := os.ReadFile(path)
+	raw, err := os.ReadFile(path) // #nosec G304 -- root is the discovered repo root, DefaultIndexRel is a package constant; no variable path segment
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func SkillsForTechnique(techniqueID string) ([]string, error) {
 		return nil, err
 	}
 	path := filepath.Join(root, pbindex.DefaultIndexRel)
-	raw, err := os.ReadFile(path)
+	raw, err := os.ReadFile(path) // #nosec G304 -- root is the discovered repo root, DefaultIndexRel is a package constant; no variable path segment
 	if err != nil {
 		return nil, err
 	}

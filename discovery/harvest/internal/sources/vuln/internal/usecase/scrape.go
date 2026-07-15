@@ -15,8 +15,6 @@ import (
 
 	"log/slog"
 
-	"log/slog"
-
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/feeds"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/ledger"
 	"github.com/butbeautifulv/veil/discovery/harvest/internal/sources/vuln/internal/repository"

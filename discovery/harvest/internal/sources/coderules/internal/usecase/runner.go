@@ -101,9 +101,7 @@ func (r *Runner) runSemgrep(ctx context.Context) error {
 	const owner, repo = "semgrep", "semgrep-rules"
 	seeds := []string{"python", "javascript", "java", "go", "csharp", "dockerfile", "yaml", "bash"}
 	var q []string
-	for _, s := range seeds {
-		q = append(q, s)
-	}
+	q = append(q, seeds...)
 	n := 0
 	for len(q) > 0 && n < r.opt.MaxSemgrep {
 		dir := q[0]

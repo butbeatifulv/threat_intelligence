@@ -83,8 +83,7 @@ func chunkFromHit(hit *search.DocumentMatch) ChunkHit {
 		}
 		return ""
 	}
-	text := get("text")
-	snippet := text
+	snippet := get("text")
 	if len(snippet) > 200 {
 		snippet = snippet[:200]
 	}
@@ -92,7 +91,7 @@ func chunkFromHit(hit *search.DocumentMatch) ChunkHit {
 		SkillID:      get("skill_id"),
 		Subdomain:    get("subdomain"),
 		SectionTitle: get("section_title"),
-		Text:         text,
+		Text:         snippet,
 		Score:        hit.Score,
 		MatchType:    MatchKeyword,
 	}

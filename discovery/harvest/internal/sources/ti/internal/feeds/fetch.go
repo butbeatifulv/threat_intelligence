@@ -84,7 +84,7 @@ func (f *Fetcher) preNetworkDelay(ctx context.Context) error {
 	}
 	extra := time.Duration(0)
 	if f.Delay > 4 {
-		extra = time.Duration(rand.Int64N(int64(f.Delay / 4)))
+		extra = time.Duration(rand.Int64N(int64(f.Delay / 4))) // #nosec G404 -- request pacing jitter, not security-sensitive
 	}
 	if !scrapefeeds.SleepOrCancel(ctx, f.Delay+extra) {
 		return ctx.Err()

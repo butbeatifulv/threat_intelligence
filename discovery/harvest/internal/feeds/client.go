@@ -33,7 +33,7 @@ func (c *Client) ReadCache(cachePath string) ([]byte, bool) {
 		return nil, false
 	}
 	fn := filepath.Join(c.Cache, filepath.FromSlash(cachePath))
-	b, err := os.ReadFile(fn)
+	b, err := os.ReadFile(fn) // #nosec G304 -- cachePath is a static literal or fmt-built from int params at every call site (see feeds.FetchIfDue callers), never attacker/network-controlled
 	if err != nil || len(b) == 0 {
 		return nil, false
 	}
@@ -46,10 +46,10 @@ func (c *Client) WriteCache(cachePath string, body []byte) error {
 		return nil
 	}
 	fn := filepath.Join(c.Cache, filepath.FromSlash(cachePath))
-	if err := os.MkdirAll(filepath.Dir(fn), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(fn), 0o750); err != nil {
 		return err
 	}
-	return os.WriteFile(fn, body, 0o644)
+	return os.WriteFile(fn, body, 0o600)
 }
 
 // DoGET performs GET with optional cache read/write.

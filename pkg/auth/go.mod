@@ -2,6 +2,8 @@ module github.com/butbeautifulv/veil/pkg/auth
 
 go 1.25.0
 
+toolchain go1.25.12
+
 require (
 	github.com/MicahParks/keyfunc/v3 v3.8.0
 	github.com/golang-jwt/jwt/v5 v5.3.1

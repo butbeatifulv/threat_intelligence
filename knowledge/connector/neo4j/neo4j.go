@@ -7,6 +7,7 @@ import (
 
 	"github.com/butbeautifulv/veil/pkg/observability"
 	driver "github.com/neo4j/neo4j-go-driver/v5/neo4j"
+	driverconfig "github.com/neo4j/neo4j-go-driver/v5/neo4j/config"
 )
 
 type Config struct {
@@ -26,7 +27,7 @@ func New(ctx context.Context, cfg Config) (*Client, error) {
 		return nil, fmt.Errorf("neo4j uri is empty")
 	}
 	auth := driver.BasicAuth(cfg.Username, cfg.Password, "")
-	d, err := driver.NewDriverWithContext(cfg.URI, auth, func(c *driver.Config) {
+	d, err := driver.NewDriverWithContext(cfg.URI, auth, func(c *driverconfig.Config) {
 		c.MaxConnectionPoolSize = 50
 		c.ConnectionAcquisitionTimeout = 30 * time.Second
 	})
@@ -56,7 +57,7 @@ func (c *Client) Session(ctx context.Context) driver.SessionWithContext {
 func (c *Client) ExecWrite(ctx context.Context, fn func(tx driver.ManagedTransaction) error) error {
 	return c.observe(ctx, "write", func(ctx context.Context) error {
 		sess := c.Session(ctx)
-		defer sess.Close(ctx)
+		defer func() { _ = sess.Close(ctx) }()
 		_, err := sess.ExecuteWrite(ctx, func(tx driver.ManagedTransaction) (any, error) {
 			return nil, fn(tx)
 		})
@@ -72,7 +73,7 @@ func (c *Client) ExecRead(ctx context.Context, fn func(tx driver.ManagedTransact
 			DatabaseName: c.database,
 			AccessMode:   driver.AccessModeRead,
 		})
-		defer sess.Close(ctx)
+		defer func() { _ = sess.Close(ctx) }()
 		var err error
 		out, err = sess.ExecuteRead(ctx, fn)
 		return err

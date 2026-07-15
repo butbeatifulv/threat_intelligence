@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/butbeautifulv/veil/platform/mcp-gateway/internal/aggregator"
 	"github.com/butbeautifulv/veil/platform/mcp-gateway/internal/authstack"
@@ -37,8 +38,9 @@ func main() {
 	)
 
 	srv := &http.Server{
-		Addr:    cfg.Listen,
-		Handler: transport.Handler(agg, cfg, stack),
+		Addr:              cfg.Listen,
+		Handler:           transport.Handler(agg, cfg, stack),
+		ReadHeaderTimeout: 10 * time.Second,
 	}
 	logger.Info("unified mcp http listening",
 		"listen", cfg.Listen,

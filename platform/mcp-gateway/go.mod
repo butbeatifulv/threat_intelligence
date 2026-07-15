@@ -2,6 +2,8 @@ module github.com/butbeautifulv/veil/platform/mcp-gateway
 
 go 1.25.0
 
+toolchain go1.25.12
+
 require (
 	github.com/butbeautifulv/veil/pkg/auth v0.0.0
 	github.com/butbeautifulv/veil/pkg/mcp v0.0.0

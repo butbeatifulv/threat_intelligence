@@ -2,6 +2,8 @@ module github.com/butbeautifulv/veil/discovery/browser
 
 go 1.25.0
 
+toolchain go1.25.12
+
 require (
 	github.com/butbeautifulv/veil/discovery/connector v0.0.0
 	github.com/butbeautifulv/veil/discovery/pkg v0.0.0

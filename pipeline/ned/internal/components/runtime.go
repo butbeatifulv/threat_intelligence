@@ -30,22 +30,22 @@ func Init(ctx context.Context, cfg config.Config, log *slog.Logger) (*Runtime, e
 	}
 	js, err := nc.JetStream()
 	if err != nil {
-		nc.Drain()
+		_ = nc.Drain()
 		return nil, fmt.Errorf("jetstream: %w", err)
 	}
 	if err := nats.EnsureBothStreams(js); err != nil {
-		nc.Drain()
+		_ = nc.Drain()
 		return nil, fmt.Errorf("streams: %w", err)
 	}
 	pub, err := nats.ConnectJetStream(cfg.NATSURL)
 	if err != nil {
-		nc.Drain()
+		_ = nc.Drain()
 		return nil, err
 	}
 	sub, err := js.PullSubscribe(cfg.ScrapeSubject, cfg.ScrapeDurable, natsgo.BindStream(cfg.ScrapeStream))
 	if err != nil {
 		pub.Close()
-		nc.Drain()
+		_ = nc.Drain()
 		return nil, fmt.Errorf("pull subscribe scrape stream=%s: %w", cfg.ScrapeStream, err)
 	}
 	return &Runtime{cfg: cfg, log: log, nc: nc, sub: sub, pub: pub}, nil

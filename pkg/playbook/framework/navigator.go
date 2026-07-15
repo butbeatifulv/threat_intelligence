@@ -35,7 +35,7 @@ func LoadNavigatorLayer() (*NavigatorLayer, error) {
 		return nil, err
 	}
 	path := filepath.Join(dir, "attack-navigator-layer.json")
-	raw, err := os.ReadFile(path)
+	raw, err := os.ReadFile(path) // #nosec G304 -- dir is the discovered committed mappings dir; filename is a literal
 	if err != nil {
 		return nil, fmt.Errorf("framework: read %s: %w", path, err)
 	}

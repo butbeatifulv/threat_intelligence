@@ -7,12 +7,6 @@ import (
 	"github.com/butbeautifulv/veil/pkg/observability"
 )
 
-const (
-	envLocal = "local"
-	envDev   = "dev"
-	envProd  = "prod"
-)
-
 func SetupLogger(env string) *slog.Logger {
 	return observability.NewLogger(env, "veil-api", os.Stdout)
 }

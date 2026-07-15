@@ -63,7 +63,7 @@ func Open(indexPath string) (*Catalog, error) {
 	} else if !filepath.IsAbs(indexPath) {
 		indexPath = filepath.Join(root, indexPath)
 	}
-	raw, err := os.ReadFile(indexPath)
+	raw, err := os.ReadFile(indexPath) // #nosec G304 -- indexPath is a deploy-time env var/config value with a committed-file default, not network input
 	if err != nil {
 		return nil, fmt.Errorf("playbook index: read %s: %w", indexPath, err)
 	}
@@ -117,7 +117,7 @@ func (c *Catalog) ReadBody(id string) (domain.SkillDetail, error) {
 		return domain.SkillDetail{}, fmt.Errorf("playbook: unknown skill %q", id)
 	}
 	path := filepath.Join(c.repoRoot, filepath.FromSlash(skillMarkdownRel(meta)))
-	raw, err := os.ReadFile(path)
+	raw, err := os.ReadFile(path) // #nosec G304 -- meta comes from a map lookup constrained to ids loaded from the committed skills index, not attacker-controlled
 	if err != nil {
 		return domain.SkillDetail{}, fmt.Errorf("playbook: read %s: %w", path, err)
 	}

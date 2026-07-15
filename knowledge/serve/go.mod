@@ -2,6 +2,8 @@ module github.com/butbeautifulv/veil/knowledge/serve
 
 go 1.25.0
 
+toolchain go1.25.12
+
 require (
 	github.com/MicahParks/keyfunc/v3 v3.8.0
 	github.com/butbeautifulv/veil/knowledge/connector v0.0.0
