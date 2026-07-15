@@ -1,6 +1,6 @@
 # Guidance for automated agents (Cursor, CI bots, etc.)
 
-**Core rules (DRY hub):** `make rules-link` from cxado meta-repo → [.cursor/rules/core-karpathy-guidelines.mdc](.cursor/rules/core-karpathy-guidelines.mdc), [core-agent-critic.mdc](.cursor/rules/core-agent-critic.mdc), [core-parallel-branches.mdc](.cursor/rules/core-parallel-branches.mdc), [core-kaizen.mdc](.cursor/rules/core-kaizen.mdc), [core-agent-documentation.mdc](.cursor/rules/core-agent-documentation.mdc). Generic skill: [cxado-skills/agent/karpathy-guidelines](https://github.com/butbeautifulv/cxado-skills). Upstream reference: [refs/andrej-karpathy-skills-main/](refs/andrej-karpathy-skills-main/) (do not edit).
+**Core rules (DRY hub):** `make rules-link` from cxado meta-repo → [.cursor/rules/core-karpathy-guidelines.mdc](.cursor/rules/core-karpathy-guidelines.mdc), [core-agent-critic.mdc](.cursor/rules/core-agent-critic.mdc), [core-parallel-branches.mdc](.cursor/rules/core-parallel-branches.mdc), [core-kaizen.mdc](.cursor/rules/core-kaizen.mdc), [core-agent-documentation.mdc](.cursor/rules/core-agent-documentation.mdc). Generic skill: [cxado-skills/agent/karpathy-guidelines](https://github.com/butbeautifulv/cxado-skills). Upstream reference: [refs/andrej-karpathy-skills-main/](../../../../refs/andrej-karpathy-skills-main/) at cxado meta root (do not edit).
 
 **Veil overlay:** [veil-agent-workflow.mdc](.cursor/rules/veil-agent-workflow.mdc) — Go layers (discovery, pipeline, knowledge), `make test-*`.
 

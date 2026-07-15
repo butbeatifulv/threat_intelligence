@@ -1,6 +1,6 @@
 # openJiuwen Agent Store (reference only)
 
-[Agent Store](https://gitcode.com/openJiuwen/agent-store) is a **catalog of community agent implementations** (Python workflows, finance bots, vibe-coding helpers). Veil vendors it under `refs/agent-store/` for **patterns**, not runtime.
+[Agent Store](https://gitcode.com/openJiuwen/agent-store) is a **catalog of community agent implementations** (Python workflows, finance bots, vibe-coding helpers). In the cxado monorepo, patterns live under `refs/agent-store/` at meta root (`../../../../refs/agent-store/` from this doc).
 
 ```bash
 make external-clone-agent-store

@@ -73,8 +73,6 @@ Thumbs.db
 # Local IDE / agent tooling
 .cursor/
 .agents/
-# Symlink to cxado-references (created by cxado `make refs-link`)
-refs/
 
 # Local MCP binaries (use scripts/mcp/run-veil-mcp.sh)
 knowledge/serve/bin/
