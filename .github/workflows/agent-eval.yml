@@ -1,0 +1,44 @@
+name: agent-eval
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'eval/gaia/**'
+      - 'scripts/eval/**'
+      - 'deploy/eval/**'
+      - 'docs/agents/agent-evaluation-gaia.md'
+      - 'docs/agents/external-agent-store.md'
+      - 'deploy/security/veil-controls.yaml'
+      - '.github/workflows/agent-eval.yml'
+  pull_request:
+    paths:
+      - 'eval/gaia/**'
+      - 'scripts/eval/**'
+      - 'deploy/eval/**'
+      - 'docs/agents/agent-evaluation-gaia.md'
+      - 'docs/agents/external-agent-store.md'
+      - 'deploy/security/veil-controls.yaml'
+      - '.github/workflows/agent-eval.yml'
+
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Agent eval registry audit
+        run: python3 scripts/eval/agent-eval-registry-audit.py
+
+      - name: GAIA pilot (offline)
+        run: make test-agent-eval-pilot
+
+      - name: GAIA paper examples (arXiv Fig. 1 format harness)
+        run: make test-agent-eval-paper
+
+      - name: Upload metrics
+        uses: actions/upload-artifact@v4
+        with:
+          name: gaia-eval-metrics
+          path: eval/gaia/results/*-metrics.json
+          if-no-files-found: warn

@@ -1,0 +1,11 @@
+# Engage secure CI moved to veneno
+name: engage-secure (moved to veneno)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pointer:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Run in butbeautifulv/veneno"

@@ -1,0 +1,2112 @@
+schema_version: 2
+tools:
+  advanced_payload_generation:
+    binary: advanced
+    kali_tool_page: https://kali.org/tools/advanced-payload-generation
+    kali_pkg_tracker: https://pkg.kali.org/pkg/advanced
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/advanced
+    upstream_repo: ''
+    preferred_install_methods: []
+  advanced:
+    binary: advanced
+    kali_tool_page: https://kali.org/tools/advanced
+    kali_pkg_tracker: https://pkg.kali.org/pkg/advanced
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/advanced
+    upstream_repo: ''
+    preferred_install_methods: []
+  ai_generate_attack_suite:
+    binary: ai
+    kali_tool_page: https://kali.org/tools/ai-generate-attack-suite
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ai
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ai
+    upstream_repo: ''
+    preferred_install_methods: []
+  ai:
+    binary: ai
+    kali_tool_page: https://kali.org/tools/ai
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ai
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ai
+    upstream_repo: ''
+    preferred_install_methods: []
+  ai_generate_payload:
+    binary: ai
+    kali_tool_page: https://kali.org/tools/ai-generate-payload
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ai
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ai
+    upstream_repo: ''
+    preferred_install_methods: []
+  ai_reconnaissance_workflow:
+    binary: ai
+    kali_tool_page: https://kali.org/tools/ai-reconnaissance-workflow
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ai
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ai
+    upstream_repo: ''
+    preferred_install_methods: []
+  ai_test_payload:
+    binary: ai
+    kali_tool_page: https://kali.org/tools/ai-test-payload
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ai
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ai
+    upstream_repo: ''
+    preferred_install_methods: []
+  ai_vulnerability_assessment:
+    binary: ai
+    kali_tool_page: https://kali.org/tools/ai-vulnerability-assessment
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ai
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ai
+    upstream_repo: ''
+    preferred_install_methods: []
+  amass_scan:
+    binary: amass
+    kali_tool_page: https://kali.org/tools/amass
+    kali_pkg_tracker: https://pkg.kali.org/pkg/amass
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/amass
+    upstream_repo: https://github.com/owasp-amass/amass
+    preferred_install_methods: &id001
+    - apt:amass
+    - go:github.com/owasp-amass/amass/v4/...@master
+  amass:
+    binary: amass
+    kali_tool_page: https://kali.org/tools/amass
+    kali_pkg_tracker: https://pkg.kali.org/pkg/amass
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/amass
+    upstream_repo: https://github.com/owasp-amass/amass
+    preferred_install_methods: *id001
+  analyze_target_intelligence:
+    binary: analyze
+    kali_tool_page: https://kali.org/tools/analyze-target-intelligence
+    kali_pkg_tracker: https://pkg.kali.org/pkg/analyze
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/analyze
+    upstream_repo: ''
+    preferred_install_methods: []
+  analyze:
+    binary: analyze
+    kali_tool_page: https://kali.org/tools/analyze
+    kali_pkg_tracker: https://pkg.kali.org/pkg/analyze
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/analyze
+    upstream_repo: ''
+    preferred_install_methods: []
+  anew_data_processing:
+    binary: anew
+    kali_tool_page: https://kali.org/tools/anew-data-processing
+    kali_pkg_tracker: https://pkg.kali.org/pkg/anew
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/anew
+    upstream_repo: ''
+    preferred_install_methods: []
+  anew:
+    binary: anew
+    kali_tool_page: https://kali.org/tools/anew
+    kali_pkg_tracker: https://pkg.kali.org/pkg/anew
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/anew
+    upstream_repo: ''
+    preferred_install_methods: []
+  angr_symbolic_execution:
+    binary: angr
+    kali_tool_page: https://kali.org/tools/angr-symbolic-execution
+    kali_pkg_tracker: https://pkg.kali.org/pkg/angr
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/angr
+    upstream_repo: ''
+    preferred_install_methods: []
+  angr:
+    binary: angr
+    kali_tool_page: https://kali.org/tools/angr
+    kali_pkg_tracker: https://pkg.kali.org/pkg/angr
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/angr
+    upstream_repo: ''
+    preferred_install_methods: []
+  api_fuzzer:
+    binary: api
+    kali_tool_page: https://kali.org/tools/api-fuzzer
+    kali_pkg_tracker: https://pkg.kali.org/pkg/api
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/api
+    upstream_repo: ''
+    preferred_install_methods: []
+  api:
+    binary: api
+    kali_tool_page: https://kali.org/tools/api
+    kali_pkg_tracker: https://pkg.kali.org/pkg/api
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/api
+    upstream_repo: ''
+    preferred_install_methods: []
+  api_schema_analyzer:
+    binary: api
+    kali_tool_page: https://kali.org/tools/api-schema-analyzer
+    kali_pkg_tracker: https://pkg.kali.org/pkg/api
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/api
+    upstream_repo: ''
+    preferred_install_methods: []
+  arjun_parameter_discovery:
+    binary: arjun
+    kali_tool_page: https://kali.org/tools/arjun-parameter-discovery
+    kali_pkg_tracker: https://pkg.kali.org/pkg/arjun
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/arjun
+    upstream_repo: ''
+    preferred_install_methods: []
+  arjun:
+    binary: arjun
+    kali_tool_page: https://kali.org/tools/arjun
+    kali_pkg_tracker: https://pkg.kali.org/pkg/arjun
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/arjun
+    upstream_repo: ''
+    preferred_install_methods: []
+  arjun_scan:
+    binary: arjun
+    kali_tool_page: https://kali.org/tools/arjun-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/arjun
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/arjun
+    upstream_repo: ''
+    preferred_install_methods: []
+  arp_scan_discovery:
+    binary: arp
+    kali_tool_page: https://kali.org/tools/arp-scan-discovery
+    kali_pkg_tracker: https://pkg.kali.org/pkg/arp
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/arp
+    upstream_repo: ''
+    preferred_install_methods: []
+  arp:
+    binary: arp
+    kali_tool_page: https://kali.org/tools/arp
+    kali_pkg_tracker: https://pkg.kali.org/pkg/arp
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/arp
+    upstream_repo: ''
+    preferred_install_methods: []
+  autorecon_comprehensive:
+    binary: autorecon
+    kali_tool_page: https://kali.org/tools/autorecon-comprehensive
+    kali_pkg_tracker: https://pkg.kali.org/pkg/autorecon
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/autorecon
+    upstream_repo: ''
+    preferred_install_methods: []
+  autorecon:
+    binary: autorecon
+    kali_tool_page: https://kali.org/tools/autorecon
+    kali_pkg_tracker: https://pkg.kali.org/pkg/autorecon
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/autorecon
+    upstream_repo: ''
+    preferred_install_methods: []
+  autorecon_scan:
+    binary: autorecon
+    kali_tool_page: https://kali.org/tools/autorecon-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/autorecon
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/autorecon
+    upstream_repo: ''
+    preferred_install_methods: []
+  binwalk_analyze:
+    binary: binwalk
+    kali_tool_page: https://kali.org/tools/binwalk-analyze
+    kali_pkg_tracker: https://pkg.kali.org/pkg/binwalk
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/binwalk
+    upstream_repo: ''
+    preferred_install_methods: []
+  binwalk:
+    binary: binwalk
+    kali_tool_page: https://kali.org/tools/binwalk
+    kali_pkg_tracker: https://pkg.kali.org/pkg/binwalk
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/binwalk
+    upstream_repo: ''
+    preferred_install_methods: []
+  browser_agent_inspect:
+    binary: browser
+    kali_tool_page: https://kali.org/tools/browser-agent-inspect
+    kali_pkg_tracker: https://pkg.kali.org/pkg/browser
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/browser
+    upstream_repo: ''
+    preferred_install_methods: []
+  browser:
+    binary: browser
+    kali_tool_page: https://kali.org/tools/browser
+    kali_pkg_tracker: https://pkg.kali.org/pkg/browser
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/browser
+    upstream_repo: ''
+    preferred_install_methods: []
+  bugbounty_authentication_bypass_testing:
+    binary: bugbounty
+    kali_tool_page: https://kali.org/tools/bugbounty-authentication-bypass-testing
+    kali_pkg_tracker: https://pkg.kali.org/pkg/bugbounty
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/bugbounty
+    upstream_repo: ''
+    preferred_install_methods: []
+  bugbounty:
+    binary: bugbounty
+    kali_tool_page: https://kali.org/tools/bugbounty
+    kali_pkg_tracker: https://pkg.kali.org/pkg/bugbounty
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/bugbounty
+    upstream_repo: ''
+    preferred_install_methods: []
+  bugbounty_business_logic_testing:
+    binary: bugbounty
+    kali_tool_page: https://kali.org/tools/bugbounty-business-logic-testing
+    kali_pkg_tracker: https://pkg.kali.org/pkg/bugbounty
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/bugbounty
+    upstream_repo: ''
+    preferred_install_methods: []
+  bugbounty_comprehensive_assessment:
+    binary: bugbounty
+    kali_tool_page: https://kali.org/tools/bugbounty-comprehensive-assessment
+    kali_pkg_tracker: https://pkg.kali.org/pkg/bugbounty
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/bugbounty
+    upstream_repo: ''
+    preferred_install_methods: []
+  bugbounty_file_upload_testing:
+    binary: bugbounty
+    kali_tool_page: https://kali.org/tools/bugbounty-file-upload-testing
+    kali_pkg_tracker: https://pkg.kali.org/pkg/bugbounty
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/bugbounty
+    upstream_repo: ''
+    preferred_install_methods: []
+  bugbounty_osint_gathering:
+    binary: bugbounty
+    kali_tool_page: https://kali.org/tools/bugbounty-osint-gathering
+    kali_pkg_tracker: https://pkg.kali.org/pkg/bugbounty
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/bugbounty
+    upstream_repo: ''
+    preferred_install_methods: []
+  bugbounty_reconnaissance_workflow:
+    binary: bugbounty
+    kali_tool_page: https://kali.org/tools/bugbounty-reconnaissance-workflow
+    kali_pkg_tracker: https://pkg.kali.org/pkg/bugbounty
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/bugbounty
+    upstream_repo: ''
+    preferred_install_methods: []
+  bugbounty_vulnerability_hunting:
+    binary: bugbounty
+    kali_tool_page: https://kali.org/tools/bugbounty-vulnerability-hunting
+    kali_pkg_tracker: https://pkg.kali.org/pkg/bugbounty
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/bugbounty
+    upstream_repo: ''
+    preferred_install_methods: []
+  burpsuite_alternative_scan:
+    binary: burpsuite
+    kali_tool_page: https://kali.org/tools/burpsuite-alternative-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/burpsuite
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/burpsuite
+    upstream_repo: ''
+    preferred_install_methods: []
+  burpsuite:
+    binary: burpsuite
+    kali_tool_page: https://kali.org/tools/burpsuite
+    kali_pkg_tracker: https://pkg.kali.org/pkg/burpsuite
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/burpsuite
+    upstream_repo: ''
+    preferred_install_methods: []
+  burpsuite_scan:
+    binary: burpsuite
+    kali_tool_page: https://kali.org/tools/burpsuite-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/burpsuite
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/burpsuite
+    upstream_repo: ''
+    preferred_install_methods: []
+  checkov_iac_scan:
+    binary: checkov
+    kali_tool_page: https://kali.org/tools/checkov-iac-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/checkov
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/checkov
+    upstream_repo: ''
+    preferred_install_methods: []
+  checkov:
+    binary: checkov
+    kali_tool_page: https://kali.org/tools/checkov
+    kali_pkg_tracker: https://pkg.kali.org/pkg/checkov
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/checkov
+    upstream_repo: ''
+    preferred_install_methods: []
+  checksec_analyze:
+    binary: checksec
+    kali_tool_page: https://kali.org/tools/checksec-analyze
+    kali_pkg_tracker: https://pkg.kali.org/pkg/checksec
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/checksec
+    upstream_repo: ''
+    preferred_install_methods: []
+  checksec:
+    binary: checksec
+    kali_tool_page: https://kali.org/tools/checksec
+    kali_pkg_tracker: https://pkg.kali.org/pkg/checksec
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/checksec
+    upstream_repo: ''
+    preferred_install_methods: []
+  clair_vulnerability_scan:
+    binary: clair
+    kali_tool_page: https://kali.org/tools/clair-vulnerability-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/clair
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/clair
+    upstream_repo: ''
+    preferred_install_methods: []
+  clair:
+    binary: clair
+    kali_tool_page: https://kali.org/tools/clair
+    kali_pkg_tracker: https://pkg.kali.org/pkg/clair
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/clair
+    upstream_repo: ''
+    preferred_install_methods: []
+  clear_cache:
+    binary: clear
+    kali_tool_page: https://kali.org/tools/clear-cache
+    kali_pkg_tracker: https://pkg.kali.org/pkg/clear
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/clear
+    upstream_repo: ''
+    preferred_install_methods: []
+  clear:
+    binary: clear
+    kali_tool_page: https://kali.org/tools/clear
+    kali_pkg_tracker: https://pkg.kali.org/pkg/clear
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/clear
+    upstream_repo: ''
+    preferred_install_methods: []
+  cloudmapper_analysis:
+    binary: cloudmapper
+    kali_tool_page: https://kali.org/tools/cloudmapper-analysis
+    kali_pkg_tracker: https://pkg.kali.org/pkg/cloudmapper
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/cloudmapper
+    upstream_repo: ''
+    preferred_install_methods: []
+  cloudmapper:
+    binary: cloudmapper
+    kali_tool_page: https://kali.org/tools/cloudmapper
+    kali_pkg_tracker: https://pkg.kali.org/pkg/cloudmapper
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/cloudmapper
+    upstream_repo: ''
+    preferred_install_methods: []
+  comprehensive_api_audit:
+    binary: comprehensive
+    kali_tool_page: https://kali.org/tools/comprehensive-api-audit
+    kali_pkg_tracker: https://pkg.kali.org/pkg/comprehensive
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/comprehensive
+    upstream_repo: ''
+    preferred_install_methods: []
+  comprehensive:
+    binary: comprehensive
+    kali_tool_page: https://kali.org/tools/comprehensive
+    kali_pkg_tracker: https://pkg.kali.org/pkg/comprehensive
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/comprehensive
+    upstream_repo: ''
+    preferred_install_methods: []
+  correlate_threat_intelligence:
+    binary: correlate
+    kali_tool_page: https://kali.org/tools/correlate-threat-intelligence
+    kali_pkg_tracker: https://pkg.kali.org/pkg/correlate
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/correlate
+    upstream_repo: ''
+    preferred_install_methods: []
+  correlate:
+    binary: correlate
+    kali_tool_page: https://kali.org/tools/correlate
+    kali_pkg_tracker: https://pkg.kali.org/pkg/correlate
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/correlate
+    upstream_repo: ''
+    preferred_install_methods: []
+  create_attack_chain_ai:
+    binary: create
+    kali_tool_page: https://kali.org/tools/create-attack-chain-ai
+    kali_pkg_tracker: https://pkg.kali.org/pkg/create
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/create
+    upstream_repo: ''
+    preferred_install_methods: []
+  create:
+    binary: create
+    kali_tool_page: https://kali.org/tools/create
+    kali_pkg_tracker: https://pkg.kali.org/pkg/create
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/create
+    upstream_repo: ''
+    preferred_install_methods: []
+  create_file:
+    binary: create
+    kali_tool_page: https://kali.org/tools/create-file
+    kali_pkg_tracker: https://pkg.kali.org/pkg/create
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/create
+    upstream_repo: ''
+    preferred_install_methods: []
+  create_scan_summary:
+    binary: create
+    kali_tool_page: https://kali.org/tools/create-scan-summary
+    kali_pkg_tracker: https://pkg.kali.org/pkg/create
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/create
+    upstream_repo: ''
+    preferred_install_methods: []
+  create_vulnerability_report:
+    binary: create
+    kali_tool_page: https://kali.org/tools/create-vulnerability-report
+    kali_pkg_tracker: https://pkg.kali.org/pkg/create
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/create
+    upstream_repo: ''
+    preferred_install_methods: []
+  ctf_auto_solve_challenge:
+    binary: api
+    kali_tool_page: https://kali.org/tools/ctf-auto-solve-challenge
+    kali_pkg_tracker: https://pkg.kali.org/pkg/api
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/api
+    upstream_repo: ''
+    preferred_install_methods: []
+  ctf_binary_analyzer:
+    binary: api
+    kali_tool_page: https://kali.org/tools/ctf-binary-analyzer
+    kali_pkg_tracker: https://pkg.kali.org/pkg/api
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/api
+    upstream_repo: ''
+    preferred_install_methods: []
+  ctf_create_challenge_workflow:
+    binary: api
+    kali_tool_page: https://kali.org/tools/ctf-create-challenge-workflow
+    kali_pkg_tracker: https://pkg.kali.org/pkg/api
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/api
+    upstream_repo: ''
+    preferred_install_methods: []
+  ctf_cryptography_solver:
+    binary: api
+    kali_tool_page: https://kali.org/tools/ctf-cryptography-solver
+    kali_pkg_tracker: https://pkg.kali.org/pkg/api
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/api
+    upstream_repo: ''
+    preferred_install_methods: []
+  ctf_forensics_analyzer:
+    binary: api
+    kali_tool_page: https://kali.org/tools/ctf-forensics-analyzer
+    kali_pkg_tracker: https://pkg.kali.org/pkg/api
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/api
+    upstream_repo: ''
+    preferred_install_methods: []
+  ctf_suggest_tools:
+    binary: api
+    kali_tool_page: https://kali.org/tools/ctf-suggest-tools
+    kali_pkg_tracker: https://pkg.kali.org/pkg/api
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/api
+    upstream_repo: ''
+    preferred_install_methods: []
+  ctf_team_strategy:
+    binary: api
+    kali_tool_page: https://kali.org/tools/ctf-team-strategy
+    kali_pkg_tracker: https://pkg.kali.org/pkg/api
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/api
+    upstream_repo: ''
+    preferred_install_methods: []
+  dalfox_xss_scan:
+    binary: dalfox
+    kali_tool_page: https://kali.org/tools/dalfox-xss-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/dalfox
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/dalfox
+    upstream_repo: ''
+    preferred_install_methods: []
+  dalfox:
+    binary: dalfox
+    kali_tool_page: https://kali.org/tools/dalfox
+    kali_pkg_tracker: https://pkg.kali.org/pkg/dalfox
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/dalfox
+    upstream_repo: ''
+    preferred_install_methods: []
+  delete_file:
+    binary: delete
+    kali_tool_page: https://kali.org/tools/delete-file
+    kali_pkg_tracker: https://pkg.kali.org/pkg/delete
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/delete
+    upstream_repo: ''
+    preferred_install_methods: []
+  delete:
+    binary: delete
+    kali_tool_page: https://kali.org/tools/delete
+    kali_pkg_tracker: https://pkg.kali.org/pkg/delete
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/delete
+    upstream_repo: ''
+    preferred_install_methods: []
+  detect_technologies_ai:
+    binary: detect
+    kali_tool_page: https://kali.org/tools/detect-technologies-ai
+    kali_pkg_tracker: https://pkg.kali.org/pkg/detect
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/detect
+    upstream_repo: ''
+    preferred_install_methods: []
+  detect:
+    binary: detect
+    kali_tool_page: https://kali.org/tools/detect
+    kali_pkg_tracker: https://pkg.kali.org/pkg/detect
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/detect
+    upstream_repo: ''
+    preferred_install_methods: []
+  dirb_scan:
+    binary: dirb
+    kali_tool_page: https://kali.org/tools/dirb-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/dirb
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/dirb
+    upstream_repo: ''
+    preferred_install_methods: []
+  dirb:
+    binary: dirb
+    kali_tool_page: https://kali.org/tools/dirb
+    kali_pkg_tracker: https://pkg.kali.org/pkg/dirb
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/dirb
+    upstream_repo: ''
+    preferred_install_methods: []
+  dirsearch_scan:
+    binary: dirsearch
+    kali_tool_page: https://kali.org/tools/dirsearch-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/dirsearch
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/dirsearch
+    upstream_repo: ''
+    preferred_install_methods: []
+  dirsearch:
+    binary: dirsearch
+    kali_tool_page: https://kali.org/tools/dirsearch
+    kali_pkg_tracker: https://pkg.kali.org/pkg/dirsearch
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/dirsearch
+    upstream_repo: ''
+    preferred_install_methods: []
+  discover_attack_chains:
+    binary: discover
+    kali_tool_page: https://kali.org/tools/discover-attack-chains
+    kali_pkg_tracker: https://pkg.kali.org/pkg/discover
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/discover
+    upstream_repo: ''
+    preferred_install_methods: []
+  discover:
+    binary: discover
+    kali_tool_page: https://kali.org/tools/discover
+    kali_pkg_tracker: https://pkg.kali.org/pkg/discover
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/discover
+    upstream_repo: ''
+    preferred_install_methods: []
+  display_system_metrics:
+    binary: display
+    kali_tool_page: https://kali.org/tools/display-system-metrics
+    kali_pkg_tracker: https://pkg.kali.org/pkg/display
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/display
+    upstream_repo: ''
+    preferred_install_methods: []
+  display:
+    binary: display
+    kali_tool_page: https://kali.org/tools/display
+    kali_pkg_tracker: https://pkg.kali.org/pkg/display
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/display
+    upstream_repo: ''
+    preferred_install_methods: []
+  dnsenum_scan:
+    binary: dnsenum
+    kali_tool_page: https://kali.org/tools/dnsenum-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/dnsenum
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/dnsenum
+    upstream_repo: ''
+    preferred_install_methods: []
+  dnsenum:
+    binary: dnsenum
+    kali_tool_page: https://kali.org/tools/dnsenum
+    kali_pkg_tracker: https://pkg.kali.org/pkg/dnsenum
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/dnsenum
+    upstream_repo: ''
+    preferred_install_methods: []
+  docker_bench_security_scan:
+    binary: docker
+    kali_tool_page: https://kali.org/tools/docker-bench-security-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/docker
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/docker
+    upstream_repo: ''
+    preferred_install_methods: []
+  docker:
+    binary: docker
+    kali_tool_page: https://kali.org/tools/docker
+    kali_pkg_tracker: https://pkg.kali.org/pkg/docker
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/docker
+    upstream_repo: ''
+    preferred_install_methods: []
+  dotdotpwn_scan:
+    binary: dotdotpwn
+    kali_tool_page: https://kali.org/tools/dotdotpwn-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/dotdotpwn
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/dotdotpwn
+    upstream_repo: ''
+    preferred_install_methods: []
+  dotdotpwn:
+    binary: dotdotpwn
+    kali_tool_page: https://kali.org/tools/dotdotpwn
+    kali_pkg_tracker: https://pkg.kali.org/pkg/dotdotpwn
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/dotdotpwn
+    upstream_repo: ''
+    preferred_install_methods: []
+  enum4linux_ng_advanced:
+    binary: enum4linux
+    kali_tool_page: https://kali.org/tools/enum4linux-ng-advanced
+    kali_pkg_tracker: https://pkg.kali.org/pkg/enum4linux
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/enum4linux
+    upstream_repo: ''
+    preferred_install_methods: []
+  enum4linux:
+    binary: enum4linux
+    kali_tool_page: https://kali.org/tools/enum4linux
+    kali_pkg_tracker: https://pkg.kali.org/pkg/enum4linux
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/enum4linux
+    upstream_repo: ''
+    preferred_install_methods: []
+  enum4linux_scan:
+    binary: enum4linux
+    kali_tool_page: https://kali.org/tools/enum4linux-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/enum4linux
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/enum4linux
+    upstream_repo: ''
+    preferred_install_methods: []
+  error_handling_statistics:
+    binary: error
+    kali_tool_page: https://kali.org/tools/error-handling-statistics
+    kali_pkg_tracker: https://pkg.kali.org/pkg/error
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/error
+    upstream_repo: ''
+    preferred_install_methods: []
+  error:
+    binary: error
+    kali_tool_page: https://kali.org/tools/error
+    kali_pkg_tracker: https://pkg.kali.org/pkg/error
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/error
+    upstream_repo: ''
+    preferred_install_methods: []
+  execute_command:
+    binary: execute
+    kali_tool_page: https://kali.org/tools/execute-command
+    kali_pkg_tracker: https://pkg.kali.org/pkg/execute
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/execute
+    upstream_repo: ''
+    preferred_install_methods: []
+  execute:
+    binary: execute
+    kali_tool_page: https://kali.org/tools/execute
+    kali_pkg_tracker: https://pkg.kali.org/pkg/execute
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/execute
+    upstream_repo: ''
+    preferred_install_methods: []
+  execute_python_script:
+    binary: engage-python-exec
+    kali_tool_page: https://kali.org/tools/execute-python-script
+    kali_pkg_tracker: https://pkg.kali.org/pkg/engage-python-exec
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/engage-python-exec
+    upstream_repo: ''
+    preferred_install_methods: []
+  engage-python-exec:
+    binary: engage-python-exec
+    kali_tool_page: https://kali.org/tools/engage-python-exec
+    kali_pkg_tracker: https://pkg.kali.org/pkg/engage-python-exec
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/engage-python-exec
+    upstream_repo: ''
+    preferred_install_methods: []
+  exiftool_extract:
+    binary: exiftool
+    kali_tool_page: https://kali.org/tools/exiftool-extract
+    kali_pkg_tracker: https://pkg.kali.org/pkg/exiftool
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/exiftool
+    upstream_repo: ''
+    preferred_install_methods: []
+  exiftool:
+    binary: exiftool
+    kali_tool_page: https://kali.org/tools/exiftool
+    kali_pkg_tracker: https://pkg.kali.org/pkg/exiftool
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/exiftool
+    upstream_repo: ''
+    preferred_install_methods: []
+  falco_runtime_monitoring:
+    binary: falco
+    kali_tool_page: https://kali.org/tools/falco-runtime-monitoring
+    kali_pkg_tracker: https://pkg.kali.org/pkg/falco
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/falco
+    upstream_repo: ''
+    preferred_install_methods: []
+  falco:
+    binary: falco
+    kali_tool_page: https://kali.org/tools/falco
+    kali_pkg_tracker: https://pkg.kali.org/pkg/falco
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/falco
+    upstream_repo: ''
+    preferred_install_methods: []
+  feroxbuster_scan:
+    binary: feroxbuster
+    kali_tool_page: https://kali.org/tools/feroxbuster
+    kali_pkg_tracker: https://pkg.kali.org/pkg/feroxbuster
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/feroxbuster
+    upstream_repo: https://github.com/epi052/feroxbuster
+    preferred_install_methods:
+    - apt:feroxbuster
+    - cargo:feroxbuster
+  feroxbuster:
+    binary: feroxbuster
+    kali_tool_page: https://kali.org/tools/feroxbuster
+    kali_pkg_tracker: https://pkg.kali.org/pkg/feroxbuster
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/feroxbuster
+    upstream_repo: https://github.com/epi052/feroxbuster
+    preferred_install_methods:
+    - apt:feroxbuster
+    - cargo:feroxbuster
+  ffuf_scan:
+    binary: ffuf
+    kali_tool_page: https://kali.org/tools/ffuf
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ffuf
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ffuf
+    upstream_repo: https://github.com/ffuf/ffuf
+    preferred_install_methods:
+    - apt:ffuf
+    - go:github.com/ffuf/ffuf/v2@latest
+  ffuf:
+    binary: ffuf
+    kali_tool_page: https://kali.org/tools/ffuf
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ffuf
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ffuf
+    upstream_repo: https://github.com/ffuf/ffuf
+    preferred_install_methods:
+    - apt:ffuf
+    - go:github.com/ffuf/ffuf/v2@latest
+  fierce_scan:
+    binary: fierce
+    kali_tool_page: https://kali.org/tools/fierce-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/fierce
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/fierce
+    upstream_repo: ''
+    preferred_install_methods: []
+  fierce:
+    binary: fierce
+    kali_tool_page: https://kali.org/tools/fierce
+    kali_pkg_tracker: https://pkg.kali.org/pkg/fierce
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/fierce
+    upstream_repo: ''
+    preferred_install_methods: []
+  foremost_carving:
+    binary: foremost
+    kali_tool_page: https://kali.org/tools/foremost-carving
+    kali_pkg_tracker: https://pkg.kali.org/pkg/foremost
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/foremost
+    upstream_repo: ''
+    preferred_install_methods: []
+  foremost:
+    binary: foremost
+    kali_tool_page: https://kali.org/tools/foremost
+    kali_pkg_tracker: https://pkg.kali.org/pkg/foremost
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/foremost
+    upstream_repo: ''
+    preferred_install_methods: []
+  format_tool_output_visual:
+    binary: format
+    kali_tool_page: https://kali.org/tools/format-tool-output-visual
+    kali_pkg_tracker: https://pkg.kali.org/pkg/format
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/format
+    upstream_repo: ''
+    preferred_install_methods: []
+  format:
+    binary: format
+    kali_tool_page: https://kali.org/tools/format
+    kali_pkg_tracker: https://pkg.kali.org/pkg/format
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/format
+    upstream_repo: ''
+    preferred_install_methods: []
+  gau_discovery:
+    binary: gau
+    kali_tool_page: https://kali.org/tools/gau-discovery
+    kali_pkg_tracker: https://pkg.kali.org/pkg/gau
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/gau
+    upstream_repo: ''
+    preferred_install_methods: []
+  gau:
+    binary: gau
+    kali_tool_page: https://kali.org/tools/gau
+    kali_pkg_tracker: https://pkg.kali.org/pkg/gau
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/gau
+    upstream_repo: ''
+    preferred_install_methods: []
+  gdb_analyze:
+    binary: gdb
+    kali_tool_page: https://kali.org/tools/gdb-analyze
+    kali_pkg_tracker: https://pkg.kali.org/pkg/gdb
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/gdb
+    upstream_repo: ''
+    preferred_install_methods: []
+  gdb:
+    binary: gdb
+    kali_tool_page: https://kali.org/tools/gdb
+    kali_pkg_tracker: https://pkg.kali.org/pkg/gdb
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/gdb
+    upstream_repo: ''
+    preferred_install_methods: []
+  gdb_peda_debug:
+    binary: gdb
+    kali_tool_page: https://kali.org/tools/gdb-peda-debug
+    kali_pkg_tracker: https://pkg.kali.org/pkg/gdb
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/gdb
+    upstream_repo: ''
+    preferred_install_methods: []
+  generate_exploit_from_cve:
+    binary: generate
+    kali_tool_page: https://kali.org/tools/generate-exploit-from-cve
+    kali_pkg_tracker: https://pkg.kali.org/pkg/generate
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/generate
+    upstream_repo: ''
+    preferred_install_methods: []
+  generate:
+    binary: generate
+    kali_tool_page: https://kali.org/tools/generate
+    kali_pkg_tracker: https://pkg.kali.org/pkg/generate
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/generate
+    upstream_repo: ''
+    preferred_install_methods: []
+  generate_payload:
+    binary: generate
+    kali_tool_page: https://kali.org/tools/generate-payload
+    kali_pkg_tracker: https://pkg.kali.org/pkg/generate
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/generate
+    upstream_repo: ''
+    preferred_install_methods: []
+  get_cache_stats:
+    binary: get
+    kali_tool_page: https://kali.org/tools/get-cache-stats
+    kali_pkg_tracker: https://pkg.kali.org/pkg/get
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/get
+    upstream_repo: ''
+    preferred_install_methods: []
+  get:
+    binary: get
+    kali_tool_page: https://kali.org/tools/get
+    kali_pkg_tracker: https://pkg.kali.org/pkg/get
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/get
+    upstream_repo: ''
+    preferred_install_methods: []
+  get_live_dashboard:
+    binary: get
+    kali_tool_page: https://kali.org/tools/get-live-dashboard
+    kali_pkg_tracker: https://pkg.kali.org/pkg/get
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/get
+    upstream_repo: ''
+    preferred_install_methods: []
+  get_process_dashboard:
+    binary: get
+    kali_tool_page: https://kali.org/tools/get-process-dashboard
+    kali_pkg_tracker: https://pkg.kali.org/pkg/get
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/get
+    upstream_repo: ''
+    preferred_install_methods: []
+  get_process_status:
+    binary: get
+    kali_tool_page: https://kali.org/tools/get-process-status
+    kali_pkg_tracker: https://pkg.kali.org/pkg/get
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/get
+    upstream_repo: ''
+    preferred_install_methods: []
+  get_telemetry:
+    binary: get
+    kali_tool_page: https://kali.org/tools/get-telemetry
+    kali_pkg_tracker: https://pkg.kali.org/pkg/get
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/get
+    upstream_repo: ''
+    preferred_install_methods: []
+  ghidra_analysis:
+    binary: ghidra
+    kali_tool_page: https://kali.org/tools/ghidra-analysis
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ghidra
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ghidra
+    upstream_repo: ''
+    preferred_install_methods: []
+  ghidra:
+    binary: ghidra
+    kali_tool_page: https://kali.org/tools/ghidra
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ghidra
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ghidra
+    upstream_repo: ''
+    preferred_install_methods: []
+  gobuster_scan:
+    binary: gobuster
+    kali_tool_page: https://kali.org/tools/gobuster
+    kali_pkg_tracker: https://pkg.kali.org/pkg/gobuster
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/gobuster
+    upstream_repo: https://github.com/OJ/gobuster
+    preferred_install_methods:
+    - apt:gobuster
+    - go:github.com/OJ/gobuster/v3@latest
+  gobuster:
+    binary: gobuster
+    kali_tool_page: https://kali.org/tools/gobuster
+    kali_pkg_tracker: https://pkg.kali.org/pkg/gobuster
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/gobuster
+    upstream_repo: https://github.com/OJ/gobuster
+    preferred_install_methods:
+    - apt:gobuster
+    - go:github.com/OJ/gobuster/v3@latest
+  graphql_scanner:
+    binary: graphql
+    kali_tool_page: https://kali.org/tools/graphql-scanner
+    kali_pkg_tracker: https://pkg.kali.org/pkg/graphql
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/graphql
+    upstream_repo: ''
+    preferred_install_methods: []
+  graphql:
+    binary: graphql
+    kali_tool_page: https://kali.org/tools/graphql
+    kali_pkg_tracker: https://pkg.kali.org/pkg/graphql
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/graphql
+    upstream_repo: ''
+    preferred_install_methods: []
+  hakrawler_crawl:
+    binary: hakrawler
+    kali_tool_page: https://kali.org/tools/hakrawler-crawl
+    kali_pkg_tracker: https://pkg.kali.org/pkg/hakrawler
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/hakrawler
+    upstream_repo: ''
+    preferred_install_methods: []
+  hakrawler:
+    binary: hakrawler
+    kali_tool_page: https://kali.org/tools/hakrawler
+    kali_pkg_tracker: https://pkg.kali.org/pkg/hakrawler
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/hakrawler
+    upstream_repo: ''
+    preferred_install_methods: []
+  hashcat_crack:
+    binary: hashcat
+    kali_tool_page: https://kali.org/tools/hashcat-crack
+    kali_pkg_tracker: https://pkg.kali.org/pkg/hashcat
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/hashcat
+    upstream_repo: ''
+    preferred_install_methods: []
+  hashcat:
+    binary: hashcat
+    kali_tool_page: https://kali.org/tools/hashcat
+    kali_pkg_tracker: https://pkg.kali.org/pkg/hashcat
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/hashcat
+    upstream_repo: ''
+    preferred_install_methods: []
+  hashpump_attack:
+    binary: hashpump
+    kali_tool_page: https://kali.org/tools/hashpump-attack
+    kali_pkg_tracker: https://pkg.kali.org/pkg/hashpump
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/hashpump
+    upstream_repo: ''
+    preferred_install_methods: []
+  hashpump:
+    binary: hashpump
+    kali_tool_page: https://kali.org/tools/hashpump
+    kali_pkg_tracker: https://pkg.kali.org/pkg/hashpump
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/hashpump
+    upstream_repo: ''
+    preferred_install_methods: []
+  http_framework_test:
+    binary: http
+    kali_tool_page: https://kali.org/tools/http-framework-test
+    kali_pkg_tracker: https://pkg.kali.org/pkg/http
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/http
+    upstream_repo: ''
+    preferred_install_methods: []
+  http:
+    binary: http
+    kali_tool_page: https://kali.org/tools/http
+    kali_pkg_tracker: https://pkg.kali.org/pkg/http
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/http
+    upstream_repo: ''
+    preferred_install_methods: []
+  http_intruder:
+    binary: http
+    kali_tool_page: https://kali.org/tools/http-intruder
+    kali_pkg_tracker: https://pkg.kali.org/pkg/http
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/http
+    upstream_repo: ''
+    preferred_install_methods: []
+  http_repeater:
+    binary: http
+    kali_tool_page: https://kali.org/tools/http-repeater
+    kali_pkg_tracker: https://pkg.kali.org/pkg/http
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/http
+    upstream_repo: ''
+    preferred_install_methods: []
+  http_set_rules:
+    binary: http
+    kali_tool_page: https://kali.org/tools/http-set-rules
+    kali_pkg_tracker: https://pkg.kali.org/pkg/http
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/http
+    upstream_repo: ''
+    preferred_install_methods: []
+  http_set_scope:
+    binary: http
+    kali_tool_page: https://kali.org/tools/http-set-scope
+    kali_pkg_tracker: https://pkg.kali.org/pkg/http
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/http
+    upstream_repo: ''
+    preferred_install_methods: []
+  httpx_probe:
+    binary: httpx
+    kali_tool_page: https://kali.org/tools/httpx-toolkit
+    kali_pkg_tracker: https://pkg.kali.org/pkg/httpx-toolkit/
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/httpx-toolkit
+    upstream_repo: https://github.com/projectdiscovery/httpx
+    preferred_install_methods: &id002
+    - apt:httpx-toolkit
+    - go:github.com/projectdiscovery/httpx/cmd/httpx@latest
+  httpx:
+    binary: httpx
+    kali_tool_page: https://kali.org/tools/httpx-toolkit
+    kali_pkg_tracker: https://pkg.kali.org/pkg/httpx-toolkit/
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/httpx-toolkit
+    upstream_repo: https://github.com/projectdiscovery/httpx
+    preferred_install_methods: *id002
+  hydra_attack:
+    binary: hydra
+    kali_tool_page: https://kali.org/tools/hydra-attack
+    kali_pkg_tracker: https://pkg.kali.org/pkg/hydra
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/hydra
+    upstream_repo: ''
+    preferred_install_methods: []
+  hydra:
+    binary: hydra
+    kali_tool_page: https://kali.org/tools/hydra
+    kali_pkg_tracker: https://pkg.kali.org/pkg/hydra
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/hydra
+    upstream_repo: ''
+    preferred_install_methods: []
+  install_python_package:
+    binary: engage-python-install
+    kali_tool_page: https://kali.org/tools/install-python-package
+    kali_pkg_tracker: https://pkg.kali.org/pkg/engage-python-install
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/engage-python-install
+    upstream_repo: ''
+    preferred_install_methods: []
+  engage-python-install:
+    binary: engage-python-install
+    kali_tool_page: https://kali.org/tools/engage-python-install
+    kali_pkg_tracker: https://pkg.kali.org/pkg/engage-python-install
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/engage-python-install
+    upstream_repo: ''
+    preferred_install_methods: []
+  intelligent_smart_scan:
+    binary: intelligent
+    kali_tool_page: https://kali.org/tools/intelligent-smart-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/intelligent
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/intelligent
+    upstream_repo: ''
+    preferred_install_methods: []
+  intelligent:
+    binary: intelligent
+    kali_tool_page: https://kali.org/tools/intelligent
+    kali_pkg_tracker: https://pkg.kali.org/pkg/intelligent
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/intelligent
+    upstream_repo: ''
+    preferred_install_methods: []
+  jaeles_vulnerability_scan:
+    binary: jaeles
+    kali_tool_page: https://kali.org/tools/jaeles-vulnerability-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/jaeles
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/jaeles
+    upstream_repo: ''
+    preferred_install_methods: []
+  jaeles:
+    binary: jaeles
+    kali_tool_page: https://kali.org/tools/jaeles
+    kali_pkg_tracker: https://pkg.kali.org/pkg/jaeles
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/jaeles
+    upstream_repo: ''
+    preferred_install_methods: []
+  john_crack:
+    binary: john
+    kali_tool_page: https://kali.org/tools/john-crack
+    kali_pkg_tracker: https://pkg.kali.org/pkg/john
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/john
+    upstream_repo: ''
+    preferred_install_methods: []
+  john:
+    binary: john
+    kali_tool_page: https://kali.org/tools/john
+    kali_pkg_tracker: https://pkg.kali.org/pkg/john
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/john
+    upstream_repo: ''
+    preferred_install_methods: []
+  jwt_analyzer:
+    binary: jwt
+    kali_tool_page: https://kali.org/tools/jwt-analyzer
+    kali_pkg_tracker: https://pkg.kali.org/pkg/jwt
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/jwt
+    upstream_repo: ''
+    preferred_install_methods: []
+  jwt:
+    binary: jwt
+    kali_tool_page: https://kali.org/tools/jwt
+    kali_pkg_tracker: https://pkg.kali.org/pkg/jwt
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/jwt
+    upstream_repo: ''
+    preferred_install_methods: []
+  katana_crawl:
+    binary: katana
+    kali_tool_page: https://kali.org/tools/katana-crawl
+    kali_pkg_tracker: https://pkg.kali.org/pkg/katana
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/katana
+    upstream_repo: ''
+    preferred_install_methods: []
+  katana:
+    binary: katana
+    kali_tool_page: https://kali.org/tools/katana
+    kali_pkg_tracker: https://pkg.kali.org/pkg/katana
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/katana
+    upstream_repo: ''
+    preferred_install_methods: []
+  kube_bench_cis:
+    binary: kube
+    kali_tool_page: https://kali.org/tools/kube-bench-cis
+    kali_pkg_tracker: https://pkg.kali.org/pkg/kube
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/kube
+    upstream_repo: ''
+    preferred_install_methods: []
+  kube:
+    binary: kube
+    kali_tool_page: https://kali.org/tools/kube
+    kali_pkg_tracker: https://pkg.kali.org/pkg/kube
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/kube
+    upstream_repo: ''
+    preferred_install_methods: []
+  kube_hunter_scan:
+    binary: kube
+    kali_tool_page: https://kali.org/tools/kube-hunter-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/kube
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/kube
+    upstream_repo: ''
+    preferred_install_methods: []
+  libc_database_lookup:
+    binary: libc
+    kali_tool_page: https://kali.org/tools/libc-database-lookup
+    kali_pkg_tracker: https://pkg.kali.org/pkg/libc
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/libc
+    upstream_repo: ''
+    preferred_install_methods: []
+  libc:
+    binary: libc
+    kali_tool_page: https://kali.org/tools/libc
+    kali_pkg_tracker: https://pkg.kali.org/pkg/libc
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/libc
+    upstream_repo: ''
+    preferred_install_methods: []
+  list_active_processes:
+    binary: list
+    kali_tool_page: https://kali.org/tools/list-active-processes
+    kali_pkg_tracker: https://pkg.kali.org/pkg/list
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/list
+    upstream_repo: ''
+    preferred_install_methods: []
+  list:
+    binary: list
+    kali_tool_page: https://kali.org/tools/list
+    kali_pkg_tracker: https://pkg.kali.org/pkg/list
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/list
+    upstream_repo: ''
+    preferred_install_methods: []
+  list_files:
+    binary: list
+    kali_tool_page: https://kali.org/tools/list-files
+    kali_pkg_tracker: https://pkg.kali.org/pkg/list
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/list
+    upstream_repo: ''
+    preferred_install_methods: []
+  masscan_high_speed:
+    binary: masscan
+    kali_tool_page: https://kali.org/tools/masscan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/masscan
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/masscan
+    upstream_repo: https://github.com/robertdavidgraham/masscan
+    preferred_install_methods: &id003
+    - apt:masscan
+  masscan:
+    binary: masscan
+    kali_tool_page: https://kali.org/tools/masscan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/masscan
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/masscan
+    upstream_repo: https://github.com/robertdavidgraham/masscan
+    preferred_install_methods: *id003
+  metasploit_run:
+    binary: metasploit
+    kali_tool_page: https://kali.org/tools/metasploit-run
+    kali_pkg_tracker: https://pkg.kali.org/pkg/metasploit
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/metasploit
+    upstream_repo: ''
+    preferred_install_methods: []
+  metasploit:
+    binary: metasploit
+    kali_tool_page: https://kali.org/tools/metasploit
+    kali_pkg_tracker: https://pkg.kali.org/pkg/metasploit
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/metasploit
+    upstream_repo: ''
+    preferred_install_methods: []
+  modify_file:
+    binary: modify
+    kali_tool_page: https://kali.org/tools/modify-file
+    kali_pkg_tracker: https://pkg.kali.org/pkg/modify
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/modify
+    upstream_repo: ''
+    preferred_install_methods: []
+  modify:
+    binary: modify
+    kali_tool_page: https://kali.org/tools/modify
+    kali_pkg_tracker: https://pkg.kali.org/pkg/modify
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/modify
+    upstream_repo: ''
+    preferred_install_methods: []
+  monitor_cve_feeds:
+    binary: monitor
+    kali_tool_page: https://kali.org/tools/monitor-cve-feeds
+    kali_pkg_tracker: https://pkg.kali.org/pkg/monitor
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/monitor
+    upstream_repo: ''
+    preferred_install_methods: []
+  monitor:
+    binary: monitor
+    kali_tool_page: https://kali.org/tools/monitor
+    kali_pkg_tracker: https://pkg.kali.org/pkg/monitor
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/monitor
+    upstream_repo: ''
+    preferred_install_methods: []
+  msfvenom_generate:
+    binary: msfvenom
+    kali_tool_page: https://kali.org/tools/msfvenom-generate
+    kali_pkg_tracker: https://pkg.kali.org/pkg/msfvenom
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/msfvenom
+    upstream_repo: ''
+    preferred_install_methods: []
+  msfvenom:
+    binary: msfvenom
+    kali_tool_page: https://kali.org/tools/msfvenom
+    kali_pkg_tracker: https://pkg.kali.org/pkg/msfvenom
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/msfvenom
+    upstream_repo: ''
+    preferred_install_methods: []
+  nbtscan_netbios:
+    binary: nbtscan
+    kali_tool_page: https://kali.org/tools/nbtscan-netbios
+    kali_pkg_tracker: https://pkg.kali.org/pkg/nbtscan
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/nbtscan
+    upstream_repo: ''
+    preferred_install_methods: []
+  nbtscan:
+    binary: nbtscan
+    kali_tool_page: https://kali.org/tools/nbtscan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/nbtscan
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/nbtscan
+    upstream_repo: ''
+    preferred_install_methods: []
+  netexec_scan:
+    binary: netexec
+    kali_tool_page: https://kali.org/tools/netexec-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/netexec
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/netexec
+    upstream_repo: ''
+    preferred_install_methods: []
+  netexec:
+    binary: netexec
+    kali_tool_page: https://kali.org/tools/netexec
+    kali_pkg_tracker: https://pkg.kali.org/pkg/netexec
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/netexec
+    upstream_repo: ''
+    preferred_install_methods: []
+  nikto_scan:
+    binary: nikto
+    kali_tool_page: https://kali.org/tools/nikto
+    kali_pkg_tracker: https://pkg.kali.org/pkg/nikto
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/nikto
+    upstream_repo: https://github.com/sullo/nikto
+    preferred_install_methods:
+    - apt:nikto
+  nikto:
+    binary: nikto
+    kali_tool_page: https://kali.org/tools/nikto
+    kali_pkg_tracker: https://pkg.kali.org/pkg/nikto
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/nikto
+    upstream_repo: https://github.com/sullo/nikto
+    preferred_install_methods:
+    - apt:nikto
+  nmap_advanced_scan:
+    binary: nmap
+    kali_tool_page: https://kali.org/tools/nmap-advanced-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/nmap
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/nmap
+    upstream_repo: ''
+    preferred_install_methods: []
+  nmap:
+    binary: nmap
+    kali_tool_page: https://kali.org/tools/nmap
+    kali_pkg_tracker: https://pkg.kali.org/pkg/nmap
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/nmap
+    upstream_repo: ''
+    preferred_install_methods: []
+  nmap_scan:
+    binary: nmap
+    kali_tool_page: https://kali.org/tools/nmap-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/nmap
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/nmap
+    upstream_repo: ''
+    preferred_install_methods: []
+  nuclei_scan:
+    binary: nuclei
+    kali_tool_page: https://kali.org/tools/nuclei
+    kali_pkg_tracker: https://pkg.kali.org/pkg/nuclei
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/nuclei
+    upstream_repo: https://github.com/projectdiscovery/nuclei
+    preferred_install_methods:
+    - apt:nuclei
+    - go:github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
+  nuclei:
+    binary: nuclei
+    kali_tool_page: https://kali.org/tools/nuclei
+    kali_pkg_tracker: https://pkg.kali.org/pkg/nuclei
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/nuclei
+    upstream_repo: https://github.com/projectdiscovery/nuclei
+    preferred_install_methods:
+    - apt:nuclei
+    - go:github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
+  objdump_analyze:
+    binary: objdump
+    kali_tool_page: https://kali.org/tools/objdump-analyze
+    kali_pkg_tracker: https://pkg.kali.org/pkg/objdump
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/objdump
+    upstream_repo: ''
+    preferred_install_methods: []
+  objdump:
+    binary: objdump
+    kali_tool_page: https://kali.org/tools/objdump
+    kali_pkg_tracker: https://pkg.kali.org/pkg/objdump
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/objdump
+    upstream_repo: ''
+    preferred_install_methods: []
+  one_gadget_search:
+    binary: one
+    kali_tool_page: https://kali.org/tools/one-gadget-search
+    kali_pkg_tracker: https://pkg.kali.org/pkg/one
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/one
+    upstream_repo: ''
+    preferred_install_methods: []
+  one:
+    binary: one
+    kali_tool_page: https://kali.org/tools/one
+    kali_pkg_tracker: https://pkg.kali.org/pkg/one
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/one
+    upstream_repo: ''
+    preferred_install_methods: []
+  optimize_tool_parameters_ai:
+    binary: optimize
+    kali_tool_page: https://kali.org/tools/optimize-tool-parameters-ai
+    kali_pkg_tracker: https://pkg.kali.org/pkg/optimize
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/optimize
+    upstream_repo: ''
+    preferred_install_methods: []
+  optimize:
+    binary: optimize
+    kali_tool_page: https://kali.org/tools/optimize
+    kali_pkg_tracker: https://pkg.kali.org/pkg/optimize
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/optimize
+    upstream_repo: ''
+    preferred_install_methods: []
+  pacu_exploitation:
+    binary: pacu
+    kali_tool_page: https://kali.org/tools/pacu-exploitation
+    kali_pkg_tracker: https://pkg.kali.org/pkg/pacu
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/pacu
+    upstream_repo: ''
+    preferred_install_methods: []
+  pacu:
+    binary: pacu
+    kali_tool_page: https://kali.org/tools/pacu
+    kali_pkg_tracker: https://pkg.kali.org/pkg/pacu
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/pacu
+    upstream_repo: ''
+    preferred_install_methods: []
+  paramspider_discovery:
+    binary: paramspider
+    kali_tool_page: https://kali.org/tools/paramspider-discovery
+    kali_pkg_tracker: https://pkg.kali.org/pkg/paramspider
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/paramspider
+    upstream_repo: ''
+    preferred_install_methods: []
+  paramspider:
+    binary: paramspider
+    kali_tool_page: https://kali.org/tools/paramspider
+    kali_pkg_tracker: https://pkg.kali.org/pkg/paramspider
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/paramspider
+    upstream_repo: ''
+    preferred_install_methods: []
+  paramspider_mining:
+    binary: paramspider
+    kali_tool_page: https://kali.org/tools/paramspider-mining
+    kali_pkg_tracker: https://pkg.kali.org/pkg/paramspider
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/paramspider
+    upstream_repo: ''
+    preferred_install_methods: []
+  pause_process:
+    binary: pause
+    kali_tool_page: https://kali.org/tools/pause-process
+    kali_pkg_tracker: https://pkg.kali.org/pkg/pause
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/pause
+    upstream_repo: ''
+    preferred_install_methods: []
+  pause:
+    binary: pause
+    kali_tool_page: https://kali.org/tools/pause
+    kali_pkg_tracker: https://pkg.kali.org/pkg/pause
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/pause
+    upstream_repo: ''
+    preferred_install_methods: []
+  prowler_scan:
+    binary: prowler
+    kali_tool_page: https://kali.org/tools/prowler-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/prowler
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/prowler
+    upstream_repo: ''
+    preferred_install_methods: []
+  prowler:
+    binary: prowler
+    kali_tool_page: https://kali.org/tools/prowler
+    kali_pkg_tracker: https://pkg.kali.org/pkg/prowler
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/prowler
+    upstream_repo: ''
+    preferred_install_methods: []
+  pwninit_setup:
+    binary: pwninit
+    kali_tool_page: https://kali.org/tools/pwninit-setup
+    kali_pkg_tracker: https://pkg.kali.org/pkg/pwninit
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/pwninit
+    upstream_repo: ''
+    preferred_install_methods: []
+  pwninit:
+    binary: pwninit
+    kali_tool_page: https://kali.org/tools/pwninit
+    kali_pkg_tracker: https://pkg.kali.org/pkg/pwninit
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/pwninit
+    upstream_repo: ''
+    preferred_install_methods: []
+  pwntools_exploit:
+    binary: pwntools
+    kali_tool_page: https://kali.org/tools/pwntools-exploit
+    kali_pkg_tracker: https://pkg.kali.org/pkg/pwntools
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/pwntools
+    upstream_repo: ''
+    preferred_install_methods: []
+  pwntools:
+    binary: pwntools
+    kali_tool_page: https://kali.org/tools/pwntools
+    kali_pkg_tracker: https://pkg.kali.org/pkg/pwntools
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/pwntools
+    upstream_repo: ''
+    preferred_install_methods: []
+  qsreplace_parameter_replacement:
+    binary: qsreplace
+    kali_tool_page: https://kali.org/tools/qsreplace-parameter-replacement
+    kali_pkg_tracker: https://pkg.kali.org/pkg/qsreplace
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/qsreplace
+    upstream_repo: ''
+    preferred_install_methods: []
+  qsreplace:
+    binary: qsreplace
+    kali_tool_page: https://kali.org/tools/qsreplace
+    kali_pkg_tracker: https://pkg.kali.org/pkg/qsreplace
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/qsreplace
+    upstream_repo: ''
+    preferred_install_methods: []
+  radare2_analyze:
+    binary: radare2
+    kali_tool_page: https://kali.org/tools/radare2-analyze
+    kali_pkg_tracker: https://pkg.kali.org/pkg/radare2
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/radare2
+    upstream_repo: ''
+    preferred_install_methods: []
+  radare2:
+    binary: radare2
+    kali_tool_page: https://kali.org/tools/radare2
+    kali_pkg_tracker: https://pkg.kali.org/pkg/radare2
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/radare2
+    upstream_repo: ''
+    preferred_install_methods: []
+  research_zero_day_opportunities:
+    binary: research
+    kali_tool_page: https://kali.org/tools/research-zero-day-opportunities
+    kali_pkg_tracker: https://pkg.kali.org/pkg/research
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/research
+    upstream_repo: ''
+    preferred_install_methods: []
+  research:
+    binary: research
+    kali_tool_page: https://kali.org/tools/research
+    kali_pkg_tracker: https://pkg.kali.org/pkg/research
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/research
+    upstream_repo: ''
+    preferred_install_methods: []
+  responder_credential_harvest:
+    binary: responder
+    kali_tool_page: https://kali.org/tools/responder-credential-harvest
+    kali_pkg_tracker: https://pkg.kali.org/pkg/responder
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/responder
+    upstream_repo: ''
+    preferred_install_methods: []
+  responder:
+    binary: responder
+    kali_tool_page: https://kali.org/tools/responder
+    kali_pkg_tracker: https://pkg.kali.org/pkg/responder
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/responder
+    upstream_repo: ''
+    preferred_install_methods: []
+  resume_process:
+    binary: resume
+    kali_tool_page: https://kali.org/tools/resume-process
+    kali_pkg_tracker: https://pkg.kali.org/pkg/resume
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/resume
+    upstream_repo: ''
+    preferred_install_methods: []
+  resume:
+    binary: resume
+    kali_tool_page: https://kali.org/tools/resume
+    kali_pkg_tracker: https://pkg.kali.org/pkg/resume
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/resume
+    upstream_repo: ''
+    preferred_install_methods: []
+  ropgadget_search:
+    binary: ropgadget
+    kali_tool_page: https://kali.org/tools/ropgadget-search
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ropgadget
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ropgadget
+    upstream_repo: ''
+    preferred_install_methods: []
+  ropgadget:
+    binary: ropgadget
+    kali_tool_page: https://kali.org/tools/ropgadget
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ropgadget
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ropgadget
+    upstream_repo: ''
+    preferred_install_methods: []
+  ropper_gadget_search:
+    binary: ropper
+    kali_tool_page: https://kali.org/tools/ropper-gadget-search
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ropper
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ropper
+    upstream_repo: ''
+    preferred_install_methods: []
+  ropper:
+    binary: ropper
+    kali_tool_page: https://kali.org/tools/ropper
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ropper
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ropper
+    upstream_repo: ''
+    preferred_install_methods: []
+  rpcclient_enumeration:
+    binary: rpcclient
+    kali_tool_page: https://kali.org/tools/rpcclient-enumeration
+    kali_pkg_tracker: https://pkg.kali.org/pkg/rpcclient
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/rpcclient
+    upstream_repo: ''
+    preferred_install_methods: []
+  rpcclient:
+    binary: rpcclient
+    kali_tool_page: https://kali.org/tools/rpcclient
+    kali_pkg_tracker: https://pkg.kali.org/pkg/rpcclient
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/rpcclient
+    upstream_repo: ''
+    preferred_install_methods: []
+  rustscan_fast_scan:
+    binary: rustscan
+    kali_tool_page: https://kali.org/tools/rustscan-fast-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/rustscan
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/rustscan
+    upstream_repo: ''
+    preferred_install_methods: []
+  rustscan:
+    binary: rustscan
+    kali_tool_page: https://kali.org/tools/rustscan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/rustscan
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/rustscan
+    upstream_repo: ''
+    preferred_install_methods: []
+  scout_suite_assessment:
+    binary: scout
+    kali_tool_page: https://kali.org/tools/scout-suite-assessment
+    kali_pkg_tracker: https://pkg.kali.org/pkg/scout
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/scout
+    upstream_repo: ''
+    preferred_install_methods: []
+  scout:
+    binary: scout
+    kali_tool_page: https://kali.org/tools/scout
+    kali_pkg_tracker: https://pkg.kali.org/pkg/scout
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/scout
+    upstream_repo: ''
+    preferred_install_methods: []
+  select_optimal_tools_ai:
+    binary: select
+    kali_tool_page: https://kali.org/tools/select-optimal-tools-ai
+    kali_pkg_tracker: https://pkg.kali.org/pkg/select
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/select
+    upstream_repo: ''
+    preferred_install_methods: []
+  select:
+    binary: select
+    kali_tool_page: https://kali.org/tools/select
+    kali_pkg_tracker: https://pkg.kali.org/pkg/select
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/select
+    upstream_repo: ''
+    preferred_install_methods: []
+  server_health:
+    binary: server
+    kali_tool_page: https://kali.org/tools/server-health
+    kali_pkg_tracker: https://pkg.kali.org/pkg/server
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/server
+    upstream_repo: ''
+    preferred_install_methods: []
+  server:
+    binary: server
+    kali_tool_page: https://kali.org/tools/server
+    kali_pkg_tracker: https://pkg.kali.org/pkg/server
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/server
+    upstream_repo: ''
+    preferred_install_methods: []
+  smbmap_scan:
+    binary: smbmap
+    kali_tool_page: https://kali.org/tools/smbmap-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/smbmap
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/smbmap
+    upstream_repo: ''
+    preferred_install_methods: []
+  smbmap:
+    binary: smbmap
+    kali_tool_page: https://kali.org/tools/smbmap
+    kali_pkg_tracker: https://pkg.kali.org/pkg/smbmap
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/smbmap
+    upstream_repo: ''
+    preferred_install_methods: []
+  sqlmap_scan:
+    binary: sqlmap
+    kali_tool_page: https://kali.org/tools/sqlmap
+    kali_pkg_tracker: https://pkg.kali.org/pkg/sqlmap
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/sqlmap
+    upstream_repo: https://github.com/sqlmapproject/sqlmap
+    preferred_install_methods:
+    - apt:sqlmap
+  sqlmap:
+    binary: sqlmap
+    kali_tool_page: https://kali.org/tools/sqlmap
+    kali_pkg_tracker: https://pkg.kali.org/pkg/sqlmap
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/sqlmap
+    upstream_repo: https://github.com/sqlmapproject/sqlmap
+    preferred_install_methods:
+    - apt:sqlmap
+  steghide_analysis:
+    binary: steghide
+    kali_tool_page: https://kali.org/tools/steghide-analysis
+    kali_pkg_tracker: https://pkg.kali.org/pkg/steghide
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/steghide
+    upstream_repo: ''
+    preferred_install_methods: []
+  steghide:
+    binary: steghide
+    kali_tool_page: https://kali.org/tools/steghide
+    kali_pkg_tracker: https://pkg.kali.org/pkg/steghide
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/steghide
+    upstream_repo: ''
+    preferred_install_methods: []
+  strings_extract:
+    binary: strings
+    kali_tool_page: https://kali.org/tools/strings-extract
+    kali_pkg_tracker: https://pkg.kali.org/pkg/strings
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/strings
+    upstream_repo: ''
+    preferred_install_methods: []
+  strings:
+    binary: strings
+    kali_tool_page: https://kali.org/tools/strings
+    kali_pkg_tracker: https://pkg.kali.org/pkg/strings
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/strings
+    upstream_repo: ''
+    preferred_install_methods: []
+  subfinder_scan:
+    binary: subfinder
+    kali_tool_page: https://kali.org/tools/subfinder
+    kali_pkg_tracker: https://pkg.kali.org/pkg/subfinder
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/subfinder
+    upstream_repo: https://github.com/projectdiscovery/subfinder
+    preferred_install_methods: &id004
+    - apt:subfinder
+    - go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+  subfinder:
+    binary: subfinder
+    kali_tool_page: https://kali.org/tools/subfinder
+    kali_pkg_tracker: https://pkg.kali.org/pkg/subfinder
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/subfinder
+    upstream_repo: https://github.com/projectdiscovery/subfinder
+    preferred_install_methods: *id004
+  target_timeline_intelligence:
+    binary: api
+    kali_tool_page: https://kali.org/tools/target-timeline-intelligence
+    kali_pkg_tracker: https://pkg.kali.org/pkg/api
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/api
+    upstream_repo: ''
+    preferred_install_methods: []
+  terminate_process:
+    binary: terminate
+    kali_tool_page: https://kali.org/tools/terminate-process
+    kali_pkg_tracker: https://pkg.kali.org/pkg/terminate
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/terminate
+    upstream_repo: ''
+    preferred_install_methods: []
+  terminate:
+    binary: terminate
+    kali_tool_page: https://kali.org/tools/terminate
+    kali_pkg_tracker: https://pkg.kali.org/pkg/terminate
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/terminate
+    upstream_repo: ''
+    preferred_install_methods: []
+  terrascan_iac_scan:
+    binary: terrascan
+    kali_tool_page: https://kali.org/tools/terrascan-iac-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/terrascan
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/terrascan
+    upstream_repo: ''
+    preferred_install_methods: []
+  terrascan:
+    binary: terrascan
+    kali_tool_page: https://kali.org/tools/terrascan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/terrascan
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/terrascan
+    upstream_repo: ''
+    preferred_install_methods: []
+  test_error_recovery:
+    binary: test
+    kali_tool_page: https://kali.org/tools/test-error-recovery
+    kali_pkg_tracker: https://pkg.kali.org/pkg/test
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/test
+    upstream_repo: ''
+    preferred_install_methods: []
+  test:
+    binary: test
+    kali_tool_page: https://kali.org/tools/test
+    kali_pkg_tracker: https://pkg.kali.org/pkg/test
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/test
+    upstream_repo: ''
+    preferred_install_methods: []
+  threat_hunting_assistant:
+    binary: threat
+    kali_tool_page: https://kali.org/tools/threat-hunting-assistant
+    kali_pkg_tracker: https://pkg.kali.org/pkg/threat
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/threat
+    upstream_repo: ''
+    preferred_install_methods: []
+  threat:
+    binary: threat
+    kali_tool_page: https://kali.org/tools/threat
+    kali_pkg_tracker: https://pkg.kali.org/pkg/threat
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/threat
+    upstream_repo: ''
+    preferred_install_methods: []
+  trivy_scan:
+    binary: trivy
+    kali_tool_page: https://kali.org/tools/trivy-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/trivy
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/trivy
+    upstream_repo: ''
+    preferred_install_methods: []
+  trivy:
+    binary: trivy
+    kali_tool_page: https://kali.org/tools/trivy
+    kali_pkg_tracker: https://pkg.kali.org/pkg/trivy
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/trivy
+    upstream_repo: ''
+    preferred_install_methods: []
+  uro_url_filtering:
+    binary: uro
+    kali_tool_page: https://kali.org/tools/uro-url-filtering
+    kali_pkg_tracker: https://pkg.kali.org/pkg/uro
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/uro
+    upstream_repo: ''
+    preferred_install_methods: []
+  uro:
+    binary: uro
+    kali_tool_page: https://kali.org/tools/uro
+    kali_pkg_tracker: https://pkg.kali.org/pkg/uro
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/uro
+    upstream_repo: ''
+    preferred_install_methods: []
+  volatility3_analyze:
+    binary: volatility3
+    kali_tool_page: https://kali.org/tools/volatility3-analyze
+    kali_pkg_tracker: https://pkg.kali.org/pkg/volatility3
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/volatility3
+    upstream_repo: ''
+    preferred_install_methods: []
+  volatility3:
+    binary: volatility3
+    kali_tool_page: https://kali.org/tools/volatility3
+    kali_pkg_tracker: https://pkg.kali.org/pkg/volatility3
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/volatility3
+    upstream_repo: ''
+    preferred_install_methods: []
+  volatility_analyze:
+    binary: volatility
+    kali_tool_page: https://kali.org/tools/volatility-analyze
+    kali_pkg_tracker: https://pkg.kali.org/pkg/volatility
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/volatility
+    upstream_repo: ''
+    preferred_install_methods: []
+  volatility:
+    binary: volatility
+    kali_tool_page: https://kali.org/tools/volatility
+    kali_pkg_tracker: https://pkg.kali.org/pkg/volatility
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/volatility
+    upstream_repo: ''
+    preferred_install_methods: []
+  vulnerability_intelligence_dashboard:
+    binary: vulnerability
+    kali_tool_page: https://kali.org/tools/vulnerability-intelligence-dashboard
+    kali_pkg_tracker: https://pkg.kali.org/pkg/vulnerability
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/vulnerability
+    upstream_repo: ''
+    preferred_install_methods: []
+  vulnerability:
+    binary: vulnerability
+    kali_tool_page: https://kali.org/tools/vulnerability
+    kali_pkg_tracker: https://pkg.kali.org/pkg/vulnerability
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/vulnerability
+    upstream_repo: ''
+    preferred_install_methods: []
+  wafw00f_scan:
+    binary: wafw00f
+    kali_tool_page: https://kali.org/tools/wafw00f-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/wafw00f
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/wafw00f
+    upstream_repo: ''
+    preferred_install_methods: []
+  wafw00f:
+    binary: wafw00f
+    kali_tool_page: https://kali.org/tools/wafw00f
+    kali_pkg_tracker: https://pkg.kali.org/pkg/wafw00f
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/wafw00f
+    upstream_repo: ''
+    preferred_install_methods: []
+  waybackurls_discovery:
+    binary: waybackurls
+    kali_tool_page: https://kali.org/tools/waybackurls-discovery
+    kali_pkg_tracker: https://pkg.kali.org/pkg/waybackurls
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/waybackurls
+    upstream_repo: ''
+    preferred_install_methods: []
+  waybackurls:
+    binary: waybackurls
+    kali_tool_page: https://kali.org/tools/waybackurls
+    kali_pkg_tracker: https://pkg.kali.org/pkg/waybackurls
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/waybackurls
+    upstream_repo: ''
+    preferred_install_methods: []
+  wfuzz_scan:
+    binary: wfuzz
+    kali_tool_page: https://kali.org/tools/wfuzz-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/wfuzz
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/wfuzz
+    upstream_repo: ''
+    preferred_install_methods: []
+  wfuzz:
+    binary: wfuzz
+    kali_tool_page: https://kali.org/tools/wfuzz
+    kali_pkg_tracker: https://pkg.kali.org/pkg/wfuzz
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/wfuzz
+    upstream_repo: ''
+    preferred_install_methods: []
+  wpscan_analyze:
+    binary: wpscan
+    kali_tool_page: https://kali.org/tools/wpscan-analyze
+    kali_pkg_tracker: https://pkg.kali.org/pkg/wpscan
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/wpscan
+    upstream_repo: ''
+    preferred_install_methods: []
+  wpscan:
+    binary: wpscan
+    kali_tool_page: https://kali.org/tools/wpscan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/wpscan
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/wpscan
+    upstream_repo: ''
+    preferred_install_methods: []
+  x8_parameter_discovery:
+    binary: x8
+    kali_tool_page: https://kali.org/tools/x8-parameter-discovery
+    kali_pkg_tracker: https://pkg.kali.org/pkg/x8
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/x8
+    upstream_repo: ''
+    preferred_install_methods: []
+  x8:
+    binary: x8
+    kali_tool_page: https://kali.org/tools/x8
+    kali_pkg_tracker: https://pkg.kali.org/pkg/x8
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/x8
+    upstream_repo: ''
+    preferred_install_methods: []
+  theharvester:
+    binary: theHarvester
+    kali_tool_page: https://kali.org/tools/theharvester
+    kali_pkg_tracker: https://pkg.kali.org/pkg/theharvester
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/theharvester
+    upstream_repo: https://github.com/laramies/theHarvester
+    preferred_install_methods:
+    - apt:theharvester
+    - pipx:theHarvester
+  enum4linux-ng:
+    binary: enum4linux-ng
+    kali_tool_page: https://kali.org/tools/enum4linux-ng
+    kali_pkg_tracker: https://pkg.kali.org/pkg/enum4linux-ng
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/enum4linux-ng
+    upstream_repo: https://github.com/cddmp/enum4linux-ng
+    preferred_install_methods:
+    - apt:enum4linux-ng
+    - git:https://github.com/cddmp/enum4linux-ng.git
+  medusa:
+    binary: medusa
+    kali_tool_page: https://kali.org/tools/medusa
+    kali_pkg_tracker: https://pkg.kali.org/pkg/medusa
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/medusa
+    upstream_repo: https://github.com/jmk-foofus/medusa
+    preferred_install_methods:
+    - apt:medusa
+  patator:
+    binary: patator
+    kali_tool_page: https://kali.org/tools/patator
+    kali_pkg_tracker: https://pkg.kali.org/pkg/patator
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/patator
+    upstream_repo: https://github.com/lanjelot/patator
+    preferred_install_methods:
+    - apt:patator
+    - pipx:patator
+  crackmapexec:
+    binary: netexec
+    kali_tool_page: https://kali.org/tools/netexec
+    kali_pkg_tracker: https://pkg.kali.org/pkg/netexec
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/netexec
+    upstream_repo: https://github.com/Pennyw0rth/NetExec
+    preferred_install_methods:
+    - apt:netexec
+    - pipx:netexec
+  evil-winrm:
+    binary: evil-winrm
+    kali_tool_page: https://kali.org/tools/evil-winrm
+    kali_pkg_tracker: https://pkg.kali.org/pkg/evil-winrm
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/evil-winrm
+    upstream_repo: https://github.com/Hackplayers/evil-winrm
+    preferred_install_methods:
+    - apt:evil-winrm
+    - gem:evil-winrm
+  hash-identifier:
+    binary: hashid
+    kali_tool_page: https://kali.org/tools/hash-identifier
+    kali_pkg_tracker: https://pkg.kali.org/pkg/hash-identifier
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/hash-identifier
+    upstream_repo: https://github.com/psypanda/hashID
+    preferred_install_methods:
+    - apt:hash-identifier
+    - pipx:hashid
+  ophcrack:
+    binary: ophcrack
+    kali_tool_page: https://kali.org/tools/ophcrack
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ophcrack
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ophcrack
+    upstream_repo: https://github.com/openwall/ophcrack
+    preferred_install_methods:
+    - apt:ophcrack
+  rustscan:
+    binary: rustscan
+    kali_tool_page: https://kali.org/tools/rustscan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/rustscan
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/rustscan
+    upstream_repo: https://github.com/RustScan/RustScan
+    preferred_install_methods:
+    - apt:rustscan
+    - cargo:rustscan
+  autorecon:
+    binary: autorecon
+    kali_tool_page: https://kali.org/tools/autorecon
+    kali_pkg_tracker: https://pkg.kali.org/pkg/autorecon
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/autorecon
+    upstream_repo: https://github.com/Tib3rius/AutoRecon
+    preferred_install_methods:
+    - apt:autorecon
+    - pipx:git+https://github.com/Tib3rius/AutoRecon.git
+  responder:
+    binary: responder
+    kali_tool_page: https://kali.org/tools/responder
+    kali_pkg_tracker: https://pkg.kali.org/pkg/responder
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/responder
+    upstream_repo: https://github.com/lgandx/Responder
+    preferred_install_methods:
+    - apt:responder
+    - git:https://github.com/lgandx/Responder.git
+  netexec:
+    binary: netexec
+    kali_tool_page: https://kali.org/tools/netexec
+    kali_pkg_tracker: https://pkg.kali.org/pkg/netexec
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/netexec
+    upstream_repo: https://github.com/Pennyw0rth/NetExec
+    preferred_install_methods:
+    - apt:netexec
+    - pipx:git+https://github.com/Pennyw0rth/NetExec.git
+  katana:
+    binary: katana
+    kali_tool_page: https://kali.org/tools/katana
+    kali_pkg_tracker: https://pkg.kali.org/pkg/katana
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/katana
+    upstream_repo: https://github.com/projectdiscovery/katana
+    preferred_install_methods:
+    - apt:katana
+    - go:github.com/projectdiscovery/katana/cmd/katana@latest
+  wpscan:
+    binary: wpscan
+    kali_tool_page: https://kali.org/tools/wpscan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/wpscan
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/wpscan
+    upstream_repo: https://github.com/wpscanteam/wpscan
+    preferred_install_methods:
+    - apt:wpscan
+    - gem:wpscan
+  dalfox:
+    binary: dalfox
+    kali_tool_page: https://kali.org/tools/dalfox
+    kali_pkg_tracker: https://pkg.kali.org/pkg/dalfox
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/dalfox
+    upstream_repo: https://github.com/hahwul/dalfox
+    preferred_install_methods:
+    - apt:dalfox
+    - go:github.com/hahwul/dalfox/v2@latest
+  ghidra:
+    binary: ghidra
+    kali_tool_page: https://kali.org/tools/ghidra
+    kali_pkg_tracker: https://pkg.kali.org/pkg/ghidra
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/ghidra
+    upstream_repo: https://github.com/NationalSecurityAgency/ghidra
+    preferred_install_methods:
+    - apt:ghidra
+    - manual:https://github.com/NationalSecurityAgency/ghidra/releases
+  volatility3:
+    binary: vol
+    kali_tool_page: https://kali.org/tools/volatility3
+    kali_pkg_tracker: https://pkg.kali.org/pkg/volatility3
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/volatility3
+    upstream_repo: https://github.com/volatilityfoundation/volatility3
+    preferred_install_methods:
+    - apt:volatility3
+    - pipx:volatility3
+  xsser_scan:
+    binary: xsser
+    kali_tool_page: https://kali.org/tools/xsser-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/xsser
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/xsser
+    upstream_repo: ''
+    preferred_install_methods: []
+  xsser:
+    binary: xsser
+    kali_tool_page: https://kali.org/tools/xsser
+    kali_pkg_tracker: https://pkg.kali.org/pkg/xsser
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/xsser
+    upstream_repo: ''
+    preferred_install_methods: []
+  xxd_hexdump:
+    binary: xxd
+    kali_tool_page: https://kali.org/tools/xxd-hexdump
+    kali_pkg_tracker: https://pkg.kali.org/pkg/xxd
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/xxd
+    upstream_repo: ''
+    preferred_install_methods: []
+  xxd:
+    binary: xxd
+    kali_tool_page: https://kali.org/tools/xxd
+    kali_pkg_tracker: https://pkg.kali.org/pkg/xxd
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/xxd
+    upstream_repo: ''
+    preferred_install_methods: []
+  zap_scan:
+    binary: zap
+    kali_tool_page: https://kali.org/tools/zap-scan
+    kali_pkg_tracker: https://pkg.kali.org/pkg/zap
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/zap
+    upstream_repo: ''
+    preferred_install_methods: []
+  zap:
+    binary: zap
+    kali_tool_page: https://kali.org/tools/zap
+    kali_pkg_tracker: https://pkg.kali.org/pkg/zap
+    kali_packaging_repo: https://gitlab.com/kalilinux/packages/zap
+    upstream_repo: ''
+    preferred_install_methods: []

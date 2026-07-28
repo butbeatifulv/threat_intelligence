@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "veil-engage": {
+      "command": "go",
+      "args": [
+        "run",
+        "./engage/serve/cmd/mcp"
+      ],
+      "cwd": "/path/to/threat_intelligence",
+      "env": {
+        "ENGAGE_ENV": "local",
+        "ENGAGE_CATALOG_PATH": "engage/serve/catalog/tools.yaml",
+        "AUTH_ENABLED": "0"
+      }
+    }
+  }
+}

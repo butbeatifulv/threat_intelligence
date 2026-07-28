@@ -1,0 +1,65 @@
+# Production-hardened graph read overlay: TLS edge (nginx), no published Neo4j/API/MCP ports.
+services:
+  neo4j:
+    ports: []
+
+  api:
+    ports: []
+    read_only: true
+    tmpfs:
+      - /tmp
+    env_file:
+      - ../profiles/secure-graph.env
+    environment:
+      API_LISTEN: ":8090"
+    healthcheck:
+      test: ["CMD", "/api", "healthcheck"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  mcp:
+    profiles:
+      - mcp
+    ports: []
+    read_only: true
+    tmpfs:
+      - /tmp
+    env_file:
+      - ../profiles/secure-graph.env
+    environment:
+      MCP_HTTP_ENABLED: "1"
+      MCP_HTTP_LISTEN: ":8091"
+    healthcheck:
+      test: ["CMD", "/mcp", "healthcheck"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  nginx:
+    build:
+      context: ../..
+      dockerfile: deploy/knowledge/docker/nginx.Dockerfile
+    ports:
+      - "${NGINX_HTTPS_PORT:-443}:443"
+    volumes:
+      - ${NGINX_TLS_CERT:-./nginx/certs/tls.crt}:/etc/nginx/certs/tls.crt:ro
+      - ${NGINX_TLS_KEY:-./nginx/certs/tls.key}:/etc/nginx/certs/tls.key:ro
+    depends_on:
+      api:
+        condition: service_healthy
+      mcp:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+
+  ingest_worker:
+    profiles:
+      - never

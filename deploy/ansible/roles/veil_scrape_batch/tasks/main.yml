@@ -1,0 +1,14 @@
+---
+- name: Install scrape cron (profile-driven batch)
+  ansible.builtin.cron:
+    name: veil-scrape-batch
+    minute: "0"
+    hour: "3"
+    job: >-
+      cd {{ veil_repo_root }} &&
+      set -a && source deploy/profiles/{{ veil_profile }}.env && set +a &&
+      {{ veil_repo_root }}/scripts/ops/compose-up-full.sh &&
+docker compose -f deploy/discovery/compose.yml
+      -f deploy/pipeline/compose.yml -f deploy/graph/compose.yml
+      run --rm scrape_worker
+    user: "{{ ansible_user }}"

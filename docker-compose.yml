@@ -1,0 +1,7 @@
+# Veil: use per-layer deploy (no monolithic root stack).
+# Full local pipeline:
+#   docker compose -f deploy/discovery/compose.yml -f deploy/pipeline/compose.yml -f deploy/graph/compose.yml up --build
+# Graph only (default demo):
+#   docker compose -f deploy/knowledge/compose.yml up --build
+include:
+  - path: deploy/knowledge/compose.yml

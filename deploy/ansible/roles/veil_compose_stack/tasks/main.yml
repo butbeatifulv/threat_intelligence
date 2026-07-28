@@ -1,0 +1,19 @@
+---
+- name: Render stack environment
+  ansible.builtin.template:
+    src: veil-stack.env.j2
+    dest: "/etc/veil/veil-stack.env"
+    mode: "0640"
+  become: true
+
+- name: Deploy stateful stack via compose helper
+  ansible.builtin.command:
+    cmd: >-
+      ./scripts/ops/terraform-veil-stack.sh up
+    chdir: "{{ veil_repo_root }}"
+  environment:
+    TERRAFORM_COMPOSE_ENV: "/etc/veil/veil-stack.env"
+    TF_ENABLE_ENGAGE: "{{ '1' if veil_enable_engage | bool else '0' }}"
+    TF_ENABLE_ENGAGE_EVENTS: "1"
+    COMPOSE_PROJECT_NAME: "{{ veil_compose_project }}"
+  changed_when: true

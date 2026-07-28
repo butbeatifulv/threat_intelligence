@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-14T11:22:36Z",
+  "chunk_count": 7405,
+  "skill_count": 754,
+  "bleve_index": "docs/skills-index/playbook-search.bleve"
+}

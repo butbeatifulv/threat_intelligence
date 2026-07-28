@@ -1,0 +1,6 @@
+project_name         = "veil-local"
+profile              = "smoke-minimal"
+enable_engage        = true
+enable_engage_events = true
+manage_compose       = false
+compose_build        = true

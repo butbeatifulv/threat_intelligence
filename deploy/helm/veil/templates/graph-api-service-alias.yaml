@@ -1,0 +1,16 @@
+{{- if .Values.graph.api.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: veil-api
+  labels:
+    app: veil-api
+spec:
+  type: ClusterIP
+  selector:
+    app: veil-api
+  ports:
+    - name: http
+      port: 8090
+      targetPort: 8090
+{{- end }}

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "veil-unified": {
+      "url": "http://localhost:8095/mcp",
+      "headers": {
+        "Authorization": "Bearer REPLACE_WITH_KEYCLOAK_ACCESS_TOKEN"
+      },
+      "description": "Unified Veil MCP (graph_ + engage_ tools) — run platform/mcp-gateway veil-mcp with graph MCP :8091 and engage MCP :8892",
+      "timeout": 300
+    }
+  }
+}

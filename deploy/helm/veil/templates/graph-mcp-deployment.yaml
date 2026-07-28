@@ -1,0 +1,57 @@
+{{- if .Values.graph.mcp.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "veil.fullname" . }}-mcp
+spec:
+  replicas: {{ .Values.graph.mcp.replicas }}
+  selector:
+    matchLabels:
+      app: veil-mcp
+  template:
+    metadata:
+      labels:
+        app: veil-mcp
+    spec:
+      enableServiceLinks: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.graph.mcp.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.graph.mcp.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: mcp
+          image: "{{ .Values.global.imageRegistry }}veil-mcp:{{ .Values.global.imageTag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8091
+          env:
+            - name: OTEL_SERVICE_NAME
+              value: veil-mcp
+            {{- include "veil.observabilityEnv" . | nindent 12 }}
+            {{- include "veil.playbookEnv" . | nindent 12 }}
+            - name: MCP_ENV
+              value: prod
+            - name: NEO4J_URI
+              value: {{ .Values.global.neo4jUri | quote }}
+            - name: MCP_HTTP_ENABLED
+              value: "1"
+            - name: MCP_HTTP_LISTEN
+              value: ":8091"
+          volumeMounts:
+            {{- include "veil.playbookVolumeMount" . | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8091
+            initialDelaySeconds: 30
+      volumes:
+        {{- include "veil.playbookVolume" . | nindent 8 }}
+{{- end }}

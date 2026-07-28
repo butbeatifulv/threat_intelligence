@@ -1,0 +1,55 @@
+{{- if .Values.graph.api.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "veil.fullname" . }}-api
+spec:
+  replicas: {{ .Values.graph.api.replicas }}
+  selector:
+    matchLabels:
+      app: veil-api
+  template:
+    metadata:
+      labels:
+        app: veil-api
+    spec:
+      enableServiceLinks: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.graph.api.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.graph.api.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: api
+          image: "{{ .Values.global.imageRegistry }}veil-api:{{ .Values.global.imageTag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8090
+          env:
+            - name: OTEL_SERVICE_NAME
+              value: veil-api
+            {{- include "veil.observabilityEnv" . | nindent 12 }}
+            {{- include "veil.playbookEnv" . | nindent 12 }}
+            - name: API_ENV
+              value: prod
+            - name: NEO4J_URI
+              value: {{ .Values.global.neo4jUri | quote }}
+            - name: NATS_URL
+              value: {{ .Values.global.natsUrl | quote }}
+          volumeMounts:
+            {{- include "veil.playbookVolumeMount" . | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8090
+            initialDelaySeconds: 30
+      volumes:
+        {{- include "veil.playbookVolume" . | nindent 8 }}
+{{- end }}

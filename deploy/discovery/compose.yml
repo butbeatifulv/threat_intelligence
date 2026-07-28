@@ -1,0 +1,79 @@
+# Scrape layer: crawl-db, NATS (scrape.>), scrape_worker, proxybroker
+# From repo root: docker compose -f deploy/discovery/compose.yml up --build
+services:
+  crawl-db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${CRAWL_DB_ROOT_PASSWORD:-veilroot}
+      MYSQL_DATABASE: veil_ledger
+      MYSQL_USER: veil
+      MYSQL_PASSWORD: ${CRAWL_DB_PASSWORD:-veilpass}
+    volumes:
+      - ../../var/veil/ledger/mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uveil", "-pveilpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  nats:
+    image: nats:2.10-alpine
+    command: ["-c", "/etc/nats/nats.conf"]
+    volumes:
+      - ./docker/nats.conf:/etc/nats/nats.conf:ro
+      - nats_data:/data
+    ports:
+      - "${NATS_CLIENT_PORT:-4222}:4222"
+      - "${NATS_MONITOR_PORT:-8222}:8222"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O- http://127.0.0.1:8222/healthz >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 3s
+      retries: 6
+
+  proxybroker:
+    build:
+      context: ../..
+      dockerfile: deploy/discovery/docker/proxybroker.Dockerfile
+    environment:
+      PROXYBROKER_ADDR: ":8099"
+    ports:
+      - "${PROXYBROKER_PORT:-8099}:8099"
+
+  scrape_worker:
+    build:
+      context: ../..
+      dockerfile: deploy/discovery/docker/scrape_worker.Dockerfile
+    environment:
+      NATS_URL: nats://nats:4222
+      SCRAPE_SOURCES: ${SCRAPE_SOURCES:-ds,vuln,lola,ti,sbom,coderules,nuclei}
+      VITESS_DSN: ${VITESS_DSN:-veil:veilpass@tcp(crawl-db:3306)/veil_ledger?parseTime=true}
+      SCRAPE_MIN_REFETCH_AFTER: ${SCRAPE_MIN_REFETCH_AFTER:-24h}
+      TI_JSONL_FILE: ${TI_JSONL_FILE:-/app/example.jsonl}
+      SBOM_CVE_LIST_FILE: ${SBOM_CVE_LIST_FILE:-/fixtures/cve_list_seed.txt}
+      SBOM_SOURCES: ${SBOM_SOURCES:-osv,ghsa}
+      NVD_MAX_PAGES: ${NVD_MAX_PAGES:-}
+      SBOM_MAX_CVES: ${SBOM_MAX_CVES:-}
+      SBOM_MAX_GHSA: ${SBOM_MAX_GHSA:-}
+      SCRAPE_FORCE_REFETCH: ${SCRAPE_FORCE_REFETCH:-}
+      DS_MAX_ATOMIC: ${DS_MAX_ATOMIC:-}
+      DS_MAX_CALDERA: ${DS_MAX_CALDERA:-}
+      VULN_METASPLOIT_MAX_RB: ${VULN_METASPLOIT_MAX_RB:-}
+      VULN_EXPLOITDB_MAX_ROWS: ${VULN_EXPLOITDB_MAX_ROWS:-}
+      DS_MAX_SIGMA: ${DS_MAX_SIGMA:-}
+      DS_MAX_YARA: ${DS_MAX_YARA:-}
+      CODERULES_MAX_SEMGREP: ${CODERULES_MAX_SEMGREP:-}
+      CODERULES_MAX_CODEQL: ${CODERULES_MAX_CODEQL:-}
+      NUCLEI_MAX: ${NUCLEI_MAX:-}
+      LOLA_MITRE_MAX_TECHNIQUES: ${LOLA_MITRE_MAX_TECHNIQUES:-}
+      LOFTS_SKIP_ON_ERROR: ${LOFTS_SKIP_ON_ERROR:-}
+      SCRAPE_FAIL_FAST: ${SCRAPE_FAIL_FAST:-}
+      SCRAPE_CACHE_DIR: /data/cache
+    volumes:
+      - ../../var/veil/blobs:/data/cache
+    depends_on:
+      nats:
+        condition: service_healthy
+
+volumes:
+  nats_data:

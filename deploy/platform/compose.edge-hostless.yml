@@ -1,0 +1,10 @@
+# Smoke/CI overlay: force-unpublish layer ports when compose merges append `ports: []`.
+services:
+  api:
+    ports: !reset []
+  mcp:
+    ports: !reset []
+  engage-api:
+    ports: !reset []
+  engage-mcp:
+    ports: !reset []

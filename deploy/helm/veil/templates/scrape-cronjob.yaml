@@ -1,0 +1,29 @@
+{{- if .Values.scrape.cronJob.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "veil.fullname" . }}-scrape
+spec:
+  schedule: {{ .Values.scrape.cronJob.schedule | quote }}
+  concurrencyPolicy: {{ .Values.scrape.cronJob.concurrencyPolicy }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          restartPolicy: OnFailure
+          containers:
+            - name: scrape-worker
+              image: "{{ .Values.global.imageRegistry }}veil-scrape-worker:{{ .Values.global.imageTag }}"
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: OTEL_SERVICE_NAME
+                  value: veil-scrape-worker
+                {{- include "veil.observabilityEnv" . | nindent 16 }}
+                - name: NATS_URL
+                  value: {{ .Values.global.natsUrl | quote }}
+              # Profile env from ConfigMap (P5d): deploy/profiles/{{ .Values.scrape.cronJob.profile }}.env
+{{- end }}

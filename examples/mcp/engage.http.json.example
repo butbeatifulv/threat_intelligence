@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "veil-engage": {
+      "url": "http://localhost:8890",
+      "headers": {
+        "Authorization": "Bearer REPLACE_WITH_KEYCLOAK_TOKEN"
+      },
+      "description": "Veil engage — tool execution API (authorized use only)",
+      "timeout": 300
+    }
+  }
+}

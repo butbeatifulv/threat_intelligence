@@ -1,0 +1,19 @@
+---
+- name: Ensure Docker is installed
+  ansible.builtin.package:
+    name: docker.io
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Add deploy user to docker group
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true
+
+- name: Sync repository checkout
+  ansible.builtin.git:
+    repo: "{{ veil_git_repo | default('https://github.com/butbeautifulv/veil.git') }}"
+    dest: "{{ veil_checkout_path | default(veil_repo_root) }}"
+    version: "{{ veil_git_ref | default('main') }}"
+    force: false

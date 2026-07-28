@@ -1,0 +1,23 @@
+# Stack preset: combined secure graph + engage (two independent compose projects).
+name: secure
+description: >
+  Documents both production-style overlays. Graph and engage are separate compose
+  projects in practice; run each chain in its own COMPOSE_PROJECT_NAME or host.
+profiles:
+  - deploy/profiles/secure-graph.env
+  - deploy/profiles/secure-engage.env
+stacks:
+  graph:
+    compose:
+      - deploy/knowledge/compose.yml
+      - deploy/knowledge/compose.secure.yml
+    compose_profiles:
+      - mcp
+  engage:
+    compose:
+      - deploy/engage/compose.yml
+      - deploy/engage/compose.secure.yml
+notes:
+  - Prefer secure-graph.yml and secure-engage.yml for single-layer bring-up.
+  - Pentest prod-like dual-instance uses pentest-prod.yml instead of nginx secure overlays.
+  - See deploy/stacks/secure-graph.yml and deploy/stacks/secure-engage.yml.

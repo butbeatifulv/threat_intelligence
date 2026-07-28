@@ -1,0 +1,11 @@
+go 1.25.0
+
+toolchain go1.25.12
+
+use (
+	../pkg
+	./connector
+	./engage-events
+	./ned
+	./pkg
+)

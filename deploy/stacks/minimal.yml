@@ -1,0 +1,27 @@
+# Stack preset: minimal E2E / closed-loop pilot base (scrape → pipeline → graph).
+name: minimal
+description: >
+  Minimal crawl smoke and platform closed-loop pilots. Uses smoke-minimal scrape
+  limits (ti,sbom, GRAPH_PACK_SKIP=1). Base data plane only; add engage overlays
+  from full-loop.yml for act→remember closed loop.
+profiles:
+  - deploy/profiles/smoke-minimal.env
+compose:
+  - deploy/discovery/compose.yml
+  - deploy/pipeline/compose.yml
+  - deploy/knowledge/compose.yml
+  - deploy/knowledge/compose.neo4j-publish.yml
+optional_compose:
+  - deploy/compose.scale.yml
+notes:
+  - >-
+    Optional partition overlay when SCRAPE_WORKER_PARTITION=1 (see
+    deploy/compose.scale.yml); compose-up-full.sh adds it automatically.
+  - >-
+    Closed-loop pilot (engage act → ingest → veil-api) layers
+    deploy/engage/compose.yml and deploy/engage/compose.veil-stack.yml — see
+    full-loop.yml or ./scripts/test/smoke-platform-closed-loop.sh.
+scripts:
+  - scripts/ops/compose-up-full.sh
+  - scripts/test/smoke-discovery-e2e.sh --up
+  - scripts/test/smoke-platform-closed-loop.sh

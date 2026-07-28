@@ -1,0 +1,5 @@
+# Local hardening: Neo4j not published to host (default compose.yml already omits ports).
+# Kept for explicit stacks that also include compose.neo4j-publish.yml — clears host maps.
+services:
+  neo4j:
+    ports: !override []

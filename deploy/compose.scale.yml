@@ -1,0 +1,44 @@
+# Optional overlay: parallel scrape via partitioned SCRAPE_SOURCES.
+# Enable: SCRAPE_WORKER_PARTITION=1 ./scripts/ops/compose-up-full.sh
+# Or: COMPOSE_PROFILES=scrape-partition docker compose ... -f deploy/compose.scale.yml up
+services:
+  scrape_worker_fast:
+    profiles:
+      - scrape-partition
+    build:
+      context: ..
+      dockerfile: deploy/discovery/docker/scrape_worker.Dockerfile
+    environment:
+      NATS_URL: nats://nats:4222
+      SCRAPE_SOURCES: ti,sbom,coderules,nuclei
+      VITESS_DSN: ${VITESS_DSN:-veil:veilpass@tcp(crawl-db:3306)/veil_ledger}
+      SCRAPE_MIN_REFETCH_AFTER: ${SCRAPE_MIN_REFETCH_AFTER:-24h}
+      SCRAPE_CACHE_DIR: /data/cache
+      TI_JSONL_FILE: ${TI_JSONL_FILE:-/app/example.jsonl}
+    volumes:
+      - ../var/veil/blobs:/data/cache
+    depends_on:
+      nats:
+        condition: service_healthy
+      crawl-db:
+        condition: service_healthy
+
+  scrape_worker_slow:
+    profiles:
+      - scrape-partition
+    build:
+      context: ..
+      dockerfile: deploy/discovery/docker/scrape_worker.Dockerfile
+    environment:
+      NATS_URL: nats://nats:4222
+      SCRAPE_SOURCES: ds,vuln,lola
+      VITESS_DSN: ${VITESS_DSN:-veil:veilpass@tcp(crawl-db:3306)/veil_ledger}
+      SCRAPE_MIN_REFETCH_AFTER: ${SCRAPE_MIN_REFETCH_AFTER:-24h}
+      SCRAPE_CACHE_DIR: /data/cache
+    volumes:
+      - ../var/veil/blobs:/data/cache
+    depends_on:
+      nats:
+        condition: service_healthy
+      crawl-db:
+        condition: service_healthy

@@ -1,0 +1,88 @@
+imagePullSecrets: []
+
+global:
+  imageRegistry: ""
+  imageTag: ""  # set from versions.env at deploy time
+  natsUrl: nats://nats.veil-data.svc:4222
+  neo4jUri: neo4j://neo4j.veil-data.svc:7687
+  veilApiUrl: http://api.veil.svc:8090
+
+graph:
+  api:
+    enabled: true
+    replicas: 2
+    resources: {}
+    # Stateless HTTP — scale replicas; optional CPU HPA (wire metrics-server).
+    hpa:
+      enabled: false
+      minReplicas: 2
+      maxReplicas: 16
+  mcp:
+    enabled: true
+    replicas: 2
+    hpa:
+      enabled: false
+      minReplicas: 2
+      maxReplicas: 16
+  ingress:
+    enabled: false
+    host: api.veil.example
+
+engage:
+  api:
+    enabled: true
+    replicas: 2
+    hpa:
+      enabled: false
+      minReplicas: 2
+      maxReplicas: 16
+  mcp:
+    enabled: true
+    replicas: 2
+    hpa:
+      enabled: false
+      minReplicas: 2
+      maxReplicas: 16
+  eventsWorker:
+    enabled: true
+    replicas: 1
+  runner:
+    enabled: false  # isolate on dedicated pool / Ansible VM
+
+pipeline:
+  worker:
+    replicas: 2
+    hpa:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 10
+      # metric: nats consumer lag (wire in P5e)
+
+ingest:
+  worker:
+    replicas: 2
+    hpa:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 10
+
+scrape:
+  cronJob:
+    enabled: true
+    schedule: "0 3 * * *"
+    profile: smoke-minimal
+    concurrencyPolicy: Forbid
+
+observability:
+  enabled: false
+  otelEndpoint: "http://tempo.cxado-obs.svc.cluster.local:4317"
+  samplerRatio: 1.0
+  metricsListen: ":9090"
+  logFormat: json
+  logLevel: info
+
+playbooks:
+  hostPath: /var/lib/veil/playbooks
+  mountPath: /home/nonroot
+  searchEngine: bleve
+  searchMode: keyword

@@ -1,0 +1,5 @@
+veil_repo_root: "{{ playbook_dir }}/../../.."
+veil_profile: fast-rich
+veil_compose_project: veil-stage
+veil_enable_engage: true
+veil_secure_overlay: false

@@ -1,0 +1,61 @@
+# Unified Veil TLS edge (P12b): single nginx for graph + engage APIs and MCP.
+services:
+  api:
+    ports: !reset []
+    healthcheck:
+      test: ["CMD", "/api", "healthcheck"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  mcp:
+    profiles:
+      - mcp
+    ports: !reset []
+    environment:
+      MCP_HTTP_ENABLED: "1"
+      MCP_HTTP_LISTEN: ":8091"
+    healthcheck:
+      test: ["CMD", "/mcp", "healthcheck"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  engage-api:
+    ports: !reset []
+
+  engage-mcp:
+    ports: !reset []
+    environment:
+      ENGAGE_MCP_HTTP_ENABLED: "1"
+      ENGAGE_MCP_HTTP_LISTEN: ":8892"
+      ENGAGE_JOBS_DIR: /tmp/engage/jobs
+      ENGAGE_FILES_DIR: /tmp/engage/files
+
+  veil-edge:
+    build:
+      context: ../..
+      dockerfile: deploy/platform/docker/nginx.Dockerfile
+    ports:
+      - "${VEIL_EDGE_HTTPS_PORT:-443}:443"
+    volumes:
+      - ${VEIL_EDGE_TLS_CERT:-./nginx/certs/tls.crt}:/etc/nginx/certs/tls.crt:ro
+      - ${VEIL_EDGE_TLS_KEY:-./nginx/certs/tls.key}:/etc/nginx/certs/tls.key:ro
+    depends_on:
+      api:
+        condition: service_healthy
+      mcp:
+        condition: service_healthy
+      engage-api:
+        condition: service_healthy
+      engage-mcp:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+      - /tmp
+    security_opt:
+      - no-new-privileges:true

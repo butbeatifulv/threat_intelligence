@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/butbeautifulv/veil/docs/graph-pack-manifest.schema.json",
+  "title": "Veil graph pack manifest",
+  "type": "object",
+  "required": [
+    "schema",
+    "graphVersion",
+    "createdAt",
+    "cypherFile",
+    "sha256",
+    "neo4j"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": ["veil.graph-pack/1", "threat-intelligence.graph-pack/1"]
+    },
+    "graphVersion": {
+      "type": "string",
+      "description": "Release tag or semver chosen by the publisher"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "cypherFile": {
+      "type": "string",
+      "const": "graph.cypher"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "neo4j": {
+      "type": "string",
+      "description": "Target Neo4j major line, e.g. 5.x"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

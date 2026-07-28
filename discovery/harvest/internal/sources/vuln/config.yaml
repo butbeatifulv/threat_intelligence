@@ -1,0 +1,4 @@
+
+# Example configuration for vuln
+# Adjust values or use environment-based loader in production.
+env: local

@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "description": "Golden queries for playbook search eval (recall@5, MRR).",
+  "queries": [
+    {
+      "id": "disk-imaging",
+      "query": "disk imaging forensic",
+      "expected_ids": ["acquiring-disk-image-with-dd-and-dcfldd"],
+      "type": "keyword-in-body"
+    },
+    {
+      "id": "dcfldd-acquisition",
+      "query": "dcfldd disk acquisition hash verification",
+      "expected_ids": ["acquiring-disk-image-with-dd-and-dcfldd"],
+      "type": "keyword-in-body"
+    },
+    {
+      "id": "volatility-memory",
+      "query": "volatility memory forensics",
+      "expected_ids": [
+        "analyzing-memory-dumps-with-volatility",
+        "conducting-memory-forensics-with-volatility",
+        "performing-memory-forensics-with-volatility3"
+      ],
+      "type": "tool-name"
+    },
+    {
+      "id": "sigma-detection",
+      "query": "sigma detection rules",
+      "expected_ids": ["building-detection-rules-with-sigma"],
+      "type": "keyword-in-body"
+    },
+    {
+      "id": "persistence-linux",
+      "query": "linux persistence crontab systemd",
+      "expected_ids": ["analyzing-persistence-mechanisms-in-linux"],
+      "type": "keyword-in-body"
+    },
+    {
+      "id": "persistence-semantic",
+      "query": "how attackers maintain access after compromise",
+      "expected_ids": [
+        "analyzing-malware-persistence-with-autoruns",
+        "analyzing-persistence-mechanisms-in-linux",
+        "detecting-persistence-with-sysmon"
+      ],
+      "type": "semantic"
+    },
+    {
+      "id": "mitre-t1059",
+      "query": "T1059.001",
+      "expected_ids": [],
+      "type": "mitre-exact",
+      "match_technique": "T1059.001"
+    },
+    {
+      "id": "powershell-execution",
+      "query": "powershell script execution detection",
+      "expected_ids": [],
+      "type": "keyword-in-body",
+      "subdomain": "threat-hunting"
+    },
+    {
+      "id": "lateral-movement",
+      "query": "detect lateral movement authentication logs",
+      "expected_ids": [
+        "detecting-lateral-movement-in-network-traffic",
+        "hunting-lateral-movement-with-splunk"
+      ],
+      "type": "semantic"
+    },
+    {
+      "id": "nmap-scanning",
+      "query": "nmap network port scanning",
+      "expected_ids": [],
+      "type": "tool-name"
+    },
+    {
+      "id": "ransomware-response",
+      "query": "ransomware incident response containment",
+      "expected_ids": ["recovering-from-ransomware-attack"],
+      "type": "semantic"
+    },
+    {
+      "id": "phishing-investigation",
+      "query": "phishing email investigation workflow",
+      "expected_ids": ["conducting-phishing-incident-response"],
+      "type": "semantic"
+    },
+    {
+      "id": "yara-malware",
+      "query": "yara rules malware detection",
+      "expected_ids": [],
+      "type": "tool-name"
+    },
+    {
+      "id": "clickjacking",
+      "query": "clickjacking frame embedding test",
+      "expected_ids": ["performing-clickjacking-attack-test"],
+      "type": "keyword-in-body"
+    },
+    {
+      "id": "threat-modeling",
+      "query": "threat modeling OWASP threat dragon",
+      "expected_ids": ["performing-threat-modeling-with-owasp-threat-dragon"],
+      "type": "keyword-in-body"
+    },
+    {
+      "id": "autoruns-persistence",
+      "query": "autoruns malware persistence registry",
+      "expected_ids": ["analyzing-malware-persistence-with-autoruns"],
+      "type": "keyword-in-body"
+    },
+    {
+      "id": "bloodhound-ad",
+      "query": "bloodhound active directory attack paths",
+      "expected_ids": [],
+      "type": "tool-name"
+    },
+    {
+      "id": "kubernetes-pod-expose",
+      "query": "expose pod externally load balancer service",
+      "expected_ids": [],
+      "type": "semantic"
+    },
+    {
+      "id": "hashcat-cracking",
+      "query": "hashcat password hash cracking",
+      "expected_ids": ["performing-hash-cracking-with-hashcat"],
+      "type": "tool-name"
+    },
+    {
+      "id": "wireshark-pcap",
+      "query": "wireshark packet capture analysis",
+      "expected_ids": [],
+      "type": "tool-name"
+    },
+    {
+      "id": "splunk-siem",
+      "query": "splunk SIEM alert triage",
+      "expected_ids": [],
+      "type": "tool-name"
+    },
+    {
+      "id": "zero-trust",
+      "query": "zero trust network access implementation",
+      "expected_ids": [],
+      "type": "semantic"
+    },
+    {
+      "id": "subdomain-threat-hunting",
+      "query": "powershell",
+      "expected_ids": [],
+      "type": "subdomain-filter",
+      "subdomain": "threat-hunting"
+    },
+    {
+      "id": "negative-no-match",
+      "query": "nomatch-xyz-abc-12345",
+      "expected_ids": [],
+      "type": "negative",
+      "expect_empty": true
+    },
+    {
+      "id": "incident-timeline",
+      "query": "incident timeline forensic analysis",
+      "expected_ids": ["building-incident-timeline-with-timesketch"],
+      "type": "semantic"
+    },
+    {
+      "id": "dcsync-detection",
+      "query": "DCSync attack detection active directory",
+      "expected_ids": ["detecting-dcsync-attack-in-active-directory"],
+      "type": "keyword-in-body"
+    },
+    {
+      "id": "sql-injection-test",
+      "query": "SQL injection web application testing",
+      "expected_ids": [],
+      "type": "semantic"
+    },
+    {
+      "id": "container-escape",
+      "query": "container escape kubernetes detection",
+      "expected_ids": ["detecting-container-escape-attempts"],
+      "type": "semantic"
+    },
+    {
+      "id": "misp-threat-intel",
+      "query": "MISP threat intelligence sharing",
+      "expected_ids": [],
+      "type": "tool-name"
+    },
+    {
+      "id": "disk-imaging-short",
+      "query": "disk imaging",
+      "expected_ids": ["acquiring-disk-image-with-dd-and-dcfldd"],
+      "type": "keyword-in-body"
+    }
+  ]
+}

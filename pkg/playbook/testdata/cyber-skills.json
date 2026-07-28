@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-20T12:00:00Z",
+  "source": "test",
+  "skill_count": 2,
+  "unique_attack_ids": 2,
+  "subdomain_counts": {
+    "digital-forensics": 1,
+    "threat-hunting": 1
+  },
+  "skills": [
+    {
+      "id": "fixture-forensics",
+      "name": "Disk Imaging Fixture",
+      "domain": "cybersecurity",
+      "subdomain": "digital-forensics",
+      "description": "Acquire disk images with dd and dcfldd for forensic imaging",
+      "tags": ["forensics", "imaging"],
+      "attack_ids": ["T1005"],
+      "corpus_path": "pkg/playbook/testdata/skills/fixture-forensics/SKILL.md"
+    },
+    {
+      "id": "fixture-hunt",
+      "name": "PowerShell Hunt Fixture",
+      "domain": "cybersecurity",
+      "subdomain": "threat-hunting",
+      "description": "Hunt PowerShell execution T1059.001 patterns",
+      "tags": ["hunt", "powershell"],
+      "attack_ids": ["T1059.001"],
+      "corpus_path": "pkg/playbook/testdata/skills/fixture-hunt/SKILL.md"
+    }
+  ]
+}

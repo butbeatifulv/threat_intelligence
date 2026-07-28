@@ -1,0 +1,28 @@
+# Discovery browser profile: Playwright sidecar + HTTP service (harvest publish when NATS up).
+#   docker compose -f deploy/discovery/compose.yml -f deploy/discovery/compose.browser.yml \
+#     --profile browser up -d discovery-browser-agent discovery-browser
+services:
+  discovery-browser-agent:
+    build:
+      context: ../..
+      dockerfile: deploy/discovery/docker/browser-agent.Dockerfile
+    ports:
+      - "${DISCOVERY_BROWSER_SIDECAR_PORT:-8910}:8910"
+    profiles:
+      - browser
+
+  discovery-browser:
+    build:
+      context: ../..
+      dockerfile: deploy/discovery/docker/discovery-browser.Dockerfile
+    environment:
+      DISCOVERY_BROWSER_SIDECAR_URL: http://discovery-browser-agent:8910
+      NATS_URL: ${NATS_URL:-nats://nats:4222}
+      BROWSER_SCRAPE_SUBJECT: ${BROWSER_SCRAPE_SUBJECT:-scrape.browser.events}
+    ports:
+      - "${DISCOVERY_BROWSER_PORT:-8920}:8920"
+    depends_on:
+      discovery-browser-agent:
+        condition: service_started
+    profiles:
+      - browser

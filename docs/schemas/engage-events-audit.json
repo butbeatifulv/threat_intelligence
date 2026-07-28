@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://veil.cxado/schemas/engage-events-audit.json",
+  "title": "EngageAuditEvent",
+  "description": "NATS subject engage.events.audit — published by veneno, consumed by veil pipeline/engage-events",
+  "type": "object",
+  "required": ["tool", "target", "success", "at"],
+  "properties": {
+    "source": { "type": "string" },
+    "tool": { "type": "string", "minLength": 1 },
+    "target": { "type": "string" },
+    "subject": { "type": "string" },
+    "success": { "type": "boolean" },
+    "at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

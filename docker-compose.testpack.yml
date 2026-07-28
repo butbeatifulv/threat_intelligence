@@ -1,0 +1,10 @@
+# Optional: test / air-gapped import from a local graph pack ZIP (no GitHub download).
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.testpack.yml up --build -d
+# Adjust the host path if your pack lives elsewhere.
+services:
+  graph-bootstrap:
+    volumes:
+      - ./var/veil/graph/releases/veil-graph-v0.4.7.zip:/pack/host.zip:ro
+    environment:
+      - GRAPH_PACK_DEFAULT=0

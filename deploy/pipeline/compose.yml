@@ -1,0 +1,16 @@
+# Pipeline layer: consumes scrape.>, publishes ingest.>
+# Requires NATS (start deploy/discovery or external NATS_URL).
+services:
+  pipeline_worker:
+    build:
+      context: ../..
+      dockerfile: deploy/pipeline/docker/pipeline_worker.Dockerfile
+    restart: unless-stopped
+    environment:
+      NATS_URL: ${NATS_URL:-nats://nats:4222}
+      NATS_SCRAPE_STREAM: SCRAPE
+      NATS_SCRAPE_DURABLE: pipeline_worker
+      NATS_SCRAPE_SUBSCRIBE_SUBJECT: ${NATS_SCRAPE_SUBSCRIBE_SUBJECT:-scrape.>}
+      NATS_INGEST_STREAM: INGEST
+      PIPELINE_BATCH: ${PIPELINE_BATCH:-10}
+      PIPELINE_MAX_WAIT: ${PIPELINE_MAX_WAIT:-5s}

@@ -1,0 +1,14 @@
+version: "2"
+
+linters:
+  default: standard
+  settings:
+    errcheck:
+      # These are all `defer x.Close()`/`Drain()`/`Unsubscribe()` cleanup calls on an
+      # already-successful path (the resource was just opened/subscribed); the error,
+      # if any, is not actionable and the idiom is used consistently across this repo.
+      exclude-functions:
+        - (io.Closer).Close
+        - (*net/http.Response).Body.Close
+        - (*github.com/nats-io/nats.go.Conn).Drain
+        - (*github.com/nats-io/nats.go.Subscription).Unsubscribe

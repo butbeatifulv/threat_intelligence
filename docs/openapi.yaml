@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: Threat Intel HTTP API
+  version: 0.1.0
+paths:
+  /health:
+    get:
+      summary: Liveness
+  /v1/categories:
+    get:
+      summary: List product categories and Neo4j label membership
+  /v1/categories/{category}/kinds:
+    get:
+      summary: Labels in category with node counts
+      parameters:
+        - name: category
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [vuln, ti, detection, lola, mitre, sbom, code_rules, dast]
+  /v1/categories/{category}/nodes:
+    get:
+      summary: Paginated nodes of a label within a category
+      parameters:
+        - name: category
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [vuln, ti, detection, lola, mitre, sbom, code_rules, dast]
+        - name: kind
+          in: query
+          required: true
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 200 }
+        - name: offset
+          in: query
+          schema: { type: integer, default: 0 }
+  /v1/categories/{category}/search:
+    get:
+      summary: Search within category
+      parameters:
+        - name: category
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [vuln, ti, detection, lola, mitre, sbom, code_rules, dast]
+        - name: q
+          in: query
+          required: true
+          schema: { type: string }
+        - name: kind
+          in: query
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 50 }
+  /v1/nodes/{id}:
+    get:
+      summary: Get one node by elementId or common keys
+  /v1/nodes/{id}/neighbors:
+    get:
+      summary: k-hop neighborhood
+      parameters:
+        - name: depth
+          in: query
+          schema: { type: integer, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 500 }
+  /v1/kinds:
+    get:
+      summary: All distinct Neo4j labels

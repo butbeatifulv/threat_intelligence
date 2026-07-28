@@ -1,0 +1,137 @@
+# Veil security control catalog — maps external frameworks to repo-enforced controls.
+# Engage/pentest execution controls: https://github.com/butbeautifulv/veneno (deploy/security/veneno-controls.yaml)
+# Sources (reference only, do not edit refs/): JCSF, DAF, DAF MLSO, OWASP GenAI landscapes.
+version: 1
+
+sources:
+  - id: jcsf
+    title: Jet Container Security Framework
+    path: refs/Jet-Container-Security-Framework-main
+    scope: container domains (nodes, runtime, images, manifests, runtime)
+  - id: daf
+    title: DevSecOps Assessment Framework
+    path: refs/DevSecOps-Assessment-Framework-main
+    scope: secure SDLC, CI/CD, secrets, container images
+  - id: daf-mlso
+    title: DAF MLSO (AI/ML systems)
+    path: refs/DevSecOps-Assessment-Framework-main/DAF_MLSO_public_RU.md
+    scope: agentic AI, MCP, least privilege
+  - id: owasp-agentic
+    title: OWASP Agentic AI Solutions Landscape Q2/2026
+    path: refs/owasp/Cheat-Sheet-Agentic-AI-Solution-Landscape-Q226-1-1.pdf
+    scope: agent lifecycle SecOps
+  - id: owasp-red-team-ai
+    title: OWASP Red Teaming AI Landscape Q2/2026
+    path: refs/owasp/Cheat-Sheet-Red-Teaming-AI-Solution-Landscape-Q226.pdf
+    scope: red-team / evaluate phase
+  - id: agent-store
+    title: openJiuwen Agent Store (catalog reference)
+    path: refs/agent-store
+    scope: agent metadata patterns only; not executed in CI
+  - id: gaia
+    title: GAIA benchmark (arXiv:2311.12983)
+    path: https://arxiv.org/abs/2311.12983
+    scope: general-assistant agent evaluation; HF dataset optional
+
+controls:
+  # --- Engage / agentic (active defense) ---
+  - id: VEIL-ENG-001
+    title: Catalog-only tool execution (no raw shell)
+    frameworks: [daf:T-DEV-SRC-1-1, owasp-agentic:deploy]
+    level: L2
+    verify: [engage_deny_raw_in_secure_profile, code_command_metachar_guard]
+    docs: [docs/engage/engage-hardening.md, docs/engage/engage-agentic-threats.md]
+
+  - id: VEIL-ENG-002
+    title: Runner isolation (Docker sandbox)
+    frameworks: [jcsf:container:L2, daf-mlso:T-PROD-RUN-ML-1-1, daf:T-CODE-IMG-2-1]
+    level: L2
+    verify: [engage_runner_mode_docker_in_secure_profile]
+    docs: [docs/engage/engage-hardening.md]
+
+  - id: VEIL-ENG-003
+    title: Auth required in production (fail-closed)
+    frameworks: [daf:T-DEV-SCM-3-3, jcsf:manifests:L2]
+    level: L2
+    verify: [engage_require_auth_in_secure_profile, engage_mcp_auth_strict]
+    docs: [docs/deploy/deploy-secure.md, docs/deploy/auth-keycloak.md]
+
+  - id: VEIL-ENG-004
+    title: MCP/HTTP hardening headers and body limits
+    frameworks: [owasp-agentic:operate, daf:T-DEV-CICD-1-4]
+    level: L2
+    verify: [code_securityhttp_headers]
+    docs: [engage/serve/internal/transport/securityhttp/middleware.go]
+
+  - id: VEIL-ENG-005
+    title: Block shell metacharacters in /api/command
+    frameworks: [daf-mlso:T-PROD-RUN-ML-2-2, owasp-red-team-ai:test]
+    level: L2
+    verify: [code_command_metachar_guard]
+    docs: [engage/serve/internal/usecase/command/runner.go]
+
+  - id: VEIL-ENG-006
+    title: Chrooted engage file API
+    frameworks: [daf:T-DEV-SM-2-1, jcsf:container:L1]
+    level: L1
+    verify: [code_files_path_traversal_test]
+    docs: [engage/serve/internal/usecase/files/manager.go]
+
+  - id: VEIL-ENG-007
+    title: Optional SSRF guard for tool targets (prod)
+    frameworks: [daf-mlso:T-PROD-RUN-ML-2-2, owasp-agentic:deploy]
+    level: L2
+    verify: [code_target_guard, engage_target_guard_in_secure_profile]
+    docs: [docs/engage/engage-agentic-threats.md]
+
+  - id: VEIL-ENG-008
+    title: Audit trail for tool runs
+    frameworks: [daf:T-DEV-CICD-1-2, owasp-agentic:monitor]
+    level: L1
+    verify: [code_audit_logger_present]
+    docs: [docs/engage/engage-runtime.md]
+
+  # --- Platform / containers (P5 hybrid) ---
+  - id: VEIL-PLT-001
+    title: Terraform/Ansible/Helm split (data vs control plane)
+    frameworks: [jcsf:manifests:L2, jcsf:nodes:L1, daf:T-PREPROD-MANSEC-2-1]
+    level: L2
+    verify: [repo_deploy_hybrid_layout]
+    docs: [docs/deploy/deploy-platform-hybrid.md]
+
+  - id: VEIL-PLT-002
+    title: Secure graph overlay (TLS edge, no published Neo4j)
+    frameworks: [jcsf:runtime:L2, daf:T-PREPROD-MANSEC-0-1]
+    level: L2
+    verify: [compose_graph_secure_overlay_exists]
+    docs: [docs/deploy/deploy-secure.md]
+
+  - id: VEIL-PLT-003
+    title: CI hardening gates (engage + platform)
+    frameworks: [daf:T-DEV-CICD-2-2, daf:T-CODE-IMG-2-1, daf:T-DEV-SRC-2-2]
+    level: L2
+    verify: [workflow_engage_hardening, workflow_engage_secure]
+    docs: [.github/workflows/engage.yml]
+
+  # --- Supply chain ---
+  - id: VEIL-SCM-001
+    title: Graph pack integrity (manifest sha256)
+    frameworks: [daf:T-ADI-ART-4-4, daf:T-CODE-SPC-3-3]
+    level: L2
+    verify: [script_graph_pack_checksum]
+    docs: [docs/contracts/graph-pack.md]
+
+  # --- Agent evaluation (GAIA + registry) ---
+  - id: VEIL-EVAL-001
+    title: GAIA pilot harness (offline fixtures + scorer)
+    frameworks: [owasp-red-team-ai:evaluate, gaia:level1]
+    level: L1
+    verify: [eval_gaia_pilot_harness, workflow_agent_eval_pilot]
+    docs: [docs/agents/agent-evaluation-gaia.md]
+
+  - id: VEIL-EVAL-002
+    title: GAIA splits not in git; arXiv methodology primary, HF optional
+    frameworks: [gaia:contamination-policy, gaia:arxiv-2311.12983]
+    level: L2
+    verify: [eval_gaia_data_gitignored]
+    docs: [docs/agents/agent-evaluation-gaia.md, deploy/eval/gaia.env.example, eval/gaia/paper/system-prompt.txt]

@@ -1,0 +1,8 @@
+{
+  "name": "discovery-browser-agent",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "playwright": "1.49.1"
+  }
+}

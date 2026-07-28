@@ -1,0 +1,32 @@
+# Stack preset: secure graph + engage behind one platform nginx (P12b paths).
+name: secure-unified
+description: >
+  Production-style graph read and engage exec on a shared Docker network with a
+  single TLS edge at deploy/platform/nginx. Replaces separate secure-graph and
+  secure-engage host ports (:443 + :8443) with one HTTPS listener.
+profiles:
+  - deploy/profiles/secure-graph.env
+  - deploy/profiles/secure-engage.env
+compose:
+  - deploy/knowledge/compose.yml
+  - deploy/knowledge/compose.secure.yml
+  - deploy/engage/compose.yml
+  - deploy/engage/compose.secure.yml
+  - deploy/platform/compose.secure-unified.yml
+compose_profiles:
+  - mcp
+notes:
+  - >-
+    Edge config lives under deploy/platform/nginx/ (P12b). The final compose
+    file overrides the per-layer nginx service to use veil-unified.conf.
+  - >-
+    Path prefixes and Keycloak roles: docs/architecture/platform-unified-access.md. All
+    proxy locations pass Authorization to upstreams.
+  - >-
+    Generate dev TLS under deploy/platform/nginx/certs/ or set
+    UNIFIED_NGINX_TLS_CERT / UNIFIED_NGINX_TLS_KEY.
+  - >-
+    Engage still reaches veil-api at http://api:8090 on the Docker network
+    (ENGAGE_VEIL_API_URL); graph and engage JWT validation remain in-process.
+  - Do not publish Neo4j or internal API/MCP ports; only UNIFIED_NGINX_HTTPS_PORT.
+  - See docs/deploy/deploy-secure.md, docs/engage/engage-runtime.md, docs/deploy/auth-keycloak.md.

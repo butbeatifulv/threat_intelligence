@@ -1,0 +1,6 @@
+upstream_repo=https://github.com/anthropics/anthropic-cybersecurity-skills
+upstream_path=Anthropic-Cybersecurity-Skills
+imported_at=2026-05-20
+upstream_sha=unknown
+skills_count=754
+mappings_files=7

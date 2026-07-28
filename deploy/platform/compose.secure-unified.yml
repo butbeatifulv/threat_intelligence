@@ -1,0 +1,27 @@
+# Secure unified overlay: one platform edge nginx; supersedes per-layer nginx images.
+services:
+  nginx:
+    build:
+      context: ../..
+      dockerfile: deploy/platform/docker/nginx.Dockerfile
+    ports:
+      - "${UNIFIED_NGINX_HTTPS_PORT:-443}:443"
+    volumes:
+      - ${UNIFIED_NGINX_TLS_CERT:-deploy/platform/nginx/certs/tls.crt}:/etc/nginx/certs/tls.crt:ro
+      - ${UNIFIED_NGINX_TLS_KEY:-deploy/platform/nginx/certs/tls.key}:/etc/nginx/certs/tls.key:ro
+    depends_on:
+      api:
+        condition: service_healthy
+      mcp:
+        condition: service_healthy
+      engage-api:
+        condition: service_healthy
+      engage-mcp:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+      - /tmp
+    security_opt:
+      - no-new-privileges:true

@@ -1,0 +1,374 @@
+# Machine-readable package hints for Engage client-native host tools.
+# Consumed by scripts/ops/install-engage-host-tools.sh (requires PyYAML: python3-yaml / pip pyyaml).
+# Upstream naming varies; verify on your distro before relying on automation.
+schema_version: 1
+
+profiles:
+  minimal:
+    - nmap
+    - httpx
+    - nuclei
+  recommended:
+    - nmap
+    - masscan
+    - httpx
+    - nuclei
+    - subfinder
+    - amass
+    - gobuster
+    - feroxbuster
+    - ffuf
+    - sqlmap
+    - nikto
+  full:
+    - nmap
+    - masscan
+    - httpx
+    - nuclei
+    - subfinder
+    - amass
+    - gobuster
+    - feroxbuster
+    - ffuf
+    - sqlmap
+    - nikto
+    - hydra
+    - trivy
+  core47:
+    - nmap
+    - masscan
+    - rustscan
+    - amass
+    - subfinder
+    - nuclei
+    - fierce
+    - dnsenum
+    - autorecon
+    - theharvester
+    - responder
+    - netexec
+    - enum4linux-ng
+    - gobuster
+    - feroxbuster
+    - dirsearch
+    - ffuf
+    - dirb
+    - httpx
+    - katana
+    - nikto
+    - sqlmap
+    - wpscan
+    - arjun
+    - paramspider
+    - dalfox
+    - wafw00f
+    - hydra
+    - john
+    - hashcat
+    - medusa
+    - patator
+    - crackmapexec
+    - evil-winrm
+    - hash-identifier
+    - ophcrack
+    - gdb
+    - radare2
+    - binwalk
+    - ghidra
+    - checksec
+    - strings
+    - objdump
+    - volatility3
+    - foremost
+    - steghide
+    - exiftool
+
+tools:
+  nmap:
+    apt: [nmap]
+    dnf: [nmap]
+    pacman: [nmap]
+    zypper: [nmap]
+    apk: [nmap]
+  masscan:
+    apt: [masscan]
+    dnf: [masscan]
+    pacman: [masscan]
+    zypper: [masscan]
+    apk: [] # use edge/community or build; leave empty = manual
+  httpx:
+    apt: [httpx]
+    dnf: [httpx]
+    pacman: [httpx]
+    zypper: [httpx]
+    apk: [httpx]
+  nuclei:
+    apt: [nuclei]
+    dnf: [nuclei]
+    pacman: [nuclei]
+    zypper: [nuclei]
+    apk: [nuclei]
+  subfinder:
+    apt: [subfinder]
+    dnf: [subfinder]
+    pacman: [subfinder]
+    zypper: [subfinder]
+    apk: [subfinder]
+  amass:
+    apt: [amass]
+    dnf: [amass]
+    pacman: [amass]
+    zypper: [amass]
+    apk: [amass]
+  gobuster:
+    apt: [gobuster]
+    dnf: [gobuster]
+    pacman: [gobuster]
+    zypper: [gobuster]
+    apk: [gobuster]
+  feroxbuster:
+    apt: [feroxbuster]
+    dnf: [feroxbuster]
+    pacman: [feroxbuster]
+    zypper: [feroxbuster]
+    apk: [feroxbuster]
+  ffuf:
+    apt: [ffuf]
+    dnf: [ffuf]
+    pacman: [ffuf]
+    zypper: [ffuf]
+    apk: [ffuf]
+  sqlmap:
+    apt: [sqlmap]
+    dnf: [sqlmap]
+    pacman: [sqlmap]
+    zypper: [sqlmap]
+    apk: [sqlmap]
+  nikto:
+    apt: [nikto]
+    dnf: [nikto]
+    pacman: [nikto]
+    zypper: [nikto]
+    apk: [nikto]
+  hydra:
+    apt: [hydra]
+    dnf: [hydra]
+    pacman: [hydra]
+    zypper: [hydra]
+    apk: [hydra]
+  trivy:
+    apt: [trivy]
+    dnf: [trivy]
+    pacman: [trivy]
+    zypper: [trivy]
+    apk: [trivy]
+  rustscan:
+    apt: [rustscan]
+    dnf: [rustscan]
+    pacman: [rustscan]
+    zypper: [rustscan]
+    apk: []
+  fierce:
+    apt: [fierce]
+    dnf: [fierce]
+    pacman: []
+    zypper: []
+    apk: []
+  dnsenum:
+    apt: [dnsenum]
+    dnf: [dnsenum]
+    pacman: []
+    zypper: []
+    apk: []
+  autorecon:
+    apt: [autorecon]
+    dnf: [autorecon]
+    pacman: []
+    zypper: []
+    apk: []
+  theharvester:
+    apt: [theharvester]
+    dnf: [theharvester]
+    pacman: [theharvester]
+    zypper: []
+    apk: []
+  responder:
+    apt: [responder]
+    dnf: [responder]
+    pacman: [responder]
+    zypper: []
+    apk: []
+  netexec:
+    apt: [netexec]
+    dnf: [netexec]
+    pacman: [netexec]
+    zypper: []
+    apk: []
+  enum4linux-ng:
+    apt: [enum4linux-ng]
+    dnf: [enum4linux-ng]
+    pacman: [enum4linux-ng]
+    zypper: []
+    apk: []
+  dirsearch:
+    apt: [dirsearch]
+    dnf: [dirsearch]
+    pacman: [dirsearch]
+    zypper: []
+    apk: []
+  dirb:
+    apt: [dirb]
+    dnf: [dirb]
+    pacman: [dirb]
+    zypper: []
+    apk: []
+  katana:
+    apt: [katana]
+    dnf: [katana]
+    pacman: [katana]
+    zypper: []
+    apk: []
+  wpscan:
+    apt: [wpscan]
+    dnf: [wpscan]
+    pacman: [wpscan]
+    zypper: []
+    apk: []
+  arjun:
+    apt: [arjun]
+    dnf: [arjun]
+    pacman: [arjun]
+    zypper: []
+    apk: []
+  paramspider:
+    apt: [paramspider]
+    dnf: [paramspider]
+    pacman: [paramspider]
+    zypper: []
+    apk: []
+  dalfox:
+    apt: [dalfox]
+    dnf: [dalfox]
+    pacman: [dalfox]
+    zypper: []
+    apk: []
+  wafw00f:
+    apt: [wafw00f]
+    dnf: [wafw00f]
+    pacman: [wafw00f]
+    zypper: []
+    apk: []
+  john:
+    apt: [john]
+    dnf: [john]
+    pacman: [john]
+    zypper: [john]
+    apk: [john]
+  hashcat:
+    apt: [hashcat]
+    dnf: [hashcat]
+    pacman: [hashcat]
+    zypper: [hashcat]
+    apk: [hashcat]
+  medusa:
+    apt: [medusa]
+    dnf: [medusa]
+    pacman: [medusa]
+    zypper: []
+    apk: []
+  patator:
+    apt: [patator]
+    dnf: [patator]
+    pacman: [patator]
+    zypper: []
+    apk: []
+  crackmapexec:
+    apt: [crackmapexec]
+    dnf: [crackmapexec]
+    pacman: []
+    zypper: []
+    apk: []
+  evil-winrm:
+    apt: [evil-winrm]
+    dnf: [evil-winrm]
+    pacman: [evil-winrm]
+    zypper: []
+    apk: []
+  hash-identifier:
+    apt: [hash-identifier]
+    dnf: [hash-identifier]
+    pacman: []
+    zypper: []
+    apk: []
+  ophcrack:
+    apt: [ophcrack]
+    dnf: [ophcrack]
+    pacman: []
+    zypper: []
+    apk: []
+  gdb:
+    apt: [gdb]
+    dnf: [gdb]
+    pacman: [gdb]
+    zypper: [gdb]
+    apk: [gdb]
+  radare2:
+    apt: [radare2]
+    dnf: [radare2]
+    pacman: [radare2]
+    zypper: []
+    apk: []
+  binwalk:
+    apt: [binwalk]
+    dnf: [binwalk]
+    pacman: [binwalk]
+    zypper: [binwalk]
+    apk: []
+  ghidra:
+    apt: [ghidra]
+    dnf: [ghidra]
+    pacman: [ghidra]
+    zypper: [ghidra]
+    apk: []
+  checksec:
+    apt: [checksec]
+    dnf: [checksec]
+    pacman: [checksec]
+    zypper: []
+    apk: []
+  strings:
+    apt: [binutils]
+    dnf: [binutils]
+    pacman: [binutils]
+    zypper: [binutils]
+    apk: [binutils]
+  objdump:
+    apt: [binutils]
+    dnf: [binutils]
+    pacman: [binutils]
+    zypper: [binutils]
+    apk: [binutils]
+  volatility3:
+    apt: [volatility3]
+    dnf: [volatility3]
+    pacman: [volatility3]
+    zypper: []
+    apk: []
+  foremost:
+    apt: [foremost]
+    dnf: [foremost]
+    pacman: [foremost]
+    zypper: []
+    apk: []
+  steghide:
+    apt: [steghide]
+    dnf: [steghide]
+    pacman: [steghide]
+    zypper: []
+    apk: []
+  exiftool:
+    apt: [libimage-exiftool-perl]
+    dnf: [perl-Image-ExifTool]
+    pacman: [perl-image-exiftool]
+    zypper: [perl-Image-ExifTool]
+    apk: [perl-image-exiftool]

@@ -1,0 +1,14 @@
+**/node_modules
+**/.next
+**/dist
+.git
+**/.git
+var/veil/blobs/*
+!var/veil/**/.gitkeep
+var/veil/ledger
+var/veil/graph
+# Legacy bind-mount dirs
+data/cache/*
+!data/cache/.gitkeep
+data/neo4j_export
+data/neo4j_user_export

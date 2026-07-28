@@ -1,0 +1,13 @@
+---
+# Veil data plane — stateful Compose stack on VM hosts.
+- name: Veil data plane
+  hosts: veil_data
+  roles:
+    - veil_common
+    - veil_compose_stack
+
+- name: Veil scrape batch hosts
+  hosts: veil_scrape
+  roles:
+    - veil_common
+    - veil_scrape_batch

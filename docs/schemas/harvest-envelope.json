@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/butbeautifulv/veil/docs/schemas/scrapev1-envelope.json",
+  "title": "scrapev1.Envelope",
+  "description": "Raw scrape envelope published to NATS scrape.> subjects. Source of truth for scrape → pipeline boundary.",
+  "type": "object",
+  "required": ["schema_version", "source", "kind", "content_key", "scraped_at", "payload"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "source": {
+      "type": "string",
+      "enum": ["sbom", "coderules", "nuclei", "ti", "vuln", "lola", "ds"]
+    },
+    "kind": { "type": "string", "minLength": 1 },
+    "content_key": { "type": "string", "minLength": 1 },
+    "scraped_at": { "type": "string", "format": "date-time" },
+    "payload": {}
+  }
+}

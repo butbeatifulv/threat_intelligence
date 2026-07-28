@@ -1,0 +1,34 @@
+global:
+  imageTag: ""
+
+engage:
+  api:
+    enabled: false
+    replicas: 1
+  mcp:
+    enabled: false
+    replicas: 1
+  eventsWorker:
+    enabled: false
+
+graph:
+  api:
+    replicas: 1
+  mcp:
+    replicas: 1
+
+pipeline:
+  worker:
+    replicas: 1
+    hpa:
+      enabled: false
+
+ingest:
+  worker:
+    replicas: 1
+    hpa:
+      enabled: false
+
+scrape:
+  cronJob:
+    profile: fast-rich

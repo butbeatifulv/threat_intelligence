@@ -1,0 +1,5 @@
+veil_repo_root: "{{ playbook_dir }}/../../.."
+veil_profile: secure-graph
+veil_compose_project: veil-prod
+veil_enable_engage: true
+veil_secure_overlay: true

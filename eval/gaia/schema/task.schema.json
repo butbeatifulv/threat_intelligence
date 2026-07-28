@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://veil.local/eval/gaia/task.schema.json",
+  "title": "GAIA task row (metadata.jsonl / Parquet column subset)",
+  "type": "object",
+  "required": ["task_id", "Question", "Level", "Final answer"],
+  "properties": {
+    "task_id": { "type": "string" },
+    "Question": { "type": "string" },
+    "Level": { "type": "integer", "minimum": 1, "maximum": 3 },
+    "Final answer": { "type": "string" },
+    "file_name": { "type": "string" },
+    "file_path": { "type": "string" },
+    "Annotator Metadata": { "type": "object" }
+  },
+  "additionalProperties": true
+}

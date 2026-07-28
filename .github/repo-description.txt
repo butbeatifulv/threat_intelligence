@@ -1,0 +1,1 @@
+Neo4j TI: discovery→pipeline→knowledge, veil-api + veil-mcp. Pentest execution in veneno. MIT.

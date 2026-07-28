@@ -1,0 +1,35 @@
+# Stack preset: full Veil data plane + engage on shared NATS/Neo4j (discover→act loop).
+name: full-loop
+description: >
+  Scrape, pipeline, graph, and engage-api with engage-events bridge on the shared
+  Veil stack (compose.veil-stack.yml). Default profile smoke-minimal for platform
+  full-loop smokes.
+profiles:
+  - deploy/profiles/smoke-minimal.env
+compose:
+  - deploy/discovery/compose.yml
+  - deploy/pipeline/compose.yml
+  - deploy/knowledge/compose.yml
+  - deploy/knowledge/compose.neo4j-publish.yml
+  - deploy/engage/compose.yml
+  - deploy/engage/compose.veil-stack.yml
+optional_compose:
+  - deploy/compose.scale.yml
+services_up:
+  - engage-api
+  - engage-events-worker
+notes:
+  - >-
+    Do not combine compose.veil-stack.yml with compose.events.yml (standalone NATS
+    / graph-ingest profile); veil-stack expects shared infrastructure from the
+    discovery/pipeline/graph chain.
+  - >-
+    Equivalent to VEIL_COMPOSE_FILES plus engage overlays; see
+    scripts/ops/compose-up-veil-engage.sh.
+  - >-
+Graph-only merge file deploy/graph/compose.full.yml mirrors the three-layer
+    discovery/pipeline/graph chain but does not include engage.
+scripts:
+  - scripts/ops/compose-up-veil-engage.sh
+  - scripts/test/smoke-platform-full-loop.sh
+  - scripts/test/smoke-veil-engage-stack.sh

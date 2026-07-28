@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/butbeautifulv/veil/docs/schemas/ingestv1-envelope.json",
+  "title": "ingestv1.Envelope",
+  "description": "Normalized ingest envelope published to NATS ingest.> subjects. Source of truth for pipeline → graph boundary.",
+  "type": "object",
+  "required": ["schema_version", "source", "kind", "idempotency_key", "payload"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "source": {
+      "type": "string",
+      "enum": ["sbom", "coderules", "nuclei", "ti", "vuln", "lola", "ds", "engage"]
+    },
+    "kind": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Includes engage_tool_run and engage_finding when source is engage"
+    },
+    "idempotency_key": { "type": "string", "minLength": 1 },
+    "payload": {}
+  }
+}

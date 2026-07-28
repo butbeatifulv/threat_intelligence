@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-20T12:00:00Z",
+  "skill_count": 2,
+  "procedures": [
+    {
+      "id": "fixture-forensics",
+      "subdomain": "digital-forensics",
+      "attack_ids": ["T1005"],
+      "nist_csf": ["DE.CM"],
+      "step_count": 2,
+      "when_to_use_count": 2,
+      "prereq_count": 1,
+      "tool_mentions": ["nmap"],
+      "catalog_tools": ["nmap_scan"],
+      "corpus_path": "pkg/playbook/testdata/skills/fixture-forensics/SKILL.md"
+    },
+    {
+      "id": "fixture-hunt",
+      "subdomain": "threat-hunting",
+      "attack_ids": ["T1059.001", "T1059"],
+      "nist_csf": [],
+      "step_count": 1,
+      "when_to_use_count": 1,
+      "prereq_count": 0,
+      "tool_mentions": ["nuclei"],
+      "catalog_tools": [],
+      "corpus_path": "pkg/playbook/testdata/skills/fixture-hunt/SKILL.md"
+    }
+  ]
+}

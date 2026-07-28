@@ -1,0 +1,62 @@
+name: deploy-platform
+
+on:
+  pull_request:
+    paths:
+      - 'deploy/terraform/**'
+      - 'deploy/ansible/**'
+      - 'deploy/helm/**'
+      - '.github/workflows/deploy-platform.yml'
+  push:
+    branches: [main, master]
+    paths:
+      - 'deploy/terraform/**'
+      - 'deploy/ansible/**'
+      - 'deploy/helm/**'
+
+jobs:
+  terraform-fmt-validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: deploy/terraform/environments/stage
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.7"
+
+      - run: terraform fmt -check -recursive ../..
+      - run: terraform init -backend=false
+      - run: terraform validate
+
+  helm-template:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/setup-helm@v4
+        with:
+          version: 'v3.14.0'
+
+      - name: Render stage and prod values
+        run: |
+          helm template veil deploy/helm/veil \
+            -f deploy/helm/veil/values.yaml \
+            -f deploy/helm/veil/values-stage.yaml \
+            --set global.imageTag=v0.4.5 > /dev/null
+          helm template veil deploy/helm/veil \
+            -f deploy/helm/veil/values.yaml \
+            -f deploy/helm/veil/values-prod.yaml \
+            --set global.imageTag=v0.4.5 > /dev/null
+
+  ansible-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Ansible
+        run: pip install ansible-core
+
+      - run: make deploy-ansible-check

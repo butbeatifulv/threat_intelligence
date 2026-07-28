@@ -1,0 +1,40 @@
+name: docs
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - '.github/repo-description.txt'
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - 'AGENTS.md'
+      - 'docs/**'
+      - 'deploy/**/README.md'
+  workflow_dispatch:
+
+jobs:
+  sync-github-description:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync repo description to GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: make sync-github-metadata
+
+  helm-template:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/setup-helm@v4
+        with:
+          version: 'v3.14.0'
+
+      - name: Helm template render check
+        run: make deploy-helm-template

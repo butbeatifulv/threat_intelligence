@@ -1,0 +1,13 @@
+# Engage CI moved to https://github.com/butbeautifulv/veneno
+#
+# This workflow is disabled after veil/veneno split.
+name: engage (moved to veneno)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pointer:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Run engage CI in butbeautifulv/veneno"

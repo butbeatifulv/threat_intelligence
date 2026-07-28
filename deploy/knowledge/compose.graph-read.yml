@@ -1,0 +1,27 @@
+# Graph read-path smoke overlay: Neo4j + bootstrap + API (no ingest/NATS/scrape).
+services:
+  graph-bootstrap:
+    environment:
+      GRAPH_PACK_SKIP: "1"
+
+  ingest_worker:
+    profiles:
+      - never
+
+  api:
+    healthcheck:
+      test: ["CMD", "/api", "healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  mcp:
+    environment:
+      MCP_HTTP_ENABLED: "1"
+    healthcheck:
+      test: ["CMD", "/mcp", "healthcheck"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 40s

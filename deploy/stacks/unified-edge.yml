@@ -1,0 +1,36 @@
+# Stack preset: full Veil data plane + engage behind one platform nginx edge (P12b).
+name: unified-edge
+description: >
+  Discovery, pipeline, knowledge, and engage on the shared Veil stack with a single
+  TLS nginx entrypoint (deploy/platform/compose.edge.yml). Host exposes HTTPS :443
+  only; graph API at /v1/, engage at /api/, MCP at /mcp/graph/ and /mcp/engage/.
+profiles:
+  - deploy/profiles/smoke-minimal.env
+compose:
+  - deploy/discovery/compose.yml
+  - deploy/pipeline/compose.yml
+  - deploy/knowledge/compose.yml
+  - deploy/knowledge/compose.neo4j-publish.yml
+  - deploy/engage/compose.yml
+  - deploy/engage/compose.veil-stack.yml
+  - deploy/platform/compose.edge.yml
+compose_profiles:
+  - mcp
+services_up:
+  - veil-edge
+  - engage-api
+  - engage-events-worker
+notes:
+  - >-
+    Do not combine compose.veil-stack.yml with compose.events.yml; veil-stack expects
+    shared NATS/Neo4j from the discovery/pipeline/knowledge chain.
+  - >-
+    Generate dev TLS under deploy/platform/nginx/certs/ (see deploy/platform/README.md)
+    before curling https://localhost.
+  - >-
+    Layer secure overlays (deploy/knowledge/compose.secure.yml,
+    deploy/engage/compose.secure.yml) are superseded by this unified edge for host
+    ingress; use one edge model per deployment.
+scripts:
+  - scripts/ops/compose-up-veil-engage.sh
+  - scripts/test/smoke-unified-edge.sh

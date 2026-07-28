@@ -1,0 +1,7 @@
+{"ioc":{"type":"ip","value":"8.8.8.8","confidence":85,"tags":["dns","google"],"source":"manual"}}
+{"ioc":{"type":"domain","value":"Example.COM.","confidence":60,"tags":["phish"],"source":"manual"}}
+{"ioc":{"type":"url","value":"https://Example.com/login","confidence":70,"tags":["phish"],"source":"manual"}}
+{"ioc":{"type":"hash","value":"44d88612fea8a8f36de82e1278abb02f","confidence":90,"tags":["malware"],"source":"manual"}}
+{"campaign":{"id":"camp-001","name":"Example Campaign","actors":["APT-X"],"iocs":[{"type":"domain","value":"example.com"},{"type":"ip","value":"8.8.8.8"}],"summary":"Demo campaign for ingestion","source":"demo"}}
+{"cluster":{"id":"cluster-001","name":"Example Cluster","campaigns":[{"id":"camp-001","name":"Example Campaign","actors":["APT-X"]}],"description":"Demo cluster grouping campaigns","source":"demo"}}
+
