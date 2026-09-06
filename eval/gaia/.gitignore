@@ -1,3 +1,6 @@
 # Local GAIA downloads (gated HF dataset — never commit)
 data/
 .cache/
+
+# Local IDE / agent tooling
+.agents/

@@ -1,2 +1,5 @@
 playbook-search.bleve/
 playbook-chunks.jsonl
+
+# Local IDE / agent tooling
+.agents/
